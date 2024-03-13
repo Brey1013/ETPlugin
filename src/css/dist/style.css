@@ -384,88 +384,77 @@
 }
 
 /*PLugin Styles###############################*/
-
 .et-product-header-area {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
-
 .et-product-header-area .et-product-breadcrumb {
-    color: var(--et_grey);
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    width: 100%;
+  color: var(--et_grey);
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: 100%;
 }
-
 .et-product-header-area .et-product-title {
-    width: 75%;
+  width: 75%;
+}
+.et-product-header-area .et-product-title h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 0px;
 }
 
 .et-product-seller-info {
-    background: var(--et_aquamarine);
-    border-radius: 8px;
-    padding: 10px;
+  background: var(--et_aquamarine);
+  border-radius: 8px;
+  padding: 10px;
 }
-
 .et-product-seller-info h2 {
-    color: #fefefe;
+  color: #fefefe;
 }
 
 .et-product-hr {
-    height: auto;
-    background: none;
-    border: none;
-    border-bottom: 1px solid var(--et_grey);
+  height: auto;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--et_grey);
 }
 
 #product-gallery #product-carousel .carousel-indicators {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
 }
-
 #product-gallery #product-carousel .carousel-indicators img {
-    object-fit: cover;
-    border-radius: 8px;
+  object-fit: cover;
+  border-radius: 8px;
 }
-
 #product-gallery .carousel-inner .carousel-item {
-    max-height: initial !important;
-
+  max-height: initial !important;
 }
-
 #product-gallery .carousel-inner .carousel-item img {
-    border-radius: 8px;
-}
-
-.et-product-header-area .et-product-title h1 {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 0px;
+  border-radius: 8px;
 }
 
 .product-header .single-listing-meta-wrap {
-    flex-direction: column !important;
+  flex-direction: column !important;
 }
 
 ul.single-listing-meta {
-    list-style: none;
-    margin: 0;
-    padding: 0 !important;
+  list-style: none;
+  margin: 0;
+  padding: 0 !important;
 }
-
 ul.single-listing-meta li {
-    padding: 0;
+  padding: 0;
 }
 
 .et-product-header-area .et-product-price {
-    width: 25%;
-    text-align: right;
+  width: 25%;
+  text-align: right;
 }
-
 .et-product-header-area .et-product-price span {
-    font-weight: bold;
-    font-size: 48px;
-    color: var(--et_aquamarine);
+  font-weight: bold;
+  font-size: 48px;
+  color: var(--et_aquamarine);
 }
 
 /*############################################*/

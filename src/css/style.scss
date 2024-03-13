@@ -345,3 +345,93 @@
 .current-category {
   font-weight: bold; /* Add your desired styling for the current category link */
 }
+
+/*PLugin Styles###############################*/
+
+.et-product-header-area {
+  display: flex;
+  flex-wrap: wrap;
+
+  .et-product-breadcrumb {
+    color: var(--et_grey);
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+
+  .et-product-title {
+    width: 75%;
+
+    h1 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.et-product-seller-info {
+  background: var(--et_aquamarine);
+  border-radius: 8px;
+  padding: 10px;
+
+  h2 {
+    color: #fefefe;
+  }
+}
+
+.et-product-hr {
+  height: auto;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--et_grey);
+}
+
+#product-gallery {
+  #product-carousel {
+    .carousel-indicators {
+      justify-content: flex-start !important;
+
+      img {
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .carousel-inner .carousel-item {
+    max-height: initial !important;
+
+    img {
+      border-radius: 8px;
+    }
+  }
+}
+
+.product-header .single-listing-meta-wrap {
+  flex-direction: column !important;
+}
+
+ul.single-listing-meta {
+  list-style: none;
+  margin: 0;
+  padding: 0 !important;
+
+  li {
+    padding: 0;
+  }
+}
+
+.et-product-header-area .et-product-price {
+  width: 25%;
+  text-align: right;
+
+  span {
+    font-weight: bold;
+    font-size: 48px;
+    color: var(--et_aquamarine);
+  }
+}
+
+/*############################################*/
