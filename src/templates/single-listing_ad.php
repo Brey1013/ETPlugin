@@ -47,13 +47,13 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                         <section class="product-header">
                             <div class="et-product-header-area">
                                 <div class="et-product-breadcrumb">
-                                    < <a href="javascript:history.back()">Back</a> | <a href="<?php echo $term_link ?>"
+                                    <i class="fas fa-chevron-left"></i> <a href="javascript:history.back()">Back</a> <b>|</b> <a href="<?php echo $term_link ?>"
                                             title="<?php echo $term_name ?>">
                                             <?php echo $term_name ?>
-                                        </a> > <a href="<?php echo $term_link_second ?>"
+                                        </a> <i class="fas fa-chevron-right"></i> <a href="<?php echo $term_link_second ?>"
                                             title="<?php echo $term_name_second ?>">
                                             <?php echo $term_name_second ?>
-                                        </a> > <a href=".">
+                                        </a> <i class="fas fa-chevron-right"></i> <a href=".">
                                             <?php echo get_the_title(); ?>
                                         </a>
                                 </div>
@@ -89,6 +89,8 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                 </div>
                             </div>
                             <!-- <hr class="et-product-hr"> -->
+                        </section>
+                        <section class="product-content">
                             <div class="rtin-content-area">
                                 <div class="row">
                                     <div class="col-12 col-md-9">
@@ -135,11 +137,11 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
 
                                                         <a class="carousel-control-prev" href="#product-carousel"
                                                             role="button" data-slide="prev">
-                                                            <i class="fa-solid fa-chevron-left"></i>
+                                                            <i class="fas fa-chevron-left"></i>
                                                         </a>
                                                         <a class="carousel-control-next" href="#product-carousel"
                                                             role="button" data-slide="next">
-                                                            <i class="fa-solid fa-chevron-right"></i>
+                                                            <i class="fas fa-chevron-right"></i>
                                                         </a>
                                                     </div>
                                                 </section>
@@ -183,7 +185,7 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                         <span class="badge badge-pill badge-secondary"><a
                                                                 href="<?php echo $sheet; ?>" target="_blank">
                                                                 <?php echo $fileName; ?> <i
-                                                                    class="doc-icon fa-solid fa-angle-down"></i>
+                                                                    class="doc-icon fas fa-angle-down"></i>
                                                             </a></span>
                                                     <?php } ?>
                                                 </div>
@@ -197,27 +199,31 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                     </div>
                                     <div class="col-12 col-md-3">
                                         <div class="et-product-seller-info">
-                                            <h2>Seller info</h2>
-
                                             <?php echo do_shortcode('[et-seller-information-widget]'); ?>
+                                        </div>
+                                        <div class="et-product-seller-map">
+                                            <?php echo do_shortcode('[et-maps-widget]'); ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="et-product-related">
+                                <h3>Related Products</h3>
+                                <?php
+
+                                woocommerce_related_products(
+                                    array(
+                                        'posts_per_page' => 4,
+                                        'columns' => 4,
+                                        'orderby' => 'rand'
+                                    )
+                                );
+
+                                ?>
+                            </div>
                         </section>
                     </div>
-                    <h3>Related Products</h3>
-                    <?php
-
-                    woocommerce_related_products(
-                        array(
-                            'posts_per_page' => 4,
-                            'columns' => 4,
-                            'orderby' => 'rand'
-                        )
-                    );
-
-                    ?>
+                    
 
                 </div>
             </div>
