@@ -57,6 +57,9 @@ function et_dashboard_summary()
     ?>
 
     <div class="row">
+        <div class="col-12">
+            <h3>Your listings summary</h3>
+        </div>
         <div class="col-md-6 col-12"><a href="../my-listings/?status=temp-draft">
                 <?php echo $drafts ?>
                 <?php _e('Saved in Drafts', 'equipmenttrader'); ?>
