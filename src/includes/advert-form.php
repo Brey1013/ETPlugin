@@ -1,11 +1,11 @@
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="et-submit-advert-form">
     <input type="hidden" name="action" value="handle_advert_form_submission">
 
     <div class="row">
-        <div class="col-12">
-            <h2>
+        <div class="col-12 et-ad-listing-progress-bar et-progress-bar-outer">
+            <!-- <h2>
                 <?php _e('Product Listing Form', 'equipmenttrader'); ?>
-            </h2>
+            </h2> -->
 
             <?php include(plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>
 
@@ -25,9 +25,23 @@
                         <img src="<?php echo $imgURL; ?> " class="col-3 p-1">
                     <?php } ?>
                 <?php } ?>
+                <hr>
             </div>
 
-            <!-- TODO: Attention Brey! This is where you can add stuff on the left of the product management form -->
+            <div class="et-listing-ad-form-help-area">
+                
+                <div class="et-ad-listing-help-area">
+                    <h4>Adding a product listing</h4>
+                    <p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Recusandae tenetur corporis dignissimos maiores, qui optio, consectetur. Maiores explicabo et rerum suscipit repellat, excepturi vel distinctio?</p>
+                    <p style="margin-bottom: 10px; float: right"><a id="" href="#et-account-help-popup" class="et-top-cut-button"><i class="fa fa-solid fa-info"></i>Get help</a><a href="#et-faq-section" class="et-top-cut-button"><i class="fa fa-solid fa-question"></i>FAQs</a></p>
+                    <hr>
+                    <h4>Still getting stuck?</h4>
+                    <p><?php echo do_shortcode('[et-sales-fine-print]') ?></p>
+                </div>
+                <div class="et-ad-listing-progress-bar">
+                   <?php include(plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>
+                </div>
+            </div>
 
         </div>
         <div class="col-6">
@@ -291,26 +305,30 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 et-ad-listing-progress-bar et-progress-bar-outer">
             <?php include(plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>
         </div>
-        <div class="col-12 text-center">
+        
+        <div class="col-6">
+            <div class="et-ad-listing-form-bottom-help-area">
+                <h4>Still getting stuck?</h4>
+                <?php echo do_shortcode('[et-sales-fine-print]') ?>
+            </div>
+        </div>
+        <div class="col-6 text-right">
             <?php if (count($cart) > 0) {
                 paginate_array($cart);
             } ?>
-            <input type="submit" name="submit-draft" value="<?php _e('Save Draft', 'equipmenttrader'); ?>"
+            <input type="submit" name="submit-draft" value="<?php _e('< Save Draft', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
             <?php if (isset($cart[$current_key])) { ?>
                 <input type="submit" name="update" value="<?php _e('Save', 'equipmenttrader'); ?>" class="btn btn-primary">
             <?php } else { ?>
-                <input type="submit" name="submit" value="<?php _e('Save and Next', 'equipmenttrader'); ?>"
+                <input type="submit" name="submit" value="<?php _e('Save and Next >', 'equipmenttrader'); ?>"
                     class="btn btn-primary">
             <?php } ?>
-            <input type="submit" name="go-to-cart" value="<?php _e('Go To Cart', 'equipmenttrader'); ?>"
+            <input type="submit" name="go-to-cart" value="<?php _e('Go To Cart >>', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
-        </div>
-        <div class="col-12">
-            <?php echo do_shortcode('[et-sales-fine-print]') ?>
         </div>
     </div>
 </form>
