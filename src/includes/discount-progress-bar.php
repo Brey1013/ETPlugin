@@ -6,6 +6,8 @@ $tier_2_title = get_option(SettingsConstants::get_setting_name(SettingsConstants
 $tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
 $tier_3_title = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_title));
 ?>
+<h3>Multi-Ad discount tracker</h3>
+<p>The more ads you buy, the more you save! Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, porro nulla deleniti nobis sint iure, corrupti ullam minima quia iusto atque nesciunt, reiciendis.</p>
 <div class="progress-bar" data-percent="<?php echo $count * 10; ?>">
     <?php for ($i = 1; $i < 11; $i++) {
         $class = '';
