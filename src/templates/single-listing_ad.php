@@ -47,15 +47,15 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                         <section class="product-header">
                             <div class="et-product-header-area">
                                 <div class="et-product-breadcrumb">
-                                    <i class="fas fa-chevron-left"></i> <a href="javascript:history.back()">Back</a> <b>|</b> <a href="<?php echo $term_link ?>"
-                                            title="<?php echo $term_name ?>">
-                                            <?php echo $term_name ?>
-                                        </a> <i class="fas fa-chevron-right"></i> <a href="<?php echo $term_link_second ?>"
-                                            title="<?php echo $term_name_second ?>">
-                                            <?php echo $term_name_second ?>
-                                        </a> <i class="fas fa-chevron-right"></i> <a href=".">
-                                            <?php echo get_the_title(); ?>
-                                        </a>
+                                    <i class="fas fa-chevron-left"></i> <a href="javascript:history.back()">Back</a>
+                                    <b>|</b> <a href="<?php echo $term_link ?>" title="<?php echo $term_name ?>">
+                                        <?php echo $term_name ?>
+                                    </a> <i class="fas fa-chevron-right"></i> <a href="<?php echo $term_link_second ?>"
+                                        title="<?php echo $term_name_second ?>">
+                                        <?php echo $term_name_second ?>
+                                    </a> <i class="fas fa-chevron-right"></i> <a href=".">
+                                        <?php echo get_the_title(); ?>
+                                    </a>
                                 </div>
                                 <div class="et-product-title">
                                     <h1>
@@ -223,7 +223,7 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                             </div>
                         </section>
                     </div>
-                    
+
 
                 </div>
             </div>

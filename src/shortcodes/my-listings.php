@@ -11,7 +11,7 @@ function et_my_listings()
     global $wpdb;
 
     $current_user_id = get_current_user_id();
-    $status_filter = isset($_GET["status"]) ? strtolower($_GET["status"]) : null;
+    $status_filter = isset ($_GET["status"]) ? strtolower($_GET["status"]) : null;
 
     $query = "SELECT p.ID, p.post_title, p.post_status, pm_featured.meta_value AS featured, pm_end_date.meta_value AS end_date
         FROM {$wpdb->posts} p
@@ -85,10 +85,10 @@ function et_my_listings()
                         }
                     }
 
-                    if (isset($term_name))
+                    if (isset ($term_name))
                         $categories[] = $term_name;
 
-                    if (isset($term_name_second))
+                    if (isset ($term_name_second))
                         $categories[] = $term_name_second;
 
                     if ($result->post_status === 'temp-draft') {

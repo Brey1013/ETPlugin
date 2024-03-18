@@ -124,8 +124,8 @@ if ($query_featured) {
                         <div class="row">
                             <div class="col-4">
                                 <form>
-                                    <?php include(plugin_dir_path(__DIR__) . 'includes/categories-widget.php'); ?>
-                                    <?php include(plugin_dir_path(__DIR__) . 'includes/prices-filter.php'); ?>
+                                    <?php include (plugin_dir_path(__DIR__) . 'includes/categories-widget.php'); ?>
+                                    <?php include (plugin_dir_path(__DIR__) . 'includes/prices-filter.php'); ?>
                                     <input type="submit" value="Apply Filter" class="btn btn-primary" />
                                 </form>
                             </div>

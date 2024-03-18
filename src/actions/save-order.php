@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 function handle_advert_form_submission()
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['submit']) || isset($_POST['update']) || isset($_POST['go-to-cart']) || isset($_POST['submit-draft']))) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset ($_POST['submit']) || isset ($_POST['update']) || isset ($_POST['go-to-cart']) || isset ($_POST['submit-draft']))) {
 
         global $woocommerce;
 
@@ -21,7 +21,7 @@ function handle_advert_form_submission()
         $priceType = sanitize_text_field($_POST['price-type']);
         $priceValue = sanitize_text_field($_POST['price-value']);
         $availability = sanitize_text_field($_POST['availability']);
-        $featured = isset($_POST['featured']) ? $_POST['featured'] : false;
+        $featured = isset ($_POST['featured']) ? $_POST['featured'] : false;
 
         $itemData = array(
             'title' => $title, // Add your custom meta data here
@@ -40,18 +40,18 @@ function handle_advert_form_submission()
             'featured' => $featured
         );
 
-        if (isset($_GET['draft_id'])) {
+        if (isset ($_GET['draft_id'])) {
             $post = get_post($_GET['draft_id']);
             $adData = get_post_meta($_GET['draft_id'], 'cart_items');
             $adData = $adData[0] ?? [];
         }
 
-        if (isset($_POST['submit']) || isset($_POST['update']) || isset($_POST['go-to-cart'])) {
+        if (isset ($_POST['submit']) || isset ($_POST['update']) || isset ($_POST['go-to-cart'])) {
             $product_id = wc_get_product_id_by_sku('master'); // Get the product ID
             $quantity = 1; // Set the quantity to 1
 
             // Handle media uploads
-            if (isset($_GET['draft_id'])) {
+            if (isset ($_GET['draft_id'])) {
                 $images = $adData['images'];
                 $specsheets = $adData['specsheets'];
                 $brand_logo = $adData['brand_logo'];
@@ -65,32 +65,32 @@ function handle_advert_form_submission()
             $itemData['specsheets'] = upload_advert_specsheets($specsheets ?? []);
             $itemData['brand_logo'] = upload_advert_brand_logo($brand_logo ?? false);
 
-            if (isset($_POST['update'])) {
+            if (isset ($_POST['update'])) {
                 foreach ($itemData as $metaKey => $metaValue) {
                     $woocommerce->cart->cart_contents[$_GET['key']][$metaKey] = $metaValue;
                 }
                 // Save the changes to the cart
                 $woocommerce->cart->set_session();
                 header('Location:' . $_SERVER['HTTP_REFERER']);
-            } elseif (isset($_POST['submit'])) {
-                if (isset($_GET['draft_id'])) {
+            } elseif (isset ($_POST['submit'])) {
+                if (isset ($_GET['draft_id'])) {
                     wp_delete_post($_GET['draft_id'], true);
                 }
                 $cart_item_key = $woocommerce->cart->add_to_cart($product_id, $quantity, 0, array(), $itemData);
                 header('Location:' . get_permalink());
-            } elseif (isset($_POST['go-to-cart'])) {
-                if (isset($_GET['draft_id'])) {
+            } elseif (isset ($_POST['go-to-cart'])) {
+                if (isset ($_GET['draft_id'])) {
                     wp_delete_post($_GET['draft_id'], true);
                 }
-                if (isset($_GET['key']) && array_key_exists($_GET['key'], $woocommerce->cart->cart_contents)) {
+                if (isset ($_GET['key']) && array_key_exists($_GET['key'], $woocommerce->cart->cart_contents)) {
                     $woocommerce->cart->remove_cart_item($_GET['key']);
                 }
                 $cart_item_key = $woocommerce->cart->add_to_cart($product_id, $quantity, 0, array(), $itemData);
                 header('Location:' . $woocommerce->cart->get_cart_url());
             }
-        } elseif (isset($_POST['submit-draft'])) {
+        } elseif (isset ($_POST['submit-draft'])) {
 
-            if (isset($_GET['draft_id'])) {
+            if (isset ($_GET['draft_id'])) {
 
                 // Handle media uploads
                 $itemData['images'] = upload_advert_images($adData['images'] ?? []);
@@ -117,7 +117,7 @@ function handle_advert_form_submission()
                 $post_id = wp_insert_post($post_arr);
             }
 
-            if (isset($_GET['key'])) {
+            if (isset ($_GET['key'])) {
                 $woocommerce->cart->remove_cart_item($_GET['key']);
             }
 
@@ -130,8 +130,8 @@ add_action('template_redirect', 'handle_advert_form_submission');
 function upload_advert_images($uploaded_files = [])
 {
     global $woocommerce;
-    if (isset($_POST['images'])) {
-        if (isset($_POST['update']) && isset($woocommerce->cart->cart_contents[$_GET['key']]['images'])) {
+    if (isset ($_POST['images'])) {
+        if (isset ($_POST['update']) && isset ($woocommerce->cart->cart_contents[$_GET['key']]['images'])) {
             $images = $woocommerce->cart->cart_contents[$_GET['key']]['images'];
             foreach ($images as $imgId) {
                 $result = wp_delete_attachment($imgId, true); // Set the second parameter to true to permanently delete the attachment
@@ -146,8 +146,8 @@ function upload_advert_images($uploaded_files = [])
 function upload_advert_specsheets($specsheets = [])
 {
     global $woocommerce;
-    if (isset($_POST['specsheets'])) {
-        if (isset($_POST['update']) && isset($woocommerce->cart->cart_contents[$_GET['key']]['specsheets'])) {
+    if (isset ($_POST['specsheets'])) {
+        if (isset ($_POST['update']) && isset ($woocommerce->cart->cart_contents[$_GET['key']]['specsheets'])) {
             $images = $woocommerce->cart->cart_contents[$_GET['key']]['specsheets'];
             foreach ($images as $imgId) {
                 $result = wp_delete_attachment($imgId, true); // Set the second parameter to true to permanently delete the attachment
@@ -162,8 +162,8 @@ function upload_advert_specsheets($specsheets = [])
 function upload_advert_brand_logo($brand_logo = false)
 {
     global $woocommerce;
-    if (isset($_FILES['brand-logo']) && $_FILES['brand-logo']['name']) {
-        if (isset($_POST['update']) && isset($woocommerce->cart->cart_contents[$_GET['key']]['brand_logo'])) {
+    if (isset ($_FILES['brand-logo']) && $_FILES['brand-logo']['name']) {
+        if (isset ($_POST['update']) && isset ($woocommerce->cart->cart_contents[$_GET['key']]['brand_logo'])) {
             $brand_logo = $woocommerce->cart->cart_contents[$_GET['key']]['brand_logo'];
             $result = wp_delete_attachment($brand_logo, true); // Set the second parameter to true to permanently delete the attachment
         }
@@ -250,7 +250,7 @@ function handle_single_file_upload($file)
     $upload_overrides = array('test_form' => false);
     $movefile = wp_handle_upload($file, $upload_overrides);
 
-    if ($movefile && !isset($movefile['error'])) {
+    if ($movefile && !isset ($movefile['error'])) {
         // File uploaded successfully, insert as attachment
         $attachment = array(
             'post_mime_type' => $file_type,
@@ -345,11 +345,11 @@ function custom_cart_item_name($product_name, $cart_item, $cart_item_key)
     // Check if the product is of a specific product type (e.g., 'book')
     if (get_post_type($product_id) === 'product' && has_term('listing-ad', 'product_type', $product_id)) {
         // Get the meta value stored in the cart for this product
-        $meta_value = isset($cart_item['title']) ? $cart_item['title'] : '';
-        $featured = isset($cart_item['featured']) ? $cart_item['featured'] : '';
+        $meta_value = isset ($cart_item['title']) ? $cart_item['title'] : '';
+        $featured = isset ($cart_item['featured']) ? $cart_item['featured'] : '';
 
         // If the meta value exists, use it as the product title
-        if (!empty($meta_value)) {
+        if (!empty ($meta_value)) {
             $product_name = $meta_value;
         }
 
@@ -434,7 +434,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
             $end_listing_date = date('Y-m-d', strtotime('+' . $duration . ' days', strtotime($start_date)));
         }
 
-        if (isset($item->legacy_values)) {
+        if (isset ($item->legacy_values)) {
             $meta_values = $item->legacy_values;
             $status = 'publish';
             $item->add_meta_data('title', $meta_values['title'], true);
@@ -473,7 +473,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
                 ),
             );
 
-            if (isset($meta_values['specsheets']) && $meta_values['specsheets']) {
+            if (isset ($meta_values['specsheets']) && $meta_values['specsheets']) {
                 $specsheets = [];
                 foreach ($meta_values['specsheets'] as $document) {
                     $specsheets[$document] = wp_get_attachment_url($document);
@@ -482,7 +482,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
                 $post_arr['meta_input']['spec_sheet'] = $specsheets;
             }
 
-            if (isset($meta_values['images']) && $meta_values['images']) {
+            if (isset ($meta_values['images']) && $meta_values['images']) {
                 $images = [];
                 foreach ($meta_values['images'] as $image) {
                     $images[$image] = wp_get_attachment_url($image);
@@ -491,7 +491,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
                 $post_arr['meta_input']['prod_images'] = $images;
             }
 
-            if (isset($meta_values['brand_logo']) && $meta_values['brand_logo']) {
+            if (isset ($meta_values['brand_logo']) && $meta_values['brand_logo']) {
                 $brand_logo = wp_get_attachment_url($meta_values['brand_logo']);
                 $item->add_meta_data('brand_logo', $brand_logo, true);
                 $brand_logo_id = $meta_values['brand_logo'];

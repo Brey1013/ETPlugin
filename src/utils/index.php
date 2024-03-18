@@ -14,4 +14,5 @@ require_once __DIR__ . '/extract-product-raw-data.php';
 require_once __DIR__ . '/post-types.php';
 require_once __DIR__ . '/related-products.php';
 require_once __DIR__ . '/taxonomies.php';
+require_once __DIR__ . '/transform-object-for-frontend.php';
 require_once __DIR__ . '/write-log.php';

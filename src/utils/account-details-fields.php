@@ -5,7 +5,7 @@ function et_add_account_details_fields()
 {
     $user = wp_get_current_user();
 
-    if (!isset($user->billing_company) && isset($user->user_registration_company)) {
+    if (!isset ($user->billing_company) && isset ($user->user_registration_company)) {
         $user->billing_company = $user->user_registration_company;
 
         update_user_meta($user->id, 'billing_company', sanitize_text_field($user->user_registration_company));
@@ -35,11 +35,11 @@ function et_add_account_details_fields()
 add_action('woocommerce_save_account_details', 'et_save_account_details_fields');
 function et_save_account_details_fields($user_id)
 {
-    if (isset($_POST['billing_company'])) {
+    if (isset ($_POST['billing_company'])) {
         update_user_meta($user_id, 'billing_company', sanitize_text_field($_POST['billing_company']));
     }
 
-    if (isset($_POST['vat_number'])) {
+    if (isset ($_POST['vat_number'])) {
         update_user_meta($user_id, 'vat_number', sanitize_text_field($_POST['vat_number']));
     }
 }

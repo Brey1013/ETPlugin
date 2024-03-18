@@ -10,7 +10,7 @@ function sales_fine_print()
 {
     $finePrint = get_option(SettingsConstants::get_setting_name(SettingsConstants::$sales_fine_print));
 
-    if (isset($finePrint)) {
+    if (isset ($finePrint)) {
         echo "* " . $finePrint;
     }
 }

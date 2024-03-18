@@ -10,7 +10,7 @@ function create_price_filter()
 {
     ob_start();
 
-    include(plugin_dir_path(__DIR__) . 'includes/prices-filter.php');
+    include (plugin_dir_path(__DIR__) . 'includes/prices-filter.php');
 
     return ob_get_clean();
 }

@@ -10,7 +10,7 @@ function create_categories_widget()
 {
     ob_start();
 
-    include(plugin_dir_path(__DIR__) . 'includes/categories-widget.php');
+    include (plugin_dir_path(__DIR__) . 'includes/categories-widget.php');
 
     return ob_get_clean();
 }

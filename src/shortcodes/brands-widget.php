@@ -10,7 +10,7 @@ function brands_widget()
 {
     ob_start();
 
-    include(plugin_dir_path(__DIR__) . 'includes/brands-widget.php');
+    include (plugin_dir_path(__DIR__) . 'includes/brands-widget.php');
 
     return ob_get_clean();
 }

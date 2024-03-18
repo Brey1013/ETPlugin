@@ -113,7 +113,7 @@ function product_list()
 
     ob_start();
 
-    include(plugin_dir_path(__DIR__) . 'includes/product-list.php');
+    include (plugin_dir_path(__DIR__) . 'includes/product-list.php');
 
     return ob_get_clean();
 }

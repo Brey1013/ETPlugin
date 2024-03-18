@@ -21,25 +21,25 @@ $(function () {
 
   setupMyListingAdmin();
 
-  let percent = $('.progress-bar').attr('data-percent');
+  $(".et-searchable-dropdown").select2();
+
+  let percent = $(".progress-bar").attr("data-percent");
+
   percent = 100 - parseInt(percent);
-  $('.progress-bar__inner').css({ width: percent + '%' });
 
-  $('.et-searchable-dropdown').select2();
+  $(".progress-bar__inner").css({ width: percent + "%" });
 
-  $('input[name="featured"]').on('click', function (e) {
+  $('input[name="featured"]').on("click", function (e) {
     var $radio = $(this);
 
     // if this was previously checked
-    if ($radio.data('waschecked') == true) {
-      $radio.prop('checked', false);
-      $radio.data('waschecked', false);
-    }
-    else
-      $radio.data('waschecked', true);
+    if ($radio.data("waschecked") == true) {
+      $radio.prop("checked", false);
+      $radio.data("waschecked", false);
+    } else $radio.data("waschecked", true);
 
     // remove was checked from other radios
-    $radio.siblings('input[name="rad"]').data('waschecked', false);
+    $radio.siblings('input[name="rad"]').data("waschecked", false);
   });
 
   $("#price-type").on("change", function (event) {
@@ -62,37 +62,43 @@ $(function () {
 });
 
 function updateSubCategoriesOnSelect() {
-  $('#category').on('change', function (e) {
+  $("#category").on("change", function (e) {
     let category = $(this).val();
-    $('#sub-category').html('')
-    if (category != '') {
-      let subOptions = $('#category').find('option[value="' + category + '"]').data('options')
-      $('#sub-category').append(`<option value="">Select Sub-Category</option>`)
-      if (typeof subOptions !== 'undefined') {
+    $("#sub-category").html("");
+    if (category != "") {
+      let subOptions = $("#category")
+        .find('option[value="' + category + '"]')
+        .data("options");
+      $("#sub-category").append(
+        `<option value="">Select Sub-Category</option>`,
+      );
+      if (typeof subOptions !== "undefined") {
         $(subOptions).each(function (i, v) {
-          $('#sub-category').append(`<option value="${v.term_id}">${v.name}</option>`)
-        })
+          $("#sub-category").append(
+            `<option value="${v.term_id}">${v.name}</option>`,
+          );
+        });
       }
-      $('#sub-category').append(`<option value="Other">Other</option>`)
-      $('#sub-category').select2()
+      $("#sub-category").append(`<option value="Other">Other</option>`);
+      $("#sub-category").select2();
     }
 
-    if (category == 'Other') {
-      $('#other_cat_wrap').removeClass('d-none')
+    if (category == "Other") {
+      $("#other_cat_wrap").removeClass("d-none");
     } else {
-      $('#other_cat_wrap').addClass('d-none')
+      $("#other_cat_wrap").addClass("d-none");
     }
-  })
+  });
 
-  $('#sub-category').on('change', function (e) {
+  $("#sub-category").on("change", function (e) {
     let sub_category = $(this).val();
 
-    if (sub_category == 'Other') {
-      $('#other_subcat_wrap').removeClass('d-none')
+    if (sub_category == "Other") {
+      $("#other_subcat_wrap").removeClass("d-none");
     } else {
-      $('#other_other_subcat_wrapcat_wrap').addClass('d-none')
+      $("#other_other_subcat_wrapcat_wrap").addClass("d-none");
     }
-  })
+  });
 }
 
 function setupTypeaheads() {
@@ -106,7 +112,7 @@ function setupTypeaheads() {
       matches = [];
 
       // regex used to determine if a string contains the substring `q`
-      substrRegex = new RegExp(q, 'i');
+      substrRegex = new RegExp(q, "i");
 
       // iterate through the pool of strings and for any string that
       // contains the substring `q`, add it to the `matches` array
@@ -123,17 +129,19 @@ function setupTypeaheads() {
   typeaheads.each(function (index, element) {
     const { mustSelectItem, options } = element.dataset;
 
-    var mappedOptions = JSON.parse(options);
+    var mappedOptions = JSON.parse(atob(options));
 
-    $(element).typeahead({
-      hint: true,
-      highlight: true,
-      minLength: 1
-    },
+    $(element).typeahead(
       {
-        name: 'states',
-        source: substringMatcher(mappedOptions)
-      });
+        hint: true,
+        highlight: true,
+        minLength: 1,
+      },
+      {
+        name: "states",
+        source: substringMatcher(mappedOptions),
+      },
+    );
   });
 }
 
@@ -229,24 +237,25 @@ function setupChevronToggle() {
 
 const previewPhoto = (event) => {
   if ($('input[name="images[]"]').length >= 10) {
-    alert('You have reached limit of 10 images.');
-    event.currentTarget.value = '';
+    alert("You have reached limit of 10 images.");
+    event.currentTarget.value = "";
     return false;
   } else {
     const files = event.currentTarget.files;
     if (files.length >= 10) {
-      alert('You can only select up to 10 images.');
-      event.currentTarget.value = '';
+      alert("You can only select up to 10 images.");
+      event.currentTarget.value = "";
       return false;
     }
 
     if ($('input[name="images[]"]').length + files.length > 10) {
-      alert('You can only select up to 10 images.');
-      event.currentTarget.value = '';
+      alert("You can only select up to 10 images.");
+      event.currentTarget.value = "";
       return false;
     }
 
-    const childCount = document.getElementById("gallery-preview").childElementCount;
+    const childCount =
+      document.getElementById("gallery-preview").childElementCount;
 
     for (var i = 0; i < files.length; i++) {
       const file = files[i];
@@ -265,7 +274,7 @@ const previewPhoto = (event) => {
       fileReader.readAsDataURL(file);
     }
 
-    event.currentTarget.value = '';
+    event.currentTarget.value = "";
   }
 };
 
@@ -275,7 +284,6 @@ const removePhoto = (event) => {
 
   updateAddImagesRequired();
 };
-
 
 const createFileReader = (childCount) => {
   const fileReader = new FileReader();
@@ -292,30 +300,32 @@ const createFileReader = (childCount) => {
     preview.setAttribute("src", event.target.result);
 
     // Set value of hidden input to data URL
-    const hiddenInput = document.querySelector("#file-preview-" + childCount + " input[type='hidden']");
+    const hiddenInput = document.querySelector(
+      "#file-preview-" + childCount + " input[type='hidden']",
+    );
     hiddenInput.setAttribute("value", event.target.result);
   };
 
   return fileReader;
 };
 
-
 function setupBrandLogoPreview() {
   const brandLogo = document.getElementById("brand-logo");
   const preview = document.getElementById("brand-logo-image");
 
-  brandLogo && brandLogo.addEventListener("change", function () {
-    if (this.files && this.files[0]) {
-      const reader = new FileReader();
+  brandLogo &&
+    brandLogo.addEventListener("change", function () {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
 
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.classList.remove("d-none");
-      };
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.classList.remove("d-none");
+        };
 
-      reader.readAsDataURL(this.files[0]);
-    }
-  });
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
 }
 
 function setupBrandLogoClear() {
@@ -336,32 +346,32 @@ function setupBrandLogoClear() {
     });
   }
 
-  clearImage && clearImage.addEventListener("click", function () {
-    preview.src = "#";
-    preview.classList.add("d-none");
-    this.classList.add("d-none");
-    brandLogo.value = "";
-  });
-
+  clearImage &&
+    clearImage.addEventListener("click", function () {
+      preview.src = "#";
+      preview.classList.add("d-none");
+      this.classList.add("d-none");
+      brandLogo.value = "";
+    });
 }
 
 var selectedFiles = [];
 
 function setupSpecsTags() {
-  $('#spec-sheets').on("change", function () {
+  $("#spec-sheets").on("change", function () {
     if (this.files.length >= 3) {
-      alert('You can only select up to 3 documents.');
-      this.value = '';
+      alert("You can only select up to 3 documents.");
+      this.value = "";
       return false;
     }
 
     if ($('input[name="specsheets[]"]').length + this.files.length > 3) {
-      alert('You can only select up to 3 documents.');
-      this.value = '';
+      alert("You can only select up to 3 documents.");
+      this.value = "";
       return false;
     }
 
-    Array.from(this.files).forEach(file => {
+    Array.from(this.files).forEach((file) => {
       selectedFiles.push(file);
     });
 
@@ -374,7 +384,9 @@ function refreshFileTags() {
   fileTags.empty();
 
   selectedFiles.forEach((file, i) => {
-    let tag = $("<span>").addClass("badge badge-pill badge-light m-2 p-0 d-flex gap-2 align-items-center justify-content-center");
+    let tag = $("<span>").addClass(
+      "badge badge-pill badge-light m-2 p-0 d-flex gap-2 align-items-center justify-content-center",
+    );
 
     // Convert file object to Base64 string
     let reader = new FileReader();
@@ -382,10 +394,10 @@ function refreshFileTags() {
       let fileData = event.target.result;
 
       // Create hidden input field with Base64-encoded file data
-      let hiddenInput = $('<input>').attr({
-        type: 'hidden',
-        name: 'specsheets[]', // Change the name if needed
-        value: fileData
+      let hiddenInput = $("<input>").attr({
+        type: "hidden",
+        name: "specsheets[]", // Change the name if needed
+        value: fileData,
       });
       tag.append(hiddenInput);
     };
@@ -409,9 +421,10 @@ function refreshFileTags() {
 
 function updateAddImagesRequired() {
   if (document.getElementById("gallery-preview").childElementCount == 0) {
-    document.getElementById("gallery-images").setAttribute("required", "required");
-  }
-  else {
+    document
+      .getElementById("gallery-images")
+      .setAttribute("required", "required");
+  } else {
     document.getElementById("gallery-images").removeAttribute("required");
   }
 }
@@ -425,4 +438,3 @@ function setupMyListingAdmin() {
     }
   });
 }
-
