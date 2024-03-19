@@ -302,26 +302,21 @@ function apply_discount_based_on_quantity($cart)
             $tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
             $tier_3_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_discount));
 
+            $discount = 0;
+
             // Check if quantity exceeds threshold
             if ($quantity >= $tier_1 && $quantity < $tier_2) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_1_discount / 100;
-
-                // Apply discount
-                $cart_item['data']->set_price($cart_item['data']->get_price() - $discount + $featured);
             } elseif ($quantity >= $tier_2 && $quantity < $tier_3) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_2_discount / 100;
-
-                // Apply discount
-                $cart_item['data']->set_price($cart_item['data']->get_price() - $discount + $featured);
             } elseif ($quantity >= $tier_3) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_3_discount / 100;
-
-                // Apply discount
-                $cart_item['data']->set_price($cart_item['data']->get_price() - $discount + $featured);
             }
+
+            $cart_item['data']->set_price($cart_item['data']->get_price() - $discount + $featured);
         }
     }
 }
