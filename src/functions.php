@@ -37,7 +37,7 @@ function et_enqueue_custom_script()
     wp_enqueue_script("wc-equipment-trader-plugin-select2", plugin_dir_url(__FILE__) . "js/select2.min.js", array("jquery"), false, true);
     wp_enqueue_style("jquery-typeahead-style", "https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.11.2/jquery.typeahead.min.css");
 
-    wp_enqueue_script("wc-equipment-trader-plugin-script", plugin_dir_url(__FILE__) . "js/script.min.js", array("jquery", "bootstrap"), false, true);
+    wp_enqueue_script("wc-equipment-trader-plugin-script", plugin_dir_url(__FILE__) . "js/script.min.js", array("jquery"), false, true);
     wp_enqueue_style("wc-equipment-trader-plugin-select2", plugin_dir_url(__FILE__) . "css/dist/select2.min.css");
     wp_enqueue_style("wc-equipment-trader-plugin-style", plugin_dir_url(__FILE__) . "css/dist/style.min.css");
 }

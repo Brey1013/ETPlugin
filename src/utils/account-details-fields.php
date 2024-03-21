@@ -42,4 +42,8 @@ function et_save_account_details_fields($user_id)
     if (isset ($_POST['vat_number'])) {
         update_user_meta($user_id, 'vat_number', sanitize_text_field($_POST['vat_number']));
     }
+
+    if (isset ($_POST['billing_contact_number'])) {
+        update_user_meta($user_id, 'billing_contact_number', sanitize_text_field($_POST['billing_contact_number']));
+    }
 }
