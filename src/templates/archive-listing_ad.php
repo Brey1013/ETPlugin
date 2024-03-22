@@ -151,8 +151,12 @@ if ($query_featured) {
                                                 }
 
                                                 $publish_date = get_the_date('Y-m-d');
+
+                                                $isFeatured = ($featured_ads == 18 && strtotime($publish_date) >= strtotime('-14 days', strtotime($today))) ||
+                                                    ($featured_ads == 25 && strtotime($publish_date) >= strtotime('-30 days', strtotime($today)));
                                                 ?>
-                                                <div class="listing-list-each listing-list-each-2 rtcl-listing-item">
+                                                <div
+                                                    class="listing-list-each listing-list-each-2 rtcl-listing-item <?php echo $isFeatured ? 'featured-listing' : ''; ?>">
                                                     <div class="rtin-item">
                                                         <div class="rtin-thumb">
                                                             <a class="rtin-thumb-inner rtcl-media"
@@ -187,13 +191,7 @@ if ($query_featured) {
                                                                                 <?php echo implode(', ', $model_str); ?>
                                                                             </li>
                                                                         <?php } ?>
-                                                                        <?php if ($featured_ads == 18 && strtotime($publish_date) >= strtotime('-14 days', strtotime($today))) { ?>
-                                                                            <li>
-                                                                                <span class="badge rtcl-badge-featured">
-                                                                                    <?php echo ($featured_ads == 18 || $featured_ads == 25) ? 'Featured' : ''; ?>
-                                                                                </span>
-                                                                            </li>
-                                                                        <?php } elseif ($featured_ads == 25 && strtotime($publish_date) >= strtotime('-30 days', strtotime($today))) { ?>
+                                                                        <?php if ($isFeatured) { ?>
                                                                             <li>
                                                                                 <span class="badge rtcl-badge-featured">
                                                                                     <?php echo ($featured_ads == 18 || $featured_ads == 25) ? 'Featured' : ''; ?>
