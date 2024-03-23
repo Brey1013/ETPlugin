@@ -18,3 +18,4 @@ require_once __DIR__ . '/my-listings.php';
 require_once __DIR__ . '/product-list.php';
 require_once __DIR__ . '/sales-fine-print.php';
 require_once __DIR__ . '/seller-information-widget.php';
+require_once __DIR__ . '/list-categories.php';
