@@ -7,7 +7,7 @@
                 <?php _e('Product Listing Form', 'equipmenttrader'); ?>
             </h2> -->
 
-            <?php include (plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>
+            <!--<?php include (plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>-->
 
         </div>
         <div class="col-6">
