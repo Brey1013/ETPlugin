@@ -115,7 +115,7 @@ function et_dashboard_summary()
 
     <div class="row">
         <div class="col-12">
-            <h1>
+            <h1 class="et-dashboard-user-info">
             <?php global $current_user; wp_get_current_user(); ?>
             <?php 
             if ( is_user_logged_in() ) { 
