@@ -113,6 +113,20 @@ function et_dashboard_summary()
     ?>
 
 
+    <div class="row">
+        <div class="col-12">
+            <h1>
+            <?php global $current_user; wp_get_current_user(); ?>
+            <?php 
+            if ( is_user_logged_in() ) { 
+              echo '<span>Account information for: </span>' . $current_user->user_login . "\n"; 
+            } else { 
+              wp_loginout(); 
+            } ?>
+</h1>
+        </div>
+    </div>
+
 
     <div class="row">
 
