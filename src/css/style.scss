@@ -345,7 +345,6 @@
 .current-category {
   font-weight: bold; /* Add your desired styling for the current category link */
 }
-
 /*PLugin Styles###############################*/
 
 .et-product-header-area {
@@ -353,12 +352,15 @@
     flex-wrap: wrap;
 }
 
-.et-product-header-area .et-product-breadcrumb {
+.et-product-breadcrumb {
     color: var(--et_grey);
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 15px;
+    max-width: 1200px;
     width: 100%;
+    margin: -25px auto 25px auto;
+    padding: 0 25px !important;
 }
 
 .et-product-header-area .et-product-title {
@@ -406,8 +408,10 @@
     margin-bottom: 0px;
 }
 
-.product-header .single-listing-meta-wrap {
-    flex-direction: column !important;
+.single-listing-meta-wrap {
+    display: flex;
+    flex-direction: column-reverse; !important;
+    margin-top: 15px !important;
 }
 
 ul.single-listing-meta {
@@ -417,17 +421,17 @@ ul.single-listing-meta {
 }
 
 ul.single-listing-meta li {
-    padding: 0;
+    padding: 10px 0 !important;
 }
 
-.et-product-header-area .et-product-price {
+/*.et-product-price {
     width: 25%;
     text-align: right;
-}
+}*/
 
-.et-product-header-area .et-product-price span {
+.et-product-price span {
     font-weight: bold;
-    font-size: 48px;
+    font-size: 36px;
     color: var(--et_aquamarine);
 }
 
@@ -462,7 +466,7 @@ form.et-submit-advert-form .progress-bar {
     background: var(--et_grey);
 }
 
-.progress-bar__inner, .progress-bar { border-radius: 500px }
+.progress-bar { border-radius: 500px }
 
 .progress-bar .bar[data-text]::before {
     background: var(--et_black);
@@ -553,10 +557,54 @@ body.single-listing_ad .badge { font-size: 100% !important }
     width: 40px;
     background: none !important;
     height: 3px;
-    background: var(--et_teal);
+    background: var(--et_teal) !important;
     border-radius: 50px;
     display: inline-block;
-    margin: 15px auto 15px 0;
+    margin: 0px auto 15px 0;
+}
+
+.et-product-overview .classima-custom-fields ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.et-spec-sheet-button {
+    padding: 15px;
+    color: var(--et_white) !important;
+    background: var(--et_grey);
+    margin: 0 10px 10px 0;
+}
+
+.et-seller-widget h4.rtin-author {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+.et-seller-widget .rtin-phone {
+    background: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
+.et-seller-widget .rtin-phone a {
+    color: var(--et_white) !important;
+    text-align: left !important;
+}
+
+.et-seller-widget .rtin-phone div.numbers, .et-seller-widget .rtin-phone div.emails { display: flex }
+
+.et-seller-widget .rtin-phone div.emails a {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+.et-product-seller-map .main-title-block {
+    border-bottom: none !important;
+}
+
+.et-product-seller-map  .main-content {
+    padding-top: 0 !important;
 }
 
 
