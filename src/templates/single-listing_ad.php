@@ -1,26 +1,28 @@
 <?php get_header(); ?>
 <?php
-$prod_images = get_post_meta(get_the_ID(), 'prod_images', true);
-$spec_sheet = get_post_meta(get_the_ID(), 'spec_sheet', true);
-$brand_array = wp_get_post_terms(get_the_ID(), 'brand', array('orderby' => 'term_order'));
+$product_id = get_the_ID();
+
+$prod_images = get_post_meta($product_id, 'prod_images', true);
+$spec_sheet = get_post_meta($product_id, 'spec_sheet', true);
+$brand_array = wp_get_post_terms($product_id, 'brand', array('orderby' => 'term_order'));
 $brand_str = array();
 
 foreach ($brand_array as $cat) {
     $brand_str[] = $cat->name;
 }
 
-$model_array = wp_get_post_terms(get_the_ID(), 'model', array('orderby' => 'term_order'));
+$model_array = wp_get_post_terms($product_id, 'model', array('orderby' => 'term_order'));
 $model_str = array();
 
 foreach ($model_array as $cat) {
     $model_str[] = $cat->name;
 }
 
-$quality = get_post_meta(get_the_ID(), 'quality', true);
-$priceType = get_post_meta(get_the_ID(), 'priceType', true);
-$priceValue = get_post_meta(get_the_ID(), 'price-value', true);
-$availability = get_post_meta(get_the_ID(), 'availability', true);
-$featured_ads = get_post_meta(get_the_ID(), 'featured_ads', true);
+$quality = get_post_meta($product_id, 'quality', true);
+$priceType = get_post_meta($product_id, 'priceType', true);
+$priceValue = get_post_meta($product_id, 'price-value', true);
+$availability = get_post_meta($product_id, 'availability', true);
+$featured_ads = get_post_meta($product_id, 'featured_ads', true);
 
 $taxonomy = 'ad_category'; //Choose the taxonomy
 $terms = get_terms($taxonomy); //Get all the terms
@@ -218,14 +220,12 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                 <hr class="et-styled-hr">
                                 <?php
 
-                                woocommerce_related_products(
-                                    array(
-                                        'posts_per_page' => 4,
-                                        'columns' => 4,
-                                        'orderby' => 'rand'
-                                    )
-                                );
-
+                                // do_action('woocommerce_after_single_product');
+                                
+                                // $related_ids = wc_get_related_products($product_id, 4, array($product_id));
+                                
+                                // print_r('<pre><code>' . $related_ids . '</code></pre>');
+                                
                                 ?>
                             </div>
                         </section>
