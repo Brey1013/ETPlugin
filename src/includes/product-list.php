@@ -14,26 +14,27 @@
                     if ($query_all && $query_all->have_posts()) {
                         while ($query_all->have_posts()) {
                             $query_all->the_post();
-                            $brand_logo = get_post_meta(get_the_ID(), 'brand_logo', true);
-                            $prod_images = get_post_meta(get_the_ID(), 'prod_images', true);
-                            $brand_array = wp_get_post_terms(get_the_ID(), 'brand', array('orderby' => 'term_order'));
+                            $product_id = get_the_ID();
+                            $brand_logo = get_post_meta($product_id, 'brand_logo', true);
+                            $prod_images = get_post_meta($product_id, 'prod_images', true);
+                            $brand_array = wp_get_post_terms($product_id, 'brand', array('orderby' => 'term_order'));
                             $brand_str = array();
 
                             foreach ($brand_array as $cat) {
                                 $brand_str[] = $cat->name;
                             }
 
-                            $model_array = wp_get_post_terms(get_the_ID(), 'model', array('orderby' => 'term_order'));
+                            $model_array = wp_get_post_terms($product_id, 'model', array('orderby' => 'term_order'));
                             $model_str = array();
 
                             foreach ($model_array as $cat) {
                                 $model_str[] = $cat->name;
                             }
 
-                            $priceType = get_post_meta(get_the_ID(), 'priceType', true);
-                            $priceValue = get_post_meta(get_the_ID(), 'price-value', true);
-                            $featured_ads = get_post_meta(get_the_ID(), 'featured_ads', true);
-                            $cat_array = wp_get_post_terms(get_the_ID(), 'ad_category', array('orderby' => 'term_order'));
+                            $priceType = get_post_meta($product_id, 'priceType', true);
+                            $priceValue = get_post_meta($product_id, 'price-value', true);
+                            $featured_ads = get_post_meta($product_id, 'featured_ads', true);
+                            $cat_array = wp_get_post_terms($product_id, 'ad_category', array('orderby' => 'term_order'));
                             $cat_str = array();
 
                             foreach ($cat_array as $cat) {
@@ -49,7 +50,7 @@
                                 <div class="rtin-item">
                                     <div class="rtin-thumb">
                                         <a class="rtin-thumb-inner rtcl-media"
-                                            href="<?php echo esc_url(get_permalink(get_the_ID())); ?>">
+                                            href="<?php echo esc_url(get_permalink($product_id)); ?>">
                                             <?php if ($prod_images) { ?>
                                                 <?php foreach ($prod_images as $img): ?>
                                                     <img src="<?php echo $img; ?>"></br>
@@ -64,7 +65,7 @@
                                                 <?php echo implode(' > ', $cat_str); ?>
                                             </span>
                                             <h3 class="rtin-title listing-title">
-                                                <a href="<?php echo esc_url(get_permalink(get_the_ID())); ?>">
+                                                <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
                                                     <?php echo get_the_title(); ?>
                                                 </a>
                                             </h3>
@@ -104,7 +105,7 @@
                                                 </div>
                                             </div>
                                             <div class="rtin-details">
-                                                <a href="<?php echo esc_url(get_permalink(get_the_ID())); ?>">Details</a>
+                                                <a href="<?php echo esc_url(get_permalink($product_id)); ?>">Details</a>
                                             </div>
                                         </div>
                                     </div>
