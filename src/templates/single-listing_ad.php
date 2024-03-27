@@ -1,5 +1,6 @@
 <?php get_header(); ?>
 <?php
+$postType = 'listing_ad';
 $product_id = get_the_ID();
 
 $prod_images = get_post_meta($product_id, 'prod_images', true);
@@ -220,12 +221,37 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                 <hr class="et-styled-hr">
                                 <?php
 
-                                // do_action('woocommerce_after_single_product');
-                                
-                                // $related_ids = wc_get_related_products($product_id, 4, array($product_id));
-                                
-                                // print_r('<pre><code>' . $related_ids . '</code></pre>');
-                                
+                                $related_ids = wc_get_related_products($product_id, 4, array($product_id));
+
+                                if (count($related_ids) == 0) {
+                                    ?>
+
+                                    <h3>No related ads found</h3>
+
+                                    <?php
+                                } else {
+                                    $args = array(
+                                        'post_type' => $postType,
+                                        'post__in' => $related_ids
+                                    );
+
+                                    $loop = new WP_Query($args);
+
+                                    echo '<div class="row">';
+
+                                    while ($loop->have_posts()):
+                                        $loop->the_post();
+
+                                        echo '<div class="col"><pre><code>Related product ID: ' . get_the_ID() . '</code></pre></div>';
+
+                                        // wc_get_template_part('content', $postType);
+                                    endwhile;
+
+                                    echo '</div>';
+
+                                    wp_reset_postdata();
+                                }
+
                                 ?>
                             </div>
                         </section>

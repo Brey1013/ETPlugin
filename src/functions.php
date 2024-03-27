@@ -42,4 +42,3 @@ function et_enqueue_custom_script()
     wp_enqueue_style("wc-equipment-trader-plugin-style", plugin_dir_url(__FILE__) . "css/dist/style.min.css");
 }
 add_action("wp_enqueue_scripts", "et_enqueue_custom_script", 100);
-
