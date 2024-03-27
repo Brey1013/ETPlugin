@@ -75,5 +75,7 @@
     "zlib"
   ],
   "php.validate.enable": false,
-  "cSpell.words": ["typeahead", "typeaheads"]
+  "cSpell.words": ["typeahead", "typeaheads"],
+  "compile-hero.disable-compile-files-on-did-save-code": false,
+  "compile-hero.generate-minified-css": true
 }
