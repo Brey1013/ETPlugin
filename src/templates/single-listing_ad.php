@@ -216,41 +216,14 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                 </div>
                                 <hr class="et-product-hr">
                             </div>
-                            <div class="et-product-related">
+                            <div class="et-product-related et-ad-listing">
                                 <h3>Related Products</h3>
                                 <hr class="et-styled-hr">
                                 <?php
 
                                 $related_ids = wc_get_related_products($product_id, 4, array($product_id));
 
-                                if (count($related_ids) == 0) {
-                                    ?>
-
-                                    <h3>No related ads found</h3>
-
-                                    <?php
-                                } else {
-                                    $args = array(
-                                        'post_type' => $postType,
-                                        'post__in' => $related_ids
-                                    );
-
-                                    $loop = new WP_Query($args);
-
-                                    echo '<div class="row">';
-
-                                    while ($loop->have_posts()):
-                                        $loop->the_post();
-
-                                        echo '<div class="col"><pre><code>Related product ID: ' . get_the_ID() . '</code></pre></div>';
-
-                                        // wc_get_template_part('content', $postType);
-                                    endwhile;
-
-                                    echo '</div>';
-
-                                    wp_reset_postdata();
-                                }
+                                echo do_shortcode('[et-product-list product_ids="' . join(',', $related_ids) . '" hide_filters="true" ]');
 
                                 ?>
                             </div>

@@ -13,13 +13,13 @@
         <div class="col-6">
             <label for="gallery-images">
                 <?php _e('Add Images (Max 10):', 'equipmenttrader'); ?>
-                <?php if (!isset ($adData['images']) || !$adData['images']) { ?>*
+                <?php if (!isset($adData['images']) || !$adData['images']) { ?>*
                 <?php } ?>
             </label>
             <input type="file" class="form-control-file" id="gallery-images" name="gallery-images" accept="image/*"
-                multiple <?php if (!isset ($adData['images'])) { ?>required<?php } ?> />
+                multiple <?php if (!isset($adData['images'])) { ?>required<?php } ?> />
             <div id="gallery-preview" class="row my-3">
-                <?php if (isset ($adData['images']) && $adData['images']) { ?>
+                <?php if (isset($adData['images']) && $adData['images']) { ?>
                     <?php foreach ($adData['images'] as $image) { ?>
                         <?php $imgURL = wp_get_attachment_image_url($image); ?>
                         <img src="<?php echo $imgURL; ?> " class="col-3 p-1">
@@ -72,22 +72,22 @@
                             <?php _e('Select Category', 'equipmenttrader'); ?>
                         </option>
                         <?php foreach ($categories as $key => $value) { ?>
-                            <option value="<?php echo $key; ?>" <?php if (isset ($adData['category']) && $adData['category'] == $key) {
+                            <option value="<?php echo $key; ?>" <?php if (isset($adData['category']) && $adData['category'] == $key) {
                                    echo 'selected';
-                               } ?>     <?php if (isset ($value['children'])) {
+                               } ?>     <?php if (isset($value['children'])) {
                                          echo "data-options='" . json_encode($value['children']) . "'";
                                      } ?>>
                                 <?php echo $value['name']; ?>
                             </option>
                         <?php } ?>
-                        <option value="Other" <?php if (isset ($adData['category']) && $adData['category'] == 'Other') {
+                        <option value="Other" <?php if (isset($adData['category']) && $adData['category'] == 'Other') {
                             echo 'selected';
                         } ?>><?php _e('Other', 'equipmenttrader'); ?>
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="form-group row <?php if (!isset ($adData['category']) || $adData['category'] != 'Other') {
+            <div class="form-group row <?php if (!isset($adData['category']) || $adData['category'] != 'Other') {
                 echo 'd-none';
             } ?>" id="other_cat_wrap">
                 <label class="col-sm-4 col-form-label" for="other-category">&nbsp;</label>
@@ -106,11 +106,11 @@
                         <option value="">
                             <?php _e('Select Sub-Category', 'equipmenttrader'); ?>
                         </option>
-                        <?php if (isset ($adData['category'])) {
+                        <?php if (isset($adData['category'])) {
                             foreach ($categories as $key => $value) {
                                 if ($adData['category'] == $key) {
                                     foreach ($value['children'] as $term) { ?>
-                                        <option value="<?php echo $term['term_id']; ?>" <?php if (isset ($adData['subcategory']) && $adData['subcategory'] == $term['term_id']) {
+                                        <option value="<?php echo $term['term_id']; ?>" <?php if (isset($adData['subcategory']) && $adData['subcategory'] == $term['term_id']) {
                                                echo 'selected';
                                            } ?>>
                                             <?php echo $term['name']; ?>
@@ -119,14 +119,14 @@
                                 }
                             }
                         } ?>
-                        <option value="Other" <?php if (isset ($adData['category']) && $adData['category'] == 'Other') {
+                        <option value="Other" <?php if (isset($adData['category']) && $adData['category'] == 'Other') {
                             echo 'selected';
                         } ?>><?php _e('Other', 'equipmenttrader'); ?>
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="form-group row <?php if (!isset ($adData['subcategory']) || $adData['subcategory'] != 'Other') {
+            <div class="form-group row <?php if (!isset($adData['subcategory']) || $adData['subcategory'] != 'Other') {
                 echo 'd-none';
             } ?>" id="other_subcat_wrap">
                 <label class="col-sm-4 col-form-label" for="other-subcategory">&nbsp;</label>
@@ -155,7 +155,7 @@
                         accept="image/*" />
                     <div class="d-flex align-items-center brand-logo-preview w-100">
                         <div class="col-10 p-0 position-relative d-flex">
-                            <?php if (isset ($adData['brand_logo']) && $adData['brand_logo']) { ?>
+                            <?php if (isset($adData['brand_logo']) && $adData['brand_logo']) { ?>
                                 <?php $imgURL = wp_get_attachment_image_url($adData['brand_logo']); ?>
                                 <img id="brand-logo-image" src="<?php echo $imgURL; ?>" alt="your brand logo"
                                     class="img-fluid" />
@@ -193,15 +193,15 @@
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control" id="quality" name="quality" required>
-                        <option value="New" <?php if (isset ($adData['quality']) && $adData['quality'] == 'New') {
+                        <option value="New" <?php if (isset($adData['quality']) && $adData['quality'] == 'New') {
                             echo 'selected';
                         } ?>><?php _e('New', 'equipmenttrader'); ?>
                         </option>
-                        <option value="Used" <?php if (isset ($adData['quality']) && $adData['quality'] == 'Used') {
+                        <option value="Used" <?php if (isset($adData['quality']) && $adData['quality'] == 'Used') {
                             echo 'selected';
                         } ?>><?php _e('Used', 'equipmenttrader'); ?>
                         </option>
-                        <option value="Refurbished" <?php if (isset ($adData['quality']) && $adData['quality'] == 'Refurbished') {
+                        <option value="Refurbished" <?php if (isset($adData['quality']) && $adData['quality'] == 'Refurbished') {
                             echo 'selected';
                         } ?>><?php _e('Refurbished', 'equipmenttrader'); ?>
                         </option>
@@ -214,18 +214,18 @@
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control" id="price-type" name="price-type" required>
-                        <option value="Entered Price" <?php if (isset ($adData['price-type']) && $adData['price-type'] == 'Entered Price') {
+                        <option value="Entered Price" <?php if (isset($adData['price-type']) && $adData['price-type'] == 'Entered Price') {
                             echo 'selected';
                         } ?>><?php _e('Entered Price', 'equipmenttrader'); ?>
                         </option>
-                        <option value="POA" <?php if (isset ($adData['price-type']) && $adData['price-type'] == 'POA') {
+                        <option value="POA" <?php if (isset($adData['price-type']) && $adData['price-type'] == 'POA') {
                             echo 'selected';
                         } ?>><?php _e('POA', 'equipmenttrader'); ?>
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="form-group row <?php if (isset ($adData['price-type']) && $adData['price-type'] == 'POA') {
+            <div class="form-group row <?php if (isset($adData['price-type']) && $adData['price-type'] == 'POA') {
                 echo 'd-none';
             } ?>" id="price-value-block">
                 <label class="col-sm-4 col-form-label" for="price-value"></label>
@@ -242,7 +242,7 @@
                     <input type="file" class="form-control-file" id="spec-sheets" name="spec-sheets"
                         accept="image/jpg, image/jpeg, .pdf" multiple />
                     <div id="file-tags" class="d-flex flex-wrap">
-                        <?php if (isset ($adData['specsheets']) && is_array($adData['specsheets'])) { ?>
+                        <?php if (isset($adData['specsheets']) && is_array($adData['specsheets'])) { ?>
                             <?php foreach ($adData['specsheets'] as $document) { ?>
                                 <?php $attachment_url = wp_get_attachment_url($document);
                                 $file_parts = explode('/', $attachment_url);
@@ -266,7 +266,7 @@
                 <div class="col-sm-8">
                     <select class="form-control" id="availability" name="availability" required>
                         <?php foreach ($availability_options as $option) { ?>
-                            <option value="<?php echo $option; ?>" <?php if (isset ($adData['availability']) && $adData['availability'] == $option) {
+                            <option value="<?php echo $option; ?>" <?php if (isset($adData['availability']) && $adData['availability'] == $option) {
                                    echo 'selected';
                                } ?>><?php echo $option; ?>
                             </option>
@@ -281,13 +281,13 @@
                 <div class="col-sm-8">
                     <label for="featured-14">
                         <input type="radio" name="featured" value="<?php echo $featured_option_1_price; ?>"
-                            id="featured-14" <?php if (isset ($adData['featured']) && $adData['featured'] == $featured_option_1_price) {
+                            id="featured-14" <?php if (isset($adData['featured']) && $adData['featured'] == $featured_option_1_price) {
                                 echo 'checked';
                             } ?>> <?php echo $featured_option_1_title; ?>
                     </label>
                     <label for="featured-30">
                         <input type="radio" name="featured" value="<?php echo $featured_option_2_price; ?>"
-                            id="featured-30" <?php if (isset ($adData['featured']) && $adData['featured'] == $featured_option_2_price) {
+                            id="featured-30" <?php if (isset($adData['featured']) && $adData['featured'] == $featured_option_2_price) {
                                 echo 'checked';
                             } ?>> <?php echo $featured_option_2_title; ?>
                     </label>
@@ -328,7 +328,7 @@
             } ?>
             <input type="submit" name="submit-draft" value="<?php _e('< Save Draft', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
-            <?php if (isset ($cart[$current_key])) { ?>
+            <?php if (isset($cart[$current_key])) { ?>
                 <input type="submit" name="update" value="<?php _e('Save', 'equipmenttrader'); ?>" class="btn btn-primary">
             <?php } else { ?>
                 <input type="submit" name="submit" value="<?php _e('Save and Next >', 'equipmenttrader'); ?>"

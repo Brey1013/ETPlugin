@@ -15,7 +15,7 @@ function save_custom_user_profile_fields($user_id)
 
         $user = wp_get_current_user();
 
-        if (!isset ($user->billing_company) && isset ($user_registration_company)) {
+        if (!isset($user->billing_company) && isset($user_registration_company)) {
             update_user_meta($user_id, 'billing_company', sanitize_text_field($user_registration_company));
         }
     }

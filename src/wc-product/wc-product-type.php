@@ -143,7 +143,7 @@ class WC_Product_Type_Plugin
      */
     public function save_advanced_settings($post_id)
     {
-        $price = isset ($_POST['_ad_duration']) ? sanitize_text_field($_POST['_ad_duration']) : '';
+        $price = isset($_POST['_ad_duration']) ? sanitize_text_field($_POST['_ad_duration']) : '';
         update_post_meta($post_id, '_ad_duration', $price);
     }
 }

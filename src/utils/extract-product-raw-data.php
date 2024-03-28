@@ -56,12 +56,12 @@ function et_extract_product_raw_data($productId)
             }
         }
 
-        if (isset ($temp_other_category) && $temp_other_category != '') {
+        if (isset($temp_other_category) && $temp_other_category != '') {
             $data['category'] = 'Other';
             $data['other-category'] = $temp_other_category;
         }
 
-        if (isset ($temp_other_subcategory) && $temp_other_subcategory != '') {
+        if (isset($temp_other_subcategory) && $temp_other_subcategory != '') {
             $data['subcategory'] = 'Other';
             $data['other-subcategory'] = $temp_other_subcategory;
         }

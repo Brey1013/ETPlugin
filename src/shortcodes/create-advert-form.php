@@ -44,7 +44,7 @@ function create_advert_form($atts)
         );
         $categories = build_category_hierarchy($listOfCategories);
 
-        $current_key = isset ($_GET['key']) ? $_GET['key'] : null;
+        $current_key = isset($_GET['key']) ? $_GET['key'] : null;
 
         $cart = WC()->cart->get_cart();
         $count = 0;
@@ -55,19 +55,19 @@ function create_advert_form($atts)
             }
         }
 
-        if (isset ($_GET['draft_id'])) {
+        if (isset($_GET['draft_id'])) {
             $post = get_post($_GET['draft_id']);
             if ($post) {
                 $adData = get_post_meta($_GET['draft_id'], 'cart_items');
                 $adData = $adData[0] ?? [];
             }
-        } else if (isset ($_GET['listing_id'])) {
+        } else if (isset($_GET['listing_id'])) {
             $tempId = $_GET['listing_id'];
 
             $adData = et_extract_product_raw_data($tempId);
         } else {
             $adData = [];
-            if (isset ($cart[$current_key])) {
+            if (isset($cart[$current_key])) {
                 $adData = $cart[$current_key];
             }
 
@@ -113,7 +113,7 @@ add_shortcode('et-create-advert-form', 'create_advert_form');
 
 function only_parents($category)
 {
-    return !isset ($category->category_parent) || $category->category_parent == 0;
+    return !isset($category->category_parent) || $category->category_parent == 0;
 }
 
 function only_children($category)
@@ -150,7 +150,7 @@ function getAllMetaValues($taxonomy)
     ]);
 
     $meta_values = [];
-    if (!empty ($terms) && !is_wp_error($terms)) {
+    if (!empty($terms) && !is_wp_error($terms)) {
         foreach ($terms as $term) {
             $meta_values[] = $term->name;
         }
@@ -162,7 +162,7 @@ function getAllMetaValues($taxonomy)
 function paginate_array($data)
 {
     $keys = array_keys($data);
-    $currentKey = isset ($_GET['key']) ? $_GET['key'] : '';
+    $currentKey = isset($_GET['key']) ? $_GET['key'] : '';
 
     // Get the current key index
     $currentIndex = array_search($currentKey, $keys);

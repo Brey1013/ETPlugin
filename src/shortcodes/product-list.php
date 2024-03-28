@@ -6,8 +6,14 @@ if (!defined('ABSPATH')) {
 
 require $PLUGIN_ABSPATH . '/constants/index.php';
 
-function product_list()
+function product_list($args)
 {
+    $defaults = array(
+        'product_ids' => '',
+        'hide_filters' => false,
+    );
+
+    $args = shortcode_atts($defaults, $args);
 
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $today = date('Y-m-d');
@@ -21,7 +27,7 @@ function product_list()
         WHERE p.post_type = 'listing_ad'
             AND p.post_status = 'publish'
             AND (pm.meta_key IS NULL OR pm.meta_key = 'featured_ads')
-            AND (pm_endate.meta_value >= date(NOW()) AND pm_endate.meta_value IS NOT NULL)
+            AND (pm_endate.meta_value >= date(NOW()) AND pm_endate.meta_value IS NOT NULL) " . getShortcodeFilters($args) . "
         ORDER BY
             CASE
                 WHEN pm.meta_value IS NOT NULL THEN pm.meta_value
@@ -119,3 +125,13 @@ function product_list()
 }
 
 add_shortcode('et-product-list', 'product_list');
+
+function getShortcodeFilters($args)
+{
+    $result = '';
+
+    if (isset($args['product_ids']) && strlen($args['product_ids']) > 0)
+        $result .= ' AND p.ID IN (' . $args['product_ids'] . ') ';
+
+    return $result;
+}

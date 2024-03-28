@@ -37,7 +37,7 @@ $current_category_id = get_queried_object_id(); // Get the ID of the current cat
                 <?php $i = 1; ?>
                 <?php foreach ($categories as $key => $category) {
                     // Check if 'term_id' key exists in the current category
-                    if (isset ($category['term_id'])) {
+                    if (isset($category['term_id'])) {
                         $class = ($current_category_id == $category['term_id']) ? 'current-category' : '';
                         $show = ($current_category_id == $category['term_id']) ? 'show' : '';
                         $non = ($current_category_id !== $category['term_id']) ? 'd-none' : '';
@@ -65,7 +65,7 @@ $current_category_id = get_queried_object_id(); // Get the ID of the current cat
                                 aria-labelledby="mainCategory<?php echo $i; ?>Heading"
                                 data-parent="#mainCategoryAccordion<?php echo $i; ?>">
                                 <div class="card-body sub-categories">
-                                    <?php if (isset ($category['children'])) { ?>
+                                    <?php if (isset($category['children'])) { ?>
                                         <?php foreach ($category['children'] as $child) {
                                             $term_link = get_term_link($child['term_id']);
                                             ?>

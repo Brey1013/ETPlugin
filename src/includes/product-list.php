@@ -1,13 +1,15 @@
 <div class="ads-listing">
     <div class="row">
-        <div class="col-4">
-            <form>
-                <?php include (plugin_dir_path(__DIR__) . 'includes/categories-widget.php'); ?>
-                <?php include (plugin_dir_path(__DIR__) . 'includes/prices-filter.php'); ?>
-                <input type="submit" value="Apply Filter" class="btn btn-primary" />
-            </form>
-        </div>
-        <div class="col-8">
+        <?php if ($args['hide_filters'] == false) { ?>
+            <div class="col-4">
+                <form>
+                    <?php include (plugin_dir_path(__DIR__) . 'includes/categories-widget.php'); ?>
+                    <?php include (plugin_dir_path(__DIR__) . 'includes/prices-filter.php'); ?>
+                    <input type="submit" value="Apply Filter" class="btn btn-primary" />
+                </form>
+            </div>
+        <?php } ?>
+        <div class="col-<?php echo $args['hide_filters'] == false ? '8' : '12' ?>">
             <div class="rtcl rtcl-listings rtcl-listings-list">
                 <div class="rtcl-list-view">
                     <?php
