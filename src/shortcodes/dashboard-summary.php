@@ -76,23 +76,23 @@ function et_dashboard_summary()
             <h3>Your listings summary</h3>
         </div>
         <div class="et-dashboard-tile drafts col-md-6 col-12"><a href="../my-listings/?status=temp-draft">
-                <?php echo $drafts ?>
+                <span class="et-dashboard-tile-number"><?php echo $drafts ?></span>
                 <?php _e('Saved in Drafts', 'equipmenttrader'); ?>
             </a></div>
         <div class="et-dashboard-tile cart col-md-6 col-12"><a href="<?php echo $woocommerce->cart->get_cart_url(); ?>">
-                <?php echo $inCart ?>
+                <span class="et-dashboard-tile-number"><?php echo $inCart ?></span>
                 <?php _e('Saved in Cart', 'equipmenttrader'); ?>
             </a></div>
         <div class="et-dashboard-tile published col-md-6 col-12"><a href="../my-listings/?status=publish">
-                <?php echo $published ?>
+                <span class="et-dashboard-tile-number"><?php echo $published ?></span>
                 <?php _e('Published Listings', 'equipmenttrader'); ?>
             </a></div>
         <div class="et-dashboard-tile featured col-md-6 col-12"><a href="../my-listings/?status=featured">
-                <?php echo $featured ?>
+                <span class="et-dashboard-tile-number"><?php echo $featured ?></span>
                 <?php _e('Featured Listings', 'equipmenttrader'); ?>
             </a></div>
         <div class="et-dashboard-tile expired col-md-6 col-12"><a href="../my-listings/?status=expired">
-                <?php echo $expired ?>
+                <span class="et-dashboard-tile-number"><?php echo $expired ?></span>
                 <?php _e('Expired Listings', 'equipmenttrader'); ?>
             </a></div>
     </div>
