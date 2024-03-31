@@ -54,8 +54,10 @@
         <div class="col-6">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="title">
-                    <?php _e('Title', 'equipmenttrader'); ?>: *
+                    <?php _e('Title', 'equipmenttrader'); ?>:*
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please provide a title for your advert</div></i>
                 </label>
+
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="title" name="title"
                         value="<?php echo $adData['title'] ?? ''; ?>"
@@ -64,7 +66,8 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="category">
-                    <?php _e('Category', 'equipmenttrader'); ?>: *
+                    <?php _e('Category', 'equipmenttrader'); ?>:*
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please select a category for your advert</div></i>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control et-searchable-dropdown" id="category" name="category" required>
@@ -90,7 +93,7 @@
             <div class="form-group row <?php if (!isset($adData['category']) || $adData['category'] != 'Other') {
                 echo 'd-none';
             } ?>" id="other_cat_wrap">
-                <label class="col-sm-4 col-form-label" for="other-category">&nbsp;</label>
+                <label class="col-sm-4 col-form-label" for="other-category">&nbsp; <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please type in the name of your own category</div></i></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="other-category" name="other-category"
                         placeholder="<?php _e('Type your own category', 'equipmenttrader'); ?>"
@@ -99,7 +102,8 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="sub-category">
-                    <?php _e('Sub-Category', 'equipmenttrader'); ?>: *
+                    <?php _e('Sub-Category', 'equipmenttrader'); ?>:*
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please select a sub category for your advert</div></i>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control et-searchable-dropdown" id="sub-category" name="sub-category">
@@ -129,7 +133,7 @@
             <div class="form-group row <?php if (!isset($adData['subcategory']) || $adData['subcategory'] != 'Other') {
                 echo 'd-none';
             } ?>" id="other_subcat_wrap">
-                <label class="col-sm-4 col-form-label" for="other-subcategory">&nbsp;</label>
+                <label class="col-sm-4 col-form-label" for="other-subcategory">&nbsp; <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please type in the name of your own sub category</div></i></label></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="other-subcategory" name="other-subcategory"
                         placeholder="<?php _e('Type your own sub-category', 'equipmenttrader'); ?>"
@@ -139,6 +143,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="brand">
                     <?php _e('Brand', 'equipmenttrader'); ?>:
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please type in or select the brand of the product being advertised</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control js-typeahead tt-query" id="brand" name="brand"
@@ -149,6 +154,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="brand-logo">
                     <?php _e('Brand Logo', 'equipmenttrader'); ?>:
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please upload an image of the logo of the brand of the product being advertised</div></i></label>
                 </label>
                 <div class="col-sm-8 d-flex align-items-center">
                     <input type="file" class="form-control-file mr-3" id="brand-logo" name="brand-logo"
@@ -173,6 +179,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="model">
                     <?php _e('Model', 'equipmenttrader'); ?>:
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please type in the model or product code of the product being advertised</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control js-typeahead tt-query" id="model" name="model"
@@ -183,6 +190,7 @@
             <div class="form-group">
                 <label for="description">
                     <?php _e('Description', 'equipmenttrader'); ?>: *
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please enter a description of the product being advertised</div></i></label>
                 </label>
                 <textarea class="form-control" id="description" name="description" required
                     rows="5"><?php echo $adData['description'] ?? ''; ?></textarea>
@@ -190,6 +198,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="quality">
                     <?php _e('Quality', 'equipmenttrader'); ?>: *
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please select the option below that best describes the physical condition of the product being advertised</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control" id="quality" name="quality" required>
@@ -211,6 +220,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="price-type">
                     <?php _e('Price', 'equipmenttrader'); ?>: *
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please select an option below of how the product will be priced.</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control" id="price-type" name="price-type" required>
@@ -237,6 +247,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="spec-sheets">
                     <?php _e('Spec Sheet (Max 3):', 'equipmenttrader'); ?>:
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please upload a maximum of 3 spec sheets or brochures related to the product, if applicable</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <input type="file" class="form-control-file" id="spec-sheets" name="spec-sheets"
@@ -262,6 +273,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="availability">
                     <?php _e('Availability', 'equipmenttrader'); ?>: *
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Please select the availability of the product being advertised</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control" id="availability" name="availability" required>
@@ -277,6 +289,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="featured">
                     <?php _e('Featured', 'equipmenttrader'); ?>:
+                    <i class="fas fa-question-circle et-tooltip-trigger"><div class="et-tooltip">Featured ads get more attention via special placement on the site, and enhanced visual styling</div></i></label>
                 </label>
                 <div class="col-sm-8">
                     <label for="featured-14">
@@ -326,7 +339,7 @@
             <?php if (count($cart) > 0) {
                 paginate_array($cart);
             } ?>
-            <input type="submit" name="submit-draft" value="<?php _e('< Save Draft', 'equipmenttrader'); ?>"
+            <input type="submit" name="submit-draft" value="<?php _e('Save Draft', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
             <?php if (isset($cart[$current_key])) { ?>
                 <input type="submit" name="update" value="<?php _e('Save', 'equipmenttrader'); ?>" class="btn btn-primary">
