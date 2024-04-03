@@ -192,7 +192,7 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="model">
-                    <?php _e('Model', 'equipmenttrader'); ?>:
+                    <?php _e('Product Code/Model', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
                         <div class="et-tooltip">Please type in the model or product code of the product being advertised
                         </div>
@@ -201,7 +201,7 @@
                 </label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control js-typeahead tt-query" id="model" name="model"
-                        placeholder="Model" value="<?php echo $adData['model'] ?? ''; ?>"
+                        placeholder="Product Code/Model" value="<?php echo $adData['model'] ?? ''; ?>"
                         data-options="<?php echo transform_object_for_frontend($models) ?>" />
                 </div>
             </div>

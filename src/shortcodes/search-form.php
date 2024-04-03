@@ -27,7 +27,7 @@ function search_form_widget()
     $brands = getAllMetaValues('brand');
 
     $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
-    $availability_options = explode("\n", $availability_options);
+    $availability_options = array_map('trim', explode("\n", $availability_options));
 
     ob_start();
 

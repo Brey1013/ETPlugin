@@ -360,7 +360,7 @@ function cmb2_sample_metaboxes()
 
     // Availability Drop Down Field
     $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
-    $availability_options = explode("\n", $availability_options);
+    $availability_options = array_map('trim', explode("\n", $availability_options));
     $multi_array = [];
     foreach ($availability_options as $value) {
         $multi_array[trim($value)] = trim($value);

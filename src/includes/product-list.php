@@ -44,6 +44,7 @@
                             }
 
                             $publish_date = get_the_date('Y-m-d');
+
                             $isFeatured = ($featured_ads == 18 && strtotime($publish_date) >= strtotime('-14 days', strtotime($today))) ||
                                 ($featured_ads == 25 && strtotime($publish_date) >= strtotime('-30 days', strtotime($today)));
                             ?>
@@ -107,7 +108,9 @@
                                                 </div>
                                             </div>
                                             <div class="rtin-details">
-                                                <a href="<?php echo esc_url(get_permalink($product_id)); ?>">Details</a>
+                                                <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
+                                                    <?php _e('Details', 'equipmenttrader'); ?>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

@@ -163,7 +163,7 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                                 class="rtin-title">
                                                                 <?php echo implode(', ', $brand_str); ?>
                                                             </span></li>
-                                                        <li> <span class="rtin-label">Model : </span> <span
+                                                        <li> <span class="rtin-label">Product Code/Model : </span> <span
                                                                 class="rtin-title">
                                                                 <?php echo implode(', ', $model_str); ?>
                                                             </span></li>

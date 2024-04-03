@@ -71,10 +71,11 @@
     </ul>
     <ul class="et-search-bottom">
         <li>
-            <a class="et-search-more-info more"><span class="more">More options <i
-                        class="fas fa-chevron-right"></i></span>
-                <span class="less">Less options <i class="fas fa-chevron-left"></i></span></a>
-            <input type="hidden" name="ofsubmitted" value="1"><input type="submit" value="Find it!">
+            <a class="et-search-more-info more">
+                <span class="more">More options <i class="fas fa-chevron-right"></i></span>
+                <span class="less">Less options <i class="fas fa-chevron-left"></i></span>
+            </a>
+            <input type="submit" value="Find it!" />
         </li>
     </ul>
 </form>

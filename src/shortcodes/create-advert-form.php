@@ -94,7 +94,7 @@ function create_advert_form($atts)
         $models = getAllMetaValues('model');
 
         $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
-        $availability_options = explode("\n", $availability_options);
+        $availability_options = array_map('trim', explode("\n", $availability_options));
 
         $featured_option_1_title = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_title));
         $featured_option_1_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_duration));

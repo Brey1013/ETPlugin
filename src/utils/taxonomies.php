@@ -56,9 +56,9 @@ function register_listing_ads_taxonomies()
 
     // Model Taxonomy
     $model_labels = array(
-        'name' => _x('Models', 'Taxonomy General Name', 'equipmenttrader'),
-        'singular_name' => _x('Model', 'Taxonomy Singular Name', 'equipmenttrader'),
-        'menu_name' => __('Models', 'equipmenttrader'),
+        'name' => _x('Product Codes/Models', 'Taxonomy General Name', 'equipmenttrader'),
+        'singular_name' => _x('Product Code/Model', 'Taxonomy Singular Name', 'equipmenttrader'),
+        'menu_name' => __('Product Codes/Models', 'equipmenttrader'),
         // Add other labels as needed
     );
     $model_args = array(
