@@ -92,6 +92,7 @@ function create_advert_form($atts)
 
         $brands = getAllMetaValues('brand');
         $models = getAllMetaValues('model');
+
         $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
         $availability_options = explode("\n", $availability_options);
 
@@ -110,87 +111,3 @@ function create_advert_form($atts)
     }
 }
 add_shortcode('et-create-advert-form', 'create_advert_form');
-
-function only_parents($category)
-{
-    return !isset($category->category_parent) || $category->category_parent == 0;
-}
-
-function only_children($category)
-{
-    return $category->category_parent > 0;
-}
-
-function build_category_hierarchy($terms)
-{
-    $categories = array();
-
-    foreach ($terms as $term) {
-        if ($term->parent == 0) {
-            $category_id = $term->term_id;
-            $categories[$category_id]['name'] = $term->name;
-        } else {
-            $parent_id = $term->parent;
-            $categories[$parent_id]['children'][] = array(
-                'term_id' => $term->term_id,
-                'name' => $term->name,
-            );
-        }
-    }
-
-    return $categories;
-}
-
-function getAllMetaValues($taxonomy)
-{
-    // Get all terms from the taxonomy
-    $terms = get_terms([
-        'taxonomy' => $taxonomy,
-        'hide_empty' => false
-    ]);
-
-    $meta_values = [];
-    if (!empty($terms) && !is_wp_error($terms)) {
-        foreach ($terms as $term) {
-            $meta_values[] = $term->name;
-        }
-    }
-
-    return $meta_values;
-}
-
-function paginate_array($data)
-{
-    $keys = array_keys($data);
-    $currentKey = isset($_GET['key']) ? $_GET['key'] : '';
-
-    // Get the current key index
-    $currentIndex = array_search($currentKey, $keys);
-    $totalKeys = count($keys);
-
-    // Display pagination links
-    echo '<div class="pagination">';
-    // Previous page link
-    if ($currentIndex !== false && $currentIndex > 0) {
-        echo '<span class="page-item"><a href="?key=' . $keys[$currentIndex - 1] . '" class="page-link">Previous</a></span> ';
-    }
-    if ($currentIndex === false && $totalKeys > 0) {
-        // If no key found in URL, show a link to the last element
-        echo '<span class="page-item"><a href="?key=' . end($keys) . '" class="page-link">Previous</a></span>';
-    }
-    // Page number links
-    for ($i = 0; $i < $totalKeys; $i++) {
-        $isActive = ($keys[$i] === $currentKey) ? 'active' : '';
-        echo '<span class="page-item ' . $isActive . '"><a href="?key=' . $keys[$i] . '" class="page-link">' . ($i + 1) . '</a></span> ';
-    }
-    // Next page link
-    if ($currentIndex !== false && $currentIndex < $totalKeys - 1) {
-        echo '<span class="page-item"><a href="?key=' . $keys[$currentIndex + 1] . '" class="page-link">Next</a></span>';
-    } elseif ($currentIndex === false && $totalKeys > 0) {
-        // do nothing
-    } else {
-        // Show a custom link if needed
-        echo '<span class="page-item"><a href="' . get_permalink() . '" class="page-link">Next</a></span>';
-    }
-    echo '</div>';
-}

@@ -1,6 +1,4 @@
 <?php
-// Template Name: Custom Taxonomy Archive
-
 get_header();
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $today = date('Y-m-d');
@@ -74,7 +72,7 @@ if ($query_featured) {
 
     // Set up pagination
     $total = count($query_featured);
-    $posts_per_page = get_option('posts_per_page');
+    $posts_per_page = 20;
     $total_pages = ceil($total / $posts_per_page);
 
 
@@ -106,8 +104,8 @@ if ($query_featured) {
         'post_type' => 'listing_ad',
         'post__in' => $current_page_posts,
         'orderby' => 'post__in',
-        // 'paged' => $paged,
-        'posts_per_page' => -1,
+        'paged' => $paged,
+        'posts_per_page' => $posts_per_page,
     );
 
     $query_all = new WP_Query($args_all);

@@ -2,6 +2,7 @@
 get_header();
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $today = date('Y-m-d');
+$term = get_queried_object();
 
 global $wpdb;
 $query = "
@@ -9,10 +10,13 @@ $query = "
     FROM {$wpdb->posts} AS p
         LEFT JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id AND pm.meta_key = 'featured_ads'
         LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
+        LEFT JOIN {$wpdb->term_relationships} AS tr ON p.ID = tr.object_id
+        LEFT JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
     WHERE p.post_type = 'listing_ad'
         AND p.post_status = 'publish'
         AND (pm.meta_key IS NULL OR pm.meta_key = 'featured_ads')
         AND (pm_endate.meta_value >= date(NOW()) AND pm_endate.meta_value IS NOT NULL)
+        AND tt.taxonomy = 'ad_category'
     ORDER BY
         CASE
             WHEN pm.meta_value IS NOT NULL THEN pm.meta_value
@@ -67,9 +71,8 @@ if ($query_featured) {
 
     // Set up pagination
     $total = count($query_featured);
-    $posts_per_page = get_option('posts_per_page');
+    $posts_per_page = 20;
     $total_pages = ceil($total / $posts_per_page);
-
 
     // Merge featured and normal posts
     $all_posts = array_merge($featured_posts_25, $featured_posts_18);

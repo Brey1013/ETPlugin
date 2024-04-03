@@ -80,22 +80,31 @@ function setupETPlugin() {
   function updateSubCategoriesOnSelect() {
     $("#category").on("change", function (e) {
       let category = $(this).val();
+
       $("#sub-category").html("");
+
       if (category != "") {
         let subOptions = $("#category")
           .find('option[value="' + category + '"]')
           .data("options");
-        $("#sub-category").append(
-          `<option value="">Select Sub-Category</option>`,
-        );
+
+        var firstValue = $("#sub-category").data("first");
+
+        $("#sub-category").append(`<option value="">${firstValue}</option>`);
+
         if (typeof subOptions !== "undefined") {
+          subOptions = JSON.parse(atob(subOptions));
+
           $(subOptions).each(function (i, v) {
             $("#sub-category").append(
               `<option value="${v.term_id}">${v.name}</option>`,
             );
           });
         }
-        $("#sub-category").append(`<option value="Other">Other</option>`);
+
+        if ($("#sub-category").data("show-other") === "true")
+          $("#sub-category").append(`<option value="Other">Other</option>`);
+
         $("#sub-category").select2();
       }
 

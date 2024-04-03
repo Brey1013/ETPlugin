@@ -82,7 +82,7 @@ function product_list($args)
 
         // Set up pagination
         $total = count($query_featured);
-        $posts_per_page = get_option('posts_per_page');
+        $posts_per_page = 20;
         $total_pages = ceil($total / $posts_per_page);
 
         // Merge featured and normal posts
