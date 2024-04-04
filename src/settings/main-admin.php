@@ -343,7 +343,7 @@ function cmb2_sample_metaboxes()
             'desc' => 'Upload an Spec Sheet',
             'id' => 'spec_sheet',
             'type' => 'file_list',
-            'preview_size' => array(100, 100),
+            'preview_size' => 'small', // Image size to use when previewing in the admin.
         )
     );
 
@@ -354,7 +354,7 @@ function cmb2_sample_metaboxes()
             'desc' => 'Upload an Images',
             'id' => 'prod_images',
             'type' => 'file_list',
-            'preview_size' => array(100, 100),
+            'preview_size' => 'small', // Image size to use when previewing in the admin.
         )
     );
 
@@ -424,10 +424,6 @@ function cmb2_sample_metaboxes()
             'desc' => __('Duration of ad listing', 'equipmenttrader'),
             'id' => 'duration',
             'type' => 'text',
-            'attributes' => array(
-                'readonly' => 'readonly',
-                'disabled' => 'disabled',
-            ),
         )
     );
 
@@ -435,13 +431,9 @@ function cmb2_sample_metaboxes()
     $cmb->add_field(
         array(
             'name' => __('Expiry Date', 'equipmenttrader'),
-            'desc' => __('Expiry date of ad listing', 'equipmenttrader'),
+            'desc' => __('Expiry date of ad listing. Example format: yyyy-mm-dd', 'equipmenttrader'),
             'id' => 'end_listing_date',
             'type' => 'text',
-            'attributes' => array(
-                'readonly' => 'readonly',
-                'disabled' => 'disabled',
-            ),
         )
     );
 }

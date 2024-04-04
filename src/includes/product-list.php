@@ -3,8 +3,19 @@
         <?php if ($args['hide_filters'] == false) { ?>
             <div class="col-4">
                 <form>
+                    <input type="hidden" name="category" value="<?php echo $_GET["category"]; ?>" />
+                    <input type="hidden" name="sub_category" value="<?php echo $_GET["sub_category"]; ?>" />
+                    <input type="hidden" name="quality" value="<?php echo $_GET["quality"]; ?>" />
+
                     <?php include (plugin_dir_path(__DIR__) . 'includes/categories-widget.php'); ?>
                     <?php include (plugin_dir_path(__DIR__) . 'includes/prices-filter.php'); ?>
+
+                    <input type="hidden" name="search" value="<?php echo $_GET["search"]; ?>" />
+                    <input type="hidden" name="brand" value="<?php echo $_GET["brand"]; ?>" />
+                    <input type="hidden" name="product_code" value="<?php echo $_GET["product_code"]; ?>" />
+                    <input type="hidden" name="availability" value="<?php echo $_GET["availability"]; ?>" />
+                    <input type="hidden" name="location" value="<?php echo $_GET["location"]; ?>" />
+
                     <input type="submit" value="Apply Filter" class="btn btn-primary" />
                 </form>
             </div>

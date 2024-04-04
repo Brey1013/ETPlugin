@@ -7,7 +7,9 @@
                     <?php foreach ($categories as $key => $value) { ?>
                         <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
                                echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
-                           } ?>>
+                           } ?>     <?php if ($_GET["category"] == $key) {
+                                     echo "selected";
+                                 } ?>>
                             <?php echo $value['name']; ?>
                         </option>
                     <?php } ?>
@@ -22,13 +24,19 @@
             <li>
                 <select name="quality" class="postform et-searchable-dropdown">
                     <option value="" selected="selected">Any Quality</option>
-                    <option value="New">
+                    <option value="New" <?php if ($_GET["quality"] == "New") {
+                        echo "selected";
+                    } ?>>
                         <?php _e('New', 'equipmenttrader'); ?>
                     </option>
-                    <option value="Used">
+                    <option value="Used" <?php if ($_GET["quality"] == "Used") {
+                        echo "selected";
+                    } ?>>
                         <?php _e('Used', 'equipmenttrader'); ?>
                     </option>
-                    <option value="Refurbished">
+                    <option value="Refurbished" <?php if ($_GET["quality"] == "Refurbished") {
+                        echo "selected";
+                    } ?>>
                         <?php _e('Refurbished', 'equipmenttrader'); ?>
                     </option>
                 </select>
@@ -36,37 +44,45 @@
             <li>
                 <div class="row">
                     <div class="col-6">
-                        <input type="number" class="postform" name="min_price" placeholder="Min Price" />
+                        <input type="number" class="postform" name="min_price" placeholder="Min Price"
+                            value="<?php echo $_GET["min_price"]; ?>" />
                     </div>
                     <div class="col-6">
-                        <input type="number" class="postform" name="max_price" placeholder="Max Price" />
+                        <input type="number" class="postform" name="max_price" placeholder="Max Price"
+                            value="<?php echo $_GET["max_price"]; ?>" />
                     </div>
                 </div>
             </li>
             <li>
-                <input type="text" name="s" placeholder="What are you looking for?" value="">
+                <input type="text" name="search" placeholder="What are you looking for?"
+                    value="<?php echo $_GET["search"]; ?>">
             </li>
         </ul>
     </div>
     <ul class="et-expanded-search">
         <li>
             <input type="text" class="postform js-typeahead tt-query" name="brand" placeholder="Brand"
-                data-options="<?php echo transform_object_for_frontend($brands) ?>" />
+                data-options="<?php echo transform_object_for_frontend($brands) ?>"
+                value="<?php echo $_GET["brand"]; ?>" />
         </li>
         <li>
-            <input class="postform" name="product_code" placeholder="Product Code" />
+            <input type="text" class="postform js-typeahead tt-query" name="product_code"
+                placeholder="Product Code/Model" data-options="<?php echo transform_object_for_frontend($models) ?>"
+                value="<?php echo $_GET["product_code"]; ?>" />
         </li>
         <li>
             <select class="form-control" class="postform" name="availability">
                 <?php foreach ($availability_options as $option) { ?>
-                    <option value="<?php echo $option; ?>">
+                    <option value="<?php echo $option; ?>" <?php if ($_GET["availability"] == $option) {
+                           echo "selected";
+                       } ?>>
                         <?php echo $option; ?>
                     </option>
                 <?php } ?>
             </select>
         </li>
         <li>
-            <input class="postform" name="location" placeholder="Location" />
+            <input class="postform" name="location" placeholder="Location" value="<?php echo $_GET["location"]; ?>" />
         </li>
     </ul>
     <ul class="et-search-bottom">

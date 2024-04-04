@@ -25,6 +25,7 @@ function search_form_widget()
     $categories = build_category_hierarchy($listOfCategories);
 
     $brands = getAllMetaValues('brand');
+    $models = getAllMetaValues('model');
 
     $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
     $availability_options = array_map('trim', explode("\n", $availability_options));

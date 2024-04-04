@@ -38,6 +38,8 @@ function product_list($args)
         END DESC,
         p.post_date DESC";
 
+    echo "<pre><code>$query</code></pre>";
+
     $query_featured = $wpdb->get_col($query);
 
     if ($query_featured) {
@@ -137,6 +139,8 @@ function getAdditionalJoins($args)
 {
     global $wpdb;
 
+    $term = get_queried_object();
+
     $result = array();
 
     $categoryFilter = '';
@@ -144,7 +148,7 @@ function getAdditionalJoins($args)
     if (isset($args['product_ids']) && strlen($args['product_ids']) > 0)
         array_push($result, 'AND p.ID IN (' . $args['product_ids'] . ')');
 
-    if ($term->term_id != null)
+    if ($term->term_id != null && $term->taxonomy == "ad_category")
         $categoryFilter = $term->term_id;
     else if (isset($_GET['sub_category']) && strlen($_GET['sub_category']) > 0)
         $categoryFilter = $_GET['sub_category'];
@@ -177,7 +181,7 @@ function getAdditionalJoins($args)
     if (isset($_GET['availability']) && strlen($_GET['availability']) > 0)
         array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_availability ON p.ID = pm_availability.post_id AND pm_availability.meta_key = 'availability'");
 
-    return join(' ', $result);
+    return join("\r\n\t", $result);
 }
 
 function getAdditionalFilters($args)
@@ -190,7 +194,7 @@ function getAdditionalFilters($args)
     if (isset($args['product_ids']) && strlen($args['product_ids']) > 0)
         array_push($result, 'AND p.ID IN (' . $args['product_ids'] . ')');
 
-    if ($term->term_id != null)
+    if ($term->term_id != null && $term->taxonomy == "ad_category")
         $categoryFilter = $term->term_id;
     else if (isset($_GET['sub_category']) && strlen($_GET['sub_category']) > 0)
         $categoryFilter = $_GET['sub_category'];
@@ -218,5 +222,28 @@ function getAdditionalFilters($args)
     if (isset($_GET['availability']) && strlen($_GET['availability']) > 0)
         array_push($result, "AND pm_availability.meta_value = '" . $_GET['availability'] . "'");
 
-    return join(' ', $result);
+    if (isset($_GET['search']) && strlen($_GET['search']) > 0) {
+        $general_filter = $_GET['search'];
+        array_push($result, "AND (p.post_title LIKE '%$general_filter%' OR p.post_content LIKE '%$general_filter%' OR p.post_excerpt LIKE '%$general_filter%')");
+    }
+
+    if (isset($_GET['location']) && strlen($_GET['location']) > 0) {
+        $billing_locations = [
+            "billing_address_1",
+            "billing_address_2",
+            "billing_address_3",
+            "billing_city",
+            "billing_country",
+            "billing_postcode",
+            "billing_state"
+        ];
+
+        array_push(
+            $result,
+            "AND (SELECT COUNT(*) FROM etr24_usermeta AS um WHERE p.post_author = um.user_id AND um.meta_key IN ('" .
+            join("','", $billing_locations) . "') AND um.meta_value like '%" . $_GET['location'] . "%') > 0"
+        );
+    }
+
+    return join("\r\n\t", $result);
 }

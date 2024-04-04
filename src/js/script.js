@@ -78,9 +78,7 @@ function setupETPlugin() {
   }
 
   function updateSubCategoriesOnSelect() {
-    $("#category").on("change", function (e) {
-      let category = $(this).val();
-
+    const updateSubCategories = (category) => {
       $("#sub-category").html("");
 
       if (category != "") {
@@ -113,6 +111,12 @@ function setupETPlugin() {
       } else {
         $("#other_cat_wrap").addClass("d-none");
       }
+    };
+
+    $("#category").on("change", (e) => {
+      let category = $(this).val();
+
+      updateSubCategories(category);
     });
 
     $("#sub-category").on("change", function (e) {
@@ -124,6 +128,20 @@ function setupETPlugin() {
         $("#other_other_subcat_wrapcat_wrap").addClass("d-none");
       }
     });
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const category = urlParams.get("category");
+    const sub_category = urlParams.get("sub_category");
+
+    if (category) {
+      updateSubCategories(category);
+    }
+
+    if (sub_category) {
+      $("#sub-category").val(sub_category);
+      $("#sub-category").trigger("change");
+    }
   }
 
   function setupTypeaheads() {
