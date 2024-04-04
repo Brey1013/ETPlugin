@@ -67,14 +67,18 @@ function setupETPlugin() {
   function revealButton(event) {
     event.preventDefault();
 
-    const link = $(event.currentTarget);
+    const links = $("a[data-reveal]");
 
-    const base64 = link.data("reveal");
-    const base64Converted = atob(base64);
+    for (var i = 0; i < links.length; i++) {
+      const link = $(links[i]);
 
-    link.attr("href", base64Converted);
-    link.text(base64Converted.split(":").splice(1).join(""));
-    link.off("click", revealButton);
+      const base64 = link.data("reveal");
+      const base64Converted = atob(base64);
+
+      link.attr("href", base64Converted);
+      link.text(base64Converted.split(":").splice(1).join(""));
+      link.off("click", revealButton);
+    }
   }
 
   function updateSubCategoriesOnSelect() {
@@ -210,12 +214,12 @@ function setupETPlugin() {
 
     $(mainCategoryCollapse).on("show.bs.collapse", function () {
       if ($(categoryFilter).val() === "") {
-        $(mainCategoryCollapse).not(this).parent().parent().addClass("d-none");
+        // $(mainCategoryCollapse).not(this).parent().parent().addClass("d-none");
       }
     });
 
     $(mainCategoryCollapse).on("hidden.bs.collapse", function () {
-      $(mainCategoryCollapse).parent().parent().removeClass("d-none");
+      // $(mainCategoryCollapse).parent().parent().removeClass("d-none");
     });
   }
 

@@ -45,7 +45,7 @@
                         <div class="modal-body">
                             <?php
 
-                            echo do_shortcode('[wpforms id="1856" title="false"]');
+                            echo do_shortcode('[contact-form-7 id="3c7a5d7" title="Seller Contact Form"]');
 
                             ?>
                         </div>

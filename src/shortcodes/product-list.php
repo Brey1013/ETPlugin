@@ -13,6 +13,11 @@ function product_list($args)
     $defaults = array(
         'product_ids' => '',
         'hide_filters' => false,
+        'only_featured' => false,
+        'posts_per_page' => 20,
+        'disable_pagination' => false,
+        'brand' => '',
+        'category' => '',
     );
 
     $args = shortcode_atts($defaults, $args);
@@ -37,8 +42,6 @@ function product_list($args)
             ELSE '0'
         END DESC,
         p.post_date DESC";
-
-    echo "<pre><code>$query</code></pre>";
 
     $query_featured = $wpdb->get_col($query);
 
@@ -87,7 +90,7 @@ function product_list($args)
 
         // Set up pagination
         $total = count($query_featured);
-        $posts_per_page = 20;
+        $posts_per_page = $args['posts_per_page'];
         $total_pages = ceil($total / $posts_per_page);
 
         // Merge featured and normal posts
@@ -103,7 +106,8 @@ function product_list($args)
         usort($all_posts, 'sortByDate');
         usort($normal_posts, 'sortByDate');
 
-        $all_posts = array_merge($all_posts, $normal_posts);
+        if ($args['only_featured'] == false)
+            $all_posts = array_merge($all_posts, $normal_posts);
 
         // Create an array of just the IDs
         $idsArray = array_map(function ($item) {
@@ -150,6 +154,8 @@ function getAdditionalJoins($args)
 
     if ($term->term_id != null && $term->taxonomy == "ad_category")
         $categoryFilter = $term->term_id;
+    else if (isset($args['category']) && strlen($args['category']) > 0)
+        $categoryFilter = $args['category'];
     else if (isset($_GET['sub_category']) && strlen($_GET['sub_category']) > 0)
         $categoryFilter = $_GET['sub_category'];
     else if (isset($_GET['category']) && strlen($_GET['category']) > 0)
@@ -157,7 +163,8 @@ function getAdditionalJoins($args)
 
     if (strlen($categoryFilter) > 0) {
         array_push($result, "LEFT JOIN {$wpdb->term_relationships} AS tr_category ON p.ID = tr_category.object_id");
-        array_push($result, "LEFT JOIN {$wpdb->term_taxonomy} AS tt_category ON tr_category.term_taxonomy_id = tt_category.term_taxonomy_id AND tt_category.taxonomy = 'ad_category'");
+        array_push($result, "LEFT JOIN {$wpdb->term_taxonomy} AS tt_category_lookup ON tr_category.term_taxonomy_id = tt_category_lookup.term_taxonomy_id AND tt_category_lookup.taxonomy = 'ad_category'");
+        array_push($result, "LEFT JOIN {$wpdb->terms} AS tt_category ON tt_category_lookup.term_id = tt_category.term_id");
     }
 
     if (isset($_GET['quality']) && strlen($_GET['quality']) > 0)
@@ -166,7 +173,7 @@ function getAdditionalJoins($args)
     if ((isset($_GET['min_price']) && strlen($_GET['min_price']) > 0) || (isset($_GET['max_price']) && strlen($_GET['max_price']) > 0))
         array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_price ON p.ID = pm_price.post_id AND pm_price.meta_key = 'price-value'");
 
-    if (isset($_GET['brand']) && strlen($_GET['brand']) > 0) {
+    if ((isset($_GET['brand']) && strlen($_GET['brand']) > 0) || (isset($args['brand']) && strlen($args['brand']) > 0)) {
         array_push($result, "LEFT JOIN {$wpdb->term_relationships} AS tr_brand ON p.ID = tr_brand.object_id");
         array_push($result, "LEFT JOIN {$wpdb->term_taxonomy} AS tt_brand_lookup ON tr_brand.term_taxonomy_id = tt_brand_lookup.term_taxonomy_id AND tt_brand_lookup.taxonomy = 'brand'");
         array_push($result, "LEFT JOIN {$wpdb->terms} AS tt_brand ON tt_brand_lookup.term_id = tt_brand.term_id");
@@ -189,7 +196,9 @@ function getAdditionalFilters($args)
     $term = get_queried_object();
 
     $result = array();
+
     $categoryFilter = '';
+    $brandFilter = '';
 
     if (isset($args['product_ids']) && strlen($args['product_ids']) > 0)
         array_push($result, 'AND p.ID IN (' . $args['product_ids'] . ')');
@@ -202,7 +211,9 @@ function getAdditionalFilters($args)
         $categoryFilter = $_GET['category'];
 
     if (strlen($categoryFilter) > 0)
-        array_push($result, "AND tt_category.term_id = {$categoryFilter}");
+        array_push($result, "AND tt_category_lookup.term_id = {$categoryFilter}");
+    else if (isset($args['category']) && strlen($args['category']) > 0)
+        array_push($result, "AND tt_category.name LIKE '%" . $args['category'] . "%'");
 
     if (isset($_GET['quality']) && strlen($_GET['quality']) > 0)
         array_push($result, "AND pm_quality.meta_value = '" . $_GET['quality'] . "'");
@@ -213,8 +224,13 @@ function getAdditionalFilters($args)
     if (isset($_GET['max_price']) && strlen($_GET['max_price']) > 0)
         array_push($result, "AND CAST(pm_price.meta_value AS INTEGER) <= " . $_GET['max_price']);
 
-    if (isset($_GET['brand']) && strlen($_GET['brand']) > 0)
-        array_push($result, "AND tt_brand.name LIKE '%" . $_GET['brand'] . "%'");
+    if (isset($args['brand']) && strlen($args['brand']) > 0)
+        $brandFilter = $args['brand'];
+    else if (isset($_GET['brand']) && strlen($_GET['brand']) > 0)
+        $brandFilter = $_GET['brand'];
+
+    if (strlen($brandFilter) > 0)
+        array_push($result, "AND tt_brand.name LIKE '%$brandFilter%'");
 
     if (isset($_GET['product_code']) && strlen($_GET['product_code']) > 0)
         array_push($result, "AND tt_model.name LIKE '%" . $_GET['product_code'] . "%'");
@@ -228,6 +244,8 @@ function getAdditionalFilters($args)
     }
 
     if (isset($_GET['location']) && strlen($_GET['location']) > 0) {
+        $location = strtolower($_GET['location']);
+
         $billing_locations = [
             "billing_address_1",
             "billing_address_2",
@@ -238,11 +256,38 @@ function getAdditionalFilters($args)
             "billing_state"
         ];
 
-        array_push(
-            $result,
-            "AND (SELECT COUNT(*) FROM etr24_usermeta AS um WHERE p.post_author = um.user_id AND um.meta_key IN ('" .
-            join("','", $billing_locations) . "') AND um.meta_value like '%" . $_GET['location'] . "%') > 0"
-        );
+        $location_filter = "AND (SELECT COUNT(*) FROM etr24_usermeta AS um WHERE p.post_author = um.user_id AND um.meta_key IN ('" .
+            join("','", $billing_locations) . "') AND (um.meta_value LIKE '%$location%'";
+
+        $countries_obj = new WC_Countries();
+
+        $countries = $countries_obj->get_countries();
+        $states = $countries_obj->get_states();
+
+        $country_codes = array();
+        $state_codes = array();
+
+        foreach ($countries as $key => $name) {
+            if (str_contains(strtolower($name), $location))
+                array_push($country_codes, $key);
+        }
+
+        foreach ($states as $country_code => $country) {
+            foreach ($states[$country_code] as $key => $name) {
+                if (str_contains(strtolower($name), $location))
+                    array_push($state_codes, $key);
+            }
+        }
+
+        if (count($country_codes) > 0)
+            $location_filter .= " OR um.meta_value IN ('" . join("', '", $country_codes) . "') ";
+
+        if (count($state_codes) > 0)
+            $location_filter .= " OR um.meta_value IN ('" . join("', '", $state_codes) . "') ";
+
+        $location_filter .= ") > 0)";
+
+        array_push($result, $location_filter);
     }
 
     return join("\r\n\t", $result);

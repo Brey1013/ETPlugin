@@ -16,7 +16,13 @@
                     <input type="hidden" name="availability" value="<?php echo $_GET["availability"]; ?>" />
                     <input type="hidden" name="location" value="<?php echo $_GET["location"]; ?>" />
 
-                    <input type="submit" value="Apply Filter" class="btn btn-primary" />
+                    <div class="card category-card">
+                        <div id="priceFilterCollapse" class="card-body category-body collapse show"
+                            aria-labelledby="priceFilterHeading">
+                            <input type="submit" value="Apply Filter" class="btn btn-primary" />
+                        </div>
+                    </div>
+
                 </form>
             </div>
         <?php } ?>
@@ -128,22 +134,26 @@
                                 </div>
                             </div>
                         <?php }
-                        // Generate pagination links
-                        $big = 999999999; // Need an unlikely integer
-                        $pagination = paginate_links(
-                            array(
-                                'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-                                'format' => '?paged=%#%',
-                                'current' => $paged,
-                                'total' => $total_pages,
-                                'prev_text' => __('&laquo; Previous'),
-                                'next_text' => __('Next &raquo;'),
-                            )
-                        );
-                        if ($pagination) {
-                            echo '<div class="pagination">';
-                            echo $pagination;
-                            echo '</div>';
+
+                        if ($args['disable_pagination'] == false) {
+
+                            // Generate pagination links
+                            $big = 999999999; // Need an unlikely integer
+                            $pagination = paginate_links(
+                                array(
+                                    'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+                                    'format' => '?paged=%#%',
+                                    'current' => $paged,
+                                    'total' => $total_pages,
+                                    'prev_text' => __('&laquo; Previous'),
+                                    'next_text' => __('Next &raquo;'),
+                                )
+                            );
+                            if ($pagination) {
+                                echo '<div class="pagination">';
+                                echo $pagination;
+                                echo '</div>';
+                            }
                         }
                     } else { ?>
                         <h2>

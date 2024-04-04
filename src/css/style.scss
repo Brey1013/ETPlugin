@@ -345,6 +345,12 @@
 .current-category {
   font-weight: bold; /* Add your desired styling for the current category link */
 }
+
+.sub-category-container .card-body.sub-categories {
+  overflow: auto;
+  max-height: 250px;
+}
+
 /*PLugin Styles###############################*/
 
 .et-product-header-area {
