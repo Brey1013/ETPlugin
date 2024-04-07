@@ -321,7 +321,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row et-form-featured">
                 <label class="col-sm-4 col-form-label" for="featured">
                     <?php _e('Featured', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
@@ -331,13 +331,13 @@
                 </label>
                 </label>
                 <div class="col-sm-8">
-                    <label for="featured-14">
+                    <label for="featured-14" class="et-form-featured-option">
                         <input type="radio" name="featured" value="<?php echo $featured_option_1_price; ?>"
                             id="featured-14" <?php if (isset($adData['featured']) && $adData['featured'] == $featured_option_1_price) {
                                 echo 'checked';
                             } ?>> <?php echo $featured_option_1_title; ?>
                     </label>
-                    <label for="featured-30">
+                    <label for="featured-30" class="et-form-featured-option">
                         <input type="radio" name="featured" value="<?php echo $featured_option_2_price; ?>"
                             id="featured-30" <?php if (isset($adData['featured']) && $adData['featured'] == $featured_option_2_price) {
                                 echo 'checked';
