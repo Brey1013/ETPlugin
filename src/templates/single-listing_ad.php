@@ -145,7 +145,7 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                 <div class="rtcl-listing-badge-wrap">
                                                     <?php if ($featured_ads) { ?>
                                                         <span class="badge rtcl-badge-featured">
-                                                            <?php echo ($featured_ads == 18 || $featured_ads == 25) ? 'Featured' : ''; ?>
+                                                            <?php echo 'Featured'; ?>
                                                         </span>
                                                     <?php } ?>
                                                     <span class="badge rtcl-badge-_top">

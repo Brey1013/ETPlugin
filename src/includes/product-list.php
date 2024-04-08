@@ -60,10 +60,11 @@
                                 $cat_str[] = $cat->name;
                             }
 
-                            $publish_date = get_the_date('Y-m-d');
+                            $publish_date = get_post_field('post_date', $post_id);
 
-                            $isFeatured = ($featured_ads == 18 && strtotime($publish_date) >= strtotime('-14 days', strtotime($today))) ||
-                                ($featured_ads == 25 && strtotime($publish_date) >= strtotime('-30 days', strtotime($today)));
+                            $isFeatured = ($featured_ads == $featured_option_1_price && $today <= strtotime("$featured_option_1_duration days", strtotime($publish_date))) ||
+                                ($featured_ads == $featured_option_2_price && $today <= strtotime("$featured_option_2_duration days", strtotime($publish_date)));
+
                             ?>
                             <div
                                 class="listing-list-each listing-list-each-2 rtcl-listing-item <?php echo $isFeatured ? 'featured-listing' : ''; ?>">
@@ -103,7 +104,7 @@
                                                     <?php if ($isFeatured) { ?>
                                                         <li>
                                                             <span class="badge rtcl-badge-featured">
-                                                                <?php echo ($featured_ads == 18 || $featured_ads == 25) ? 'Featured' : ''; ?>
+                                                                <?php echo 'Featured'; ?>
                                                             </span>
                                                         </li>
                                                     <?php } ?>

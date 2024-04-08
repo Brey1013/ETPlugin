@@ -543,9 +543,12 @@ function display_custom_data_on_order_received_page($item_id, $item, $product)
         $featured = $item->get_meta('featured_ads', true);
         $listing_id = $item->get_meta('listing_ad_id', true);
 
-        if ($featured && $featured == 18) {
+        $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
+        $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
+
+        if ($featured && $featured == $featured_option_1_price) {
             echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';
-        } elseif ($featured && $featured == 25) {
+        } elseif ($featured && $featured == $featured_option_2_price) {
             echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';
         } else {
             echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';

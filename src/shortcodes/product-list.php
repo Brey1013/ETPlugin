@@ -25,6 +25,16 @@ function product_list($args)
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $today = date('Y-m-d');
 
+    $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
+    $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
+    $featured_option_1_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_duration));
+    $featured_option_2_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_duration));
+
+    $feature_options[1]["price"] = $featured_option_1_price;
+    $feature_options[1]["duration"] = $featured_option_1_duration;
+    $feature_options[2]["price"] = $featured_option_2_price;
+    $feature_options[2]["duration"] = $featured_option_2_duration;
+
     $query = "
     SELECT p.ID
     FROM {$wpdb->posts} AS p
@@ -35,7 +45,7 @@ function product_list($args)
         AND p.post_status = 'publish'
         AND (pm.meta_key IS NULL OR pm.meta_key = 'featured_ads')
         AND (pm_endate.meta_value >= date(NOW()) AND pm_endate.meta_value IS NOT NULL)
-        " . getAdditionalFilters($args) . "
+        " . getAdditionalFilters($args, $feature_options) . "
     ORDER BY
         CASE
             WHEN pm.meta_value IS NOT NULL THEN pm.meta_value
@@ -43,27 +53,22 @@ function product_list($args)
         END DESC,
         p.post_date DESC";
 
-    $query_featured = $wpdb->get_col($query);
+    $adverts = $wpdb->get_col($query);
 
-    if ($query_featured) {
-        $featured_posts_18 = array(); // For featured ads with value 18
-        $featured_posts_25 = array(); // For featured ads with value 25
+    if ($adverts) {
+        $featured_option_1 = array();
+        $featured_option_2 = array();
         $normal_posts = array();
 
-        foreach ($query_featured as $featured_id) {
-            $featured = get_post_meta($featured_id, 'featured_ads', true);
-            $end_listing_date = get_post_meta($featured_id, 'end_listing_date', true);
-            $duration = get_post_meta($featured_id, 'duration', true);
-            $publish_date = get_the_date('Y-m-d', $featured_id);
+        foreach ($adverts as $advert_id) {
+            $featured = get_post_meta($advert_id, 'featured_ads', true);
+            $end_listing_date = get_post_meta($advert_id, 'end_listing_date', true);
+            $duration = get_post_meta($advert_id, 'duration', true);
+            $publish_date = get_the_date('Y-m-d', $advert_id);
             $today = time();
 
-            $featured_option_1_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_duration));
-            $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
-            $featured_option_2_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_duration));
-            $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
-
             $ad_arr = array(
-                'id' => $featured_id,
+                'id' => $advert_id,
                 'date' => $publish_date
             );
 
@@ -71,7 +76,7 @@ function product_list($args)
                 $remaining_days = $duration - $featured_option_1_duration;
                 $feature_expiry_date = strtotime('-' . $remaining_days . ' days', strtotime($end_listing_date));
                 if ($feature_expiry_date >= $today) {
-                    $featured_posts_18[] = $ad_arr;
+                    $featured_option_1[] = $ad_arr;
                 } else {
                     $normal_posts[] = $ad_arr;
                 }
@@ -79,7 +84,7 @@ function product_list($args)
                 $remaining_days = $duration - $featured_option_2_duration;
                 $feature_expiry_date = strtotime('-' . $remaining_days . ' days', strtotime($end_listing_date));
                 if ($feature_expiry_date >= $today) {
-                    $featured_posts_25[] = $ad_arr;
+                    $featured_option_2[] = $ad_arr;
                 } else {
                     $normal_posts[] = $ad_arr;
                 }
@@ -89,12 +94,12 @@ function product_list($args)
         }
 
         // Set up pagination
-        $total = count($query_featured);
+        $total = count($adverts);
         $posts_per_page = $args['posts_per_page'];
         $total_pages = ceil($total / $posts_per_page);
 
         // Merge featured and normal posts
-        $all_posts = array_merge($featured_posts_25, $featured_posts_18);
+        $all_posts = array_merge($featured_option_2, $featured_option_1);
 
         // Custom comparison function to sort by date
         function sortByDate($a, $b)
@@ -188,10 +193,14 @@ function getAdditionalJoins($args)
     if (isset($_GET['availability']) && strlen($_GET['availability']) > 0)
         array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_availability ON p.ID = pm_availability.post_id AND pm_availability.meta_key = 'availability'");
 
+    if ($args['only_featured'] == true) {
+        array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'");
+    }
+
     return join("\r\n\t", $result);
 }
 
-function getAdditionalFilters($args)
+function getAdditionalFilters($args, $feature_options)
 {
     $term = get_queried_object();
 
@@ -288,6 +297,16 @@ function getAdditionalFilters($args)
         $location_filter .= ") > 0)";
 
         array_push($result, $location_filter);
+    }
+
+    if ($args['only_featured'] == true) {
+        $featured_filters = array();
+
+        foreach ($feature_options as $number => $settings) {
+            $featured_filters[] = "(pm_featured.meta_value = '" . $settings['price'] . "' AND NOW() <= DATE_ADD(p.post_date, INTERVAL " . $settings["duration"] . " DAY))";
+        }
+
+        array_push($result, "AND " . join(" OR ", $featured_filters));
     }
 
     return join("\r\n\t", $result);
