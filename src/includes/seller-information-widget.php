@@ -1,8 +1,10 @@
 <section class="et-seller-widget classified-seller-info widget">
     <h3 class="widget-title">Seller Information</h3>
     <h4 class="rtin-author">
-        <?php echo $display_name ?>
+        <i class="fas fa-user"></i> <?php echo $display_name ?>
     </h4>
+
+    <hr class="et-seller-hr">
 
     <?php if ($billing_phone || $account_email) { ?>
 
@@ -27,6 +29,8 @@
                 </div>
 
             <?php } ?>
+
+            <hr class="et-seller-hr">
 
             <div class="contact">
                 <i class="fas fa-building"></i>
