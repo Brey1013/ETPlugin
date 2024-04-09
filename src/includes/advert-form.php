@@ -352,8 +352,7 @@
                     <span class="sub-total">
                         <?php
 
-                        // TODO: If the customer has received a discount due to their cart size then this value needs to be multiplied by said discounted amount
-                        echo wc_price($price);
+                        echo wc_price($price * ((100 - $discount) / 100));
 
                         ?>
                         <?php _e('inc VAT', 'equipmenttrader'); ?>
@@ -368,16 +367,52 @@
             <?php include (plugin_dir_path(__DIR__) . 'includes/discount-progress-bar.php'); ?>
         </div>
 
+        <div class="col-6"></div>
+        <div class="col-6">
+            <div class="cart_totals">
+                <h3>Cart totals</h3>
+                <table cellspacing="0" class="shop_table shop_table_responsive">
+                    <tbody>
+                        <tr class="cart-subtotal">
+                            <th>Subtotal</th>
+                            <td data-title="Subtotal">
+                                <?php echo wc_price($subTotal); ?>
+                            </td>
+                        </tr>
+                        <tr class="cart-subtotal">
+                            <th>Discount</th>
+                            <td data-title="Discount">
+                                <?php echo wc_price($discounts); ?>
+                            </td>
+                        </tr>
+                        <tr class="order-total">
+                            <th>Total</th>
+                            <td data-title="Total">
+                                <strong> <?php echo wc_price($total); ?> </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="col-6">
             <div class="et-ad-listing-form-bottom-help-area">
                 <h4>Still getting stuck?</h4>
-                <?php echo do_shortcode('[et-sales-fine-print]') ?>
             </div>
         </div>
         <div class="col-6 text-right">
             <?php if (count($cart) > 0) {
                 paginate_array($cart);
             } ?>
+        </div>
+
+        <div class="col-6">
+            <div class="et-ad-listing-form-bottom-help-area">
+                <?php echo do_shortcode('[et-sales-fine-print]') ?>
+            </div>
+        </div>
+        <div class="col-6 text-right">
             <input type="submit" name="submit-draft" value="<?php _e('Save Draft', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
             <?php if (isset($cart[$current_key])) { ?>
@@ -389,5 +424,6 @@
             <input type="submit" name="go-to-cart" value="<?php _e('Go To Cart >>', 'equipmenttrader'); ?>"
                 class="btn btn-secondary">
         </div>
+
     </div>
 </form>

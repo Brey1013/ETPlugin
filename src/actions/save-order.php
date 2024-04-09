@@ -266,7 +266,7 @@ function handle_single_file_upload($file)
     return false;
 }
 
-// Apply 5% discount if more than 3 same products are in cart
+// Apply discounts
 add_action('woocommerce_before_calculate_totals', 'apply_discount_based_on_quantity');
 function apply_discount_based_on_quantity($cart)
 {
@@ -284,6 +284,13 @@ function apply_discount_based_on_quantity($cart)
         }
     }
 
+    $tier_1 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1));
+    $tier_1_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1_discount));
+    $tier_2 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2));
+    $tier_2_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2_discount));
+    $tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
+    $tier_3_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_discount));
+
     // Iterate through cart items
     foreach ($cart_items as $cart_item_key => $cart_item) {
         // Get product ID and quantity
@@ -292,23 +299,16 @@ function apply_discount_based_on_quantity($cart)
             $featured = $cart_item['featured'] ?? false;
             $featured = intval($featured);
 
-            $tier_1 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1));
-            $tier_1_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1_discount));
-            $tier_2 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2));
-            $tier_2_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2_discount));
-            $tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
-            $tier_3_discount = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_discount));
-
             $discount = 0;
 
             // Check if quantity exceeds threshold
             if ($quantity >= $tier_1 && $quantity < $tier_2) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_1_discount / 100;
-            } elseif ($quantity >= $tier_2 && $quantity < $tier_3) {
+            } elseif ($quantity < $tier_3) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_2_discount / 100;
-            } elseif ($quantity >= $tier_3) {
+            } else {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_3_discount / 100;
             }

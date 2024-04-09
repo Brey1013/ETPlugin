@@ -60,7 +60,7 @@
                                 $cat_str[] = $cat->name;
                             }
 
-                            $publish_date = get_post_field('post_date', $post_id);
+                            $publish_date = get_post_field('post_date', $product_id);
 
                             $isFeatured = ($featured_ads == $featured_option_1_price && $today <= strtotime("$featured_option_1_duration days", strtotime($publish_date))) ||
                                 ($featured_ads == $featured_option_2_price && $today <= strtotime("$featured_option_2_duration days", strtotime($publish_date)));

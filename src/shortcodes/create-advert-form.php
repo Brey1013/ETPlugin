@@ -31,6 +31,27 @@ function create_advert_form($atts)
 
     if (class_exists('WooCommerce')) {
 
+        $discount_tier_1 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1));
+        $discount_tier_2 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2));
+        $discount_tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
+
+        $discount_tier_1_percentage = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_1_discount));
+        $discount_tier_2_percentage = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_2_discount));
+        $discount_tier_3_percentage = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_discount));
+
+        $subTotal = 0;
+        $discounts = 0;
+        $total = 0;
+
+        // Get regular price
+        $regular_price = get_post_meta($product_id, '_regular_price', true);
+
+        // Get sale price
+        $sale_price = get_post_meta($product_id, '_sale_price', true);
+
+        // If the product is on sale, use the sale price, otherwise use the regular price
+        $price = intval($sale_price ? $sale_price : $regular_price);
+
         $listOfCategories = get_categories(
             array(
                 'taxonomy' => 'ad_category',
@@ -42,18 +63,39 @@ function create_advert_form($atts)
                 'hide_empty' => 0,
             )
         );
+
         $categories = build_category_hierarchy($listOfCategories);
 
         $current_key = isset($_GET['key']) ? $_GET['key'] : null;
 
         $cart = WC()->cart->get_cart();
         $count = 0;
+
         foreach ($cart as $cart_item_key => $cart_item) {
             $cart_product_id = $cart_item['product_id'];
+
             if (has_term('listing-ad', 'product_type', $cart_product_id)) {
                 $count++;
+
+                $featured = $cart_item['featured'] ?? false;
+                $featured = intval($featured);
+
+                $subTotal += $price + $featured;
             }
         }
+
+        $discount = 0;
+
+        if ($count > $discount_tier_1 && $count < $discount_tier_2) {
+            $discount = $discount_tier_1_percentage;
+        } elseif ($count < $discount_tier_3) {
+            $discount = $discount_tier_2_percentage;
+        } else {
+            $discount = $discount_tier_3_percentage;
+        }
+
+        $discounts = $price * $count * ($discount / 100);
+        $total = $subTotal - $discounts;
 
         if (isset($_GET['draft_id'])) {
             $post = get_post($_GET['draft_id']);
@@ -71,24 +113,7 @@ function create_advert_form($atts)
                 $adData = $cart[$current_key];
             }
 
-            $discount = 0;
-            if ($count > 2 && $count < 7) {
-                $discount = 5;
-            } elseif ($count > 6 && $count < 10) {
-                $discount = 10;
-            } elseif ($count > 9) {
-                $discount = 15;
-            }
         }
-
-        // Get regular price
-        $regular_price = get_post_meta($product_id, '_regular_price', true);
-
-        // Get sale price
-        $sale_price = get_post_meta($product_id, '_sale_price', true);
-
-        // If the product is on sale, use the sale price, otherwise use the regular price
-        $price = $sale_price ? $sale_price : $regular_price;
 
         $brands = getAllMetaValues('brand');
         $models = getAllMetaValues('model');

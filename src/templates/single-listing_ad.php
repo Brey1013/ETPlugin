@@ -212,6 +212,9 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                         <div class="et-product-seller-map">
                                             <?php echo do_shortcode('[et-maps-widget]'); ?>
                                         </div>
+                                        <div class="et-product-seller-brand">
+                                            <?php echo do_shortcode('[et-brands-widget]'); ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr class="et-product-hr">

@@ -101,31 +101,19 @@ function product_list($args)
         // Merge featured and normal posts
         $all_posts = array_merge($featured_option_2, $featured_option_1);
 
-        // Custom comparison function to sort by date
-        function sortByDate($a, $b)
-        {
-            return strtotime($b['date']) - strtotime($a['date']);
-        }
-
-        // Sort the array by date
-        usort($all_posts, 'sortByDate');
-        usort($normal_posts, 'sortByDate');
-
         if ($args['only_featured'] == false)
             $all_posts = array_merge($all_posts, $normal_posts);
+
+        usort($all_posts, 'sortByDate');
 
         // Create an array of just the IDs
         $idsArray = array_map(function ($item) {
             return $item['id'];
         }, $all_posts);
 
-
-        // Get posts for the current page
-        $current_page_posts = array_slice($idsArray, ($paged - 1) * $posts_per_page, $posts_per_page);
-
         $args_all = array(
             'post_type' => 'listing_ad',
-            'post__in' => $current_page_posts,
+            'post__in' => $idsArray,
             'orderby' => 'post__in',
             'paged' => $paged,
             'posts_per_page' => $posts_per_page,
@@ -310,4 +298,10 @@ function getAdditionalFilters($args, $feature_options)
     }
 
     return join("\r\n\t", $result);
+}
+
+// Custom comparison function to sort by date
+function sortByDate($a, $b)
+{
+    return strtotime($b['date']) - strtotime($a['date']);
 }

@@ -1,7 +1,11 @@
-<section class="brands-section">
-    <h3>Brand</h3>
-    <img src="https://images.unsplash.com/photo-1470093851219-69951fcbb533?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        height="100" />
-    <h3>Brand Name</h3>
-    <p>Model Name</p>
+<section class="site-content-block classima-single-brand">
+    <div class="main-title-block">
+        <h3 class="main-title">Brand</h3>
+        <hr class="et-styled-hr">
+    </div>
+    <div class="main-content">
+        <img src="<?php echo $brandLogo ?>" height="100" />
+        <h3>Name: <?php echo $brandName ?></h3>
+        <p>Product Code/Model: <?php echo $modelName ?></p>
+    </div>
 </section>
