@@ -62,6 +62,12 @@ function setupETPlugin() {
     images && images.addEventListener("change", previewPhoto);
 
     $("a[data-reveal]").on("click", revealButton);
+
+    $(".searchandfilter input[type='reset']").on("click", function () {
+      setTimeout(function () {
+        $(".et-searchable-dropdown").trigger("change");
+      }, 100);
+    });
   });
 
   function revealButton(event) {
@@ -83,16 +89,14 @@ function setupETPlugin() {
 
   function updateSubCategoriesOnSelect() {
     const updateSubCategories = (category) => {
-      $("#sub-category").html("");
+      var firstValue = $("#sub-category").data("first");
 
-      if (category != "") {
+      $("#sub-category").html(`<option value="">${firstValue}</option>`);
+
+      if (category) {
         let subOptions = $("#category")
           .find('option[value="' + category + '"]')
           .data("options");
-
-        var firstValue = $("#sub-category").data("first");
-
-        $("#sub-category").append(`<option value="">${firstValue}</option>`);
 
         if (typeof subOptions !== "undefined") {
           subOptions = JSON.parse(atob(subOptions));
@@ -118,7 +122,7 @@ function setupETPlugin() {
     };
 
     $("#category").on("change", (e) => {
-      let category = $(this).val();
+      let category = $(e.currentTarget).val();
 
       updateSubCategories(category);
     });

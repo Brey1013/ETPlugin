@@ -72,6 +72,7 @@
         </li>
         <li>
             <select class="form-control" class="postform" name="availability">
+                <option value="">All Availabilities</option>
                 <?php foreach ($availability_options as $option) { ?>
                     <option value="<?php echo $option; ?>" <?php if ($_GET["availability"] == $option) {
                            echo "selected";
@@ -92,6 +93,7 @@
                 <span class="less">Less options <i class="fas fa-chevron-left"></i></span>
             </a>
             <input type="submit" value="Find it!" />
+            <input type="reset" value="Clear all filters">
         </li>
     </ul>
 </form>
