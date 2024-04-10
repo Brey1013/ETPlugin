@@ -30,6 +30,16 @@ function search_form_widget()
     $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
     $availability_options = array_map('trim', explode("\n", $availability_options));
 
+    $countries_obj = new WC_Countries();
+
+    $locations = array();
+
+    $states = $countries_obj->get_states();
+
+    foreach ($states["ZA"] as $key => $name) {
+        array_push($locations, $name);
+    }
+
     ob_start();
 
     include (plugin_dir_path(__DIR__) . 'includes/search-form.php');

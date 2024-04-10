@@ -410,8 +410,8 @@ function cmb2_sample_metaboxes()
     // Other sub category text field
     $cmb->add_field(
         array(
-            'name' => __('Other Sub-Category', 'equipmenttrader'),
-            'desc' => __('Add Other Sub-Category', 'equipmenttrader'),
+            'name' => __('Other Product Type', 'equipmenttrader'),
+            'desc' => __('Add Other Product Type', 'equipmenttrader'),
             'id' => 'other-subcategory',
             'type' => 'text',
         )

@@ -1,9 +1,9 @@
 <?php
 if ($full_address) { ?>
 
-      <section class="site-content-block classima-single-map">
+      <section class="border-0 classima-single-map shadow-none site-content-block">
             <div class="main-title-block">
-                  <h3 class="main-title">Location</h3>
+                  <h3 class="rtin-specs-title">Location</h3>
                   <hr class="et-styled-hr">
             </div>
             <div class="main-content">

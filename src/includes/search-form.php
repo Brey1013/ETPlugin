@@ -3,7 +3,7 @@
         <ul>
             <li>
                 <select id="category" name="category" class="postform et-searchable-dropdown">
-                    <option value="" selected="selected">All Ad Categories</option>
+                    <option value="" selected="selected">All Product Categories</option>
                     <?php foreach ($categories as $key => $value) { ?>
                         <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
                                echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
@@ -17,13 +17,13 @@
             </li>
             <li>
                 <select id="sub-category" name="sub_category" class="postform et-searchable-dropdown"
-                    data-first="All Sub Categories">
-                    <option value="" selected="selected">All Sub Categories</option>
+                    data-first="Product Type">
+                    <option value="" selected="selected">Product Type</option>
                 </select>
             </li>
             <li>
                 <select name="quality" class="postform et-searchable-dropdown">
-                    <option value="" selected="selected">Any Quality</option>
+                    <option value="" selected="selected">New/Used/Refurbished</option>
                     <option value="New" <?php if ($_GET["quality"] == "New") {
                         echo "selected";
                     } ?>>
@@ -72,7 +72,7 @@
         </li>
         <li>
             <select class="form-control" class="postform" name="availability">
-                <option value="">All Availabilities</option>
+                <option value="">Availability</option>
                 <?php foreach ($availability_options as $option) { ?>
                     <option value="<?php echo $option; ?>" <?php if ($_GET["availability"] == $option) {
                            echo "selected";
@@ -83,7 +83,9 @@
             </select>
         </li>
         <li>
-            <input class="postform" name="location" placeholder="Location" value="<?php echo $_GET["location"]; ?>" />
+            <input class="postform js-typeahead tt-query" name="location" placeholder="Location"
+                data-options="<?php echo transform_object_for_frontend($locations) ?>"
+                value="<?php echo $_GET["location"]; ?>" />
         </li>
     </ul>
     <ul class="et-search-bottom">

@@ -84,9 +84,10 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                                     $class = '';
                                                                 }
                                                                 ?>
-                                                                <div class="carousel-item <?php echo $class; ?>">
-                                                                    <img src="<?php echo $img; ?>" class="d-block w-100"
-                                                                        alt="one" />
+                                                                <div class="carousel-item <?php echo $class; ?>"
+                                                                    style="text-align: center;">
+                                                                    <img src="<?php echo $img; ?>" style="max-height: inherit;"
+                                                                        alt="<?php echo $term_name; ?> <?php echo $i; ?>" />
                                                                 </div>
                                                                 <?php $i++; ?>
                                                             <?php } ?>
@@ -153,56 +154,6 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                     </span>
                                                 </div>
                                             </div>
-                                            <hr class="et-product-hr">
-                                            <div class="et-product-overview">
-                                                <h3 class="rtin-specs-title">Overview</h3>
-                                                <hr class="et-styled-hr">
-                                                <div class="classima-custom-fields clearfix">
-                                                    <ul>
-                                                        <li> <span class="rtin-label">Brand: </span> <span
-                                                                class="rtin-title">
-                                                                <?php echo implode(', ', $brand_str); ?>
-                                                            </span></li>
-                                                        <li> <span class="rtin-label">Product Code/Model : </span> <span
-                                                                class="rtin-title">
-                                                                <?php echo implode(', ', $model_str); ?>
-                                                            </span></li>
-                                                        <li> <span class="rtin-label">Category: </span> <span
-                                                                class="rtin-title">
-                                                                <?php echo $term_name; ?>
-                                                            </span></li>
-                                                        <li> <span class="rtin-label">Sub-Category: </span> <span
-                                                                class="rtin-title">
-                                                                <?php echo $term_name_second; ?>
-                                                            </span></li>
-                                                        <li> <span class="rtin-label">Availability: </span> <span
-                                                                class="rtin-title">
-                                                                <?php echo $availability; ?>
-                                                            </span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <?php if ($spec_sheet) { ?>
-                                                <div>
-                                                    <p>Spec Sheets:</p>
-                                                    <?php foreach ($spec_sheet as $sheet) {
-                                                        $file_parts = explode('/', $sheet);
-                                                        $fileName = end($file_parts);
-                                                        ?>
-                                                        <span class="et-spec-sheet-button badge badge-pill badge-secondary"><a
-                                                                href="<?php echo $sheet; ?>" target="_blank">
-                                                                <?php echo $fileName; ?> <i
-                                                                    class="doc-icon fas fa-angle-down"></i>
-                                                            </a></span>
-                                                    <?php } ?>
-                                                </div>
-                                            <?php } ?>
-                                            <h3 class="rtin-specs-title" style="margin-top: 25px">Description</h3>
-                                            <hr class="et-styled-hr">
-                                            <div class="et-product-content">
-                                                <?php echo get_the_content(); ?>
-                                            </div>
-
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-3">
@@ -212,6 +163,61 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                         <div class="et-product-seller-map">
                                             <?php echo do_shortcode('[et-maps-widget]'); ?>
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <hr class="et-product-hr">
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="et-product-overview">
+                                            <h3 class="rtin-specs-title">Overview</h3>
+                                            <hr class="et-styled-hr">
+                                            <div class="classima-custom-fields clearfix">
+                                                <ul>
+                                                    <li> <span class="rtin-label">Brand: </span> <span
+                                                            class="rtin-title">
+                                                            <?php echo implode(', ', $brand_str); ?>
+                                                        </span></li>
+                                                    <li> <span class="rtin-label">Product Code/Model : </span> <span
+                                                            class="rtin-title">
+                                                            <?php echo implode(', ', $model_str); ?>
+                                                        </span></li>
+                                                    <li> <span class="rtin-label">Category: </span> <span
+                                                            class="rtin-title">
+                                                            <?php echo $term_name; ?>
+                                                        </span></li>
+                                                    <li> <span class="rtin-label">Product Type: </span> <span
+                                                            class="rtin-title">
+                                                            <?php echo $term_name_second; ?>
+                                                        </span></li>
+                                                    <li> <span class="rtin-label">Availability: </span> <span
+                                                            class="rtin-title">
+                                                            <?php echo $availability; ?>
+                                                        </span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <?php if ($spec_sheet) { ?>
+                                            <div>
+                                                <p>Spec Sheets:</p>
+                                                <?php foreach ($spec_sheet as $sheet) {
+                                                    $file_parts = explode('/', $sheet);
+                                                    $fileName = end($file_parts);
+                                                    ?>
+                                                    <span class="et-spec-sheet-button badge badge-pill badge-secondary"><a
+                                                            href="<?php echo $sheet; ?>" target="_blank">
+                                                            <?php echo $fileName; ?> <i class="doc-icon fas fa-angle-down"></i>
+                                                        </a></span>
+                                                <?php } ?>
+                                            </div>
+                                        <?php } ?>
+                                        <h3 class="rtin-specs-title" style="margin-top: 25px">Description</h3>
+                                        <hr class="et-styled-hr">
+                                        <div class="et-product-content">
+                                            <?php echo get_the_content(); ?>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12 col-md-3">
                                         <div class="et-product-seller-brand">
                                             <?php echo do_shortcode('[et-brands-widget]'); ?>
                                         </div>

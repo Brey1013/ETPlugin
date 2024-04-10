@@ -5,25 +5,7 @@
         <div class="col-12 et-ad-listing-progress-bar et-progress-bar-outer">
         </div>
         <div class="col-6">
-            <label for="gallery-images">
-                <?php _e('Add Images (Max 10):', 'equipmenttrader'); ?>
-                <?php if (!isset($adData['images']) || !$adData['images']) { ?>*
-                <?php } ?>
-            </label>
-            <input type="file" class="form-control-file" id="gallery-images" name="gallery-images" accept="image/*"
-                multiple <?php if (!isset($adData['images'])) { ?>required<?php } ?> />
-            <div id="gallery-preview" class="row my-3">
-                <?php if (isset($adData['images']) && $adData['images']) { ?>
-                    <?php foreach ($adData['images'] as $image) { ?>
-                        <?php $imgURL = wp_get_attachment_image_url($image); ?>
-                        <img src="<?php echo $imgURL; ?> " class="col-3 p-1">
-                    <?php } ?>
-                <?php } ?>
-                <hr>
-            </div>
-
             <div class="et-listing-ad-form-help-area">
-
                 <div class="et-ad-listing-help-area">
                     <h4>Adding a product listing</h4>
                     <p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Recusandae tenetur corporis
@@ -34,7 +16,7 @@
                             href="#et-faq-section" class="et-top-cut-button"><i
                                 class="fa fa-solid fa-question"></i>FAQs</a></p>
                     <hr>
-                    <h4>Still getting stuck?</h4>
+                    <h4>Getting stuck?</h4>
                     <p>
                         <?php echo do_shortcode('[et-sales-fine-print]') ?>
                     </p>
@@ -103,16 +85,16 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="sub-category">
-                    <?php _e('Sub-Category', 'equipmenttrader'); ?>:*
+                    <?php _e('Select Product Type', 'equipmenttrader'); ?>:*
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please select a sub category for your advert</div>
+                        <div class="et-tooltip">Please select a product type for your advert</div>
                     </i>
                 </label>
                 <div class="col-sm-8">
                     <select class="form-control et-searchable-dropdown" id="sub-category" name="sub-category"
-                        data-first="<?php _e('Select Sub-Category', 'equipmenttrader'); ?>" data-show-other="true">
+                        data-first="<?php _e('Select Product Type', 'equipmenttrader'); ?>" data-show-other="true">
                         <option value="">
-                            <?php _e('Select Sub-Category', 'equipmenttrader'); ?>
+                            <?php _e('Select Product Type', 'equipmenttrader'); ?>
                         </option>
                         <?php if (isset($adData['category'])) {
                             foreach ($categories as $key => $value) {
@@ -139,7 +121,7 @@
             } ?>" id="other_subcat_wrap">
                 <label class="col-sm-4 col-form-label" for="other-subcategory">&nbsp; <i
                         class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please type in the name of your own sub category</div>
+                        <div class="et-tooltip">Please type in the name of your own product type</div>
                     </i></label></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="other-subcategory" name="other-subcategory"
@@ -215,6 +197,21 @@
                 </label>
                 <textarea class="form-control" id="description" name="description" required
                     rows="5"><?php echo $adData['description'] ?? ''; ?></textarea>
+            </div>
+            <label for="gallery-images">
+                <?php _e('Add Images (Max 10):', 'equipmenttrader'); ?>
+                <?php if (!isset($adData['images']) || !$adData['images']) { ?>*
+                <?php } ?>
+            </label>
+            <input type="file" class="form-control-file" id="gallery-images" name="gallery-images" accept="image/*"
+                multiple <?php if (!isset($adData['images'])) { ?>required<?php } ?> />
+            <div id="gallery-preview" class="row my-3">
+                <?php if (isset($adData['images']) && $adData['images']) { ?>
+                    <?php foreach ($adData['images'] as $image) { ?>
+                        <?php $imgURL = wp_get_attachment_image_url($image); ?>
+                        <img src="<?php echo $imgURL; ?> " class="col-3 p-1">
+                    <?php } ?>
+                <?php } ?>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="quality">
@@ -398,7 +395,7 @@
 
         <div class="col-6">
             <div class="et-ad-listing-form-bottom-help-area">
-                <h4>Still getting stuck?</h4>
+                <h4>Getting stuck?</h4>
             </div>
         </div>
         <div class="col-6 text-right">
