@@ -180,7 +180,11 @@ function setupETPlugin() {
     typeaheads.each(function (index, element) {
       const { mustSelectItem, options } = element.dataset;
 
-      var mappedOptions = JSON.parse(atob(options));
+      var mappedOptions = JSON.parse(atob(options)) || [];
+
+      for (var i = 0; i < mappedOptions.length; i++) {
+        mappedOptions[i] = decodeEntities(mappedOptions[i]);
+      }
 
       $(element).typeahead(
         {
@@ -194,6 +198,14 @@ function setupETPlugin() {
         },
       );
     });
+  }
+
+  function decodeEntities(encodedString) {
+    var textArea = document.createElement("textarea");
+
+    textArea.innerHTML = encodedString;
+
+    return textArea.value;
   }
 
   function setupFilterableDropdowns() {

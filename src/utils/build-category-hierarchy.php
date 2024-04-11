@@ -17,5 +17,32 @@ function build_category_hierarchy($terms)
         }
     }
 
+    usort($categories, 'sortTerms');
+
+    for ($i = 0; $i < count($categories); $i++) {
+        $parent_category = $categories[$i];
+
+        if (isset($parent_category['children']) && count($parent_category['children']) > 0) {
+            $children = $parent_category['children'];
+
+            usort($children, 'sortTerms');
+
+            $categories[$i]['children'] = $children;
+        }
+    }
+
     return $categories;
+}
+
+function sortTerms($a, $b)
+{
+    $comparison = strcasecmp($a['name'], $b['name']);
+
+    if ($comparison < 0) {
+        return -1;
+    } else if ($comparison > 0) {
+        return 1;
+    }
+
+    return 0;
 }

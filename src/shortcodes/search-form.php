@@ -27,6 +27,9 @@ function search_form_widget()
     $brands = getAllMetaValues('brand');
     $models = getAllMetaValues('model');
 
+    sort($brands, SORT_STRING | SORT_FLAG_CASE | SORT_ASC);
+    sort($models, SORT_STRING | SORT_FLAG_CASE | SORT_ASC);
+
     $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
     $availability_options = array_map('trim', explode("\n", $availability_options));
 
@@ -39,6 +42,8 @@ function search_form_widget()
     foreach ($states["ZA"] as $key => $name) {
         array_push($locations, $name);
     }
+
+    sort($locations, SORT_STRING | SORT_FLAG_CASE | SORT_ASC);
 
     ob_start();
 

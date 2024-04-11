@@ -146,13 +146,13 @@
                                     'format' => '?paged=%#%',
                                     'current' => $paged,
                                     'total' => $total_pages,
-                                    'prev_text' => __('&laquo; Previous'),
-                                    'next_text' => __('Next &raquo;'),
+                                    'prev_text' => __('&lt; Previous'),
+                                    'next_text' => __('Next &gt;'),
                                 )
                             );
                             if ($pagination) {
                                 echo '<div class="pagination">';
-                                echo $pagination;
+                                echo str_replace('page-numbers', 'page-link', $pagination);
                                 echo '</div>';
                             }
                         }

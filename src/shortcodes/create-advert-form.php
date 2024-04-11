@@ -118,6 +118,9 @@ function create_advert_form($atts)
         $brands = getAllMetaValues('brand');
         $models = getAllMetaValues('model');
 
+        sort($brands, SORT_STRING | SORT_FLAG_CASE | SORT_ASC);
+        sort($models, SORT_STRING | SORT_FLAG_CASE | SORT_ASC);
+
         $availability_options = get_option(SettingsConstants::get_setting_name(SettingsConstants::$availability));
         $availability_options = array_map('trim', explode("\n", $availability_options));
 

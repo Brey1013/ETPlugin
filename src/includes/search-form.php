@@ -3,11 +3,11 @@
         <ul>
             <li>
                 <select id="category" name="category" class="postform et-searchable-dropdown">
-                    <option value="" selected="selected">All Product Categories</option>
+                    <option value="">All Product Categories</option>
                     <?php foreach ($categories as $key => $value) { ?>
                         <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
                                echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
-                           } ?>     <?php if ($_GET["category"] == $key) {
+                           } ?>     <?php if ($_GET["category"] === $key) {
                                      echo "selected";
                                  } ?>>
                             <?php echo $value['name']; ?>
@@ -18,12 +18,12 @@
             <li>
                 <select id="sub-category" name="sub_category" class="postform et-searchable-dropdown"
                     data-first="Product Type">
-                    <option value="" selected="selected">Product Type</option>
+                    <option value="">Product Type</option>
                 </select>
             </li>
             <li>
                 <select name="quality" class="postform et-searchable-dropdown">
-                    <option value="" selected="selected">New/Used/Refurbished</option>
+                    <option value="">New/Used/Refurbished</option>
                     <option value="New" <?php if ($_GET["quality"] == "New") {
                         echo "selected";
                     } ?>>
