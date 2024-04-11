@@ -12,9 +12,14 @@ function seller_information_widget()
 
     $author_id = $post->post_author;
 
-    $display_name = get_the_author_meta('display_name', $author_id);
+    $display_name = get_the_author_meta('billing_company', $author_id);
+
+    if (!isset($display_name) && !$display_name)
+        $display_name = get_the_author_meta('display_name', $author_id);
+
     $account_email = get_the_author_meta('email', $author_id);
     $billing_phone = get_the_author_meta('billing_phone', $author_id);
+    $logo = get_the_author_meta('image', $author_id);
 
     ob_start();
 

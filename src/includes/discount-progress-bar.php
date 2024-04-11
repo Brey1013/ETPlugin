@@ -11,28 +11,32 @@ $tier_3_title = get_option(SettingsConstants::get_setting_name(SettingsConstants
     nulla deleniti nobis sint iure, corrupti ullam minima quia iusto atque nesciunt, reiciendis.</p>
 <div class="progress-bar" data-percent="<?php echo $count * 10; ?>">
     <?php for ($i = 1; $i < 11; $i++) {
-        $class = '';
+        $class = array();
         $text = '';
         if ($count >= $tier_1 && $count < $tier_2) {
-            $class = 'active';
+            $class[] = 'active';
         }
         if ($i == $tier_1) {
+            $class[] = 'discount';
             $text = $tier_1_title;
         }
         if ($count >= $tier_2 && $count < $tier_3) {
-            $class = 'active';
+            $class[] = 'active';
         }
         if ($i == $tier_2) {
+            $class[] = 'discount';
             $text = $tier_2_title;
         }
         if ($count >= $tier_3) {
-            $class = 'active';
+            $class[] = 'active';
         }
         if ($i == $tier_3) {
+            $class[] = 'discount';
             $text = $tier_3_title;
         }
         ?>
-        <span class="bar <?php echo $class; ?>" data-percent="<?php echo $i; ?>" data-text="<?php echo $text; ?>"></span>
+        <span class="bar <?php echo join(" ", $class); ?>" data-percent="<?php echo $i; ?>"
+            data-text="<?php echo $text; ?>"></span>
     <?php } ?>
     <span class="progress-bar__inner"></span>
 </div>

@@ -1,9 +1,13 @@
+<?php
+
+global $woocommerce;
+
+?>
+
 <form method="post" enctype="multipart/form-data" class="et-submit-advert-form">
     <input type="hidden" name="action" value="handle_advert_form_submission">
 
     <div class="row">
-        <div class="col-12 et-ad-listing-progress-bar et-progress-bar-outer">
-        </div>
         <div class="col-6">
             <div class="et-listing-ad-form-help-area">
                 <div class="et-ad-listing-help-area">
@@ -419,7 +423,7 @@
                     class="btn btn-primary">
             <?php } ?>
             <input type="submit" name="go-to-cart" value="<?php _e('Go To Cart >>', 'equipmenttrader'); ?>"
-                class="btn btn-secondary">
+                data-cart-url="<?php echo $woocommerce->cart->get_cart_url(); ?>" class="btn btn-secondary">
         </div>
 
     </div>

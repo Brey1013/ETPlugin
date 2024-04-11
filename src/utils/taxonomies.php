@@ -7,7 +7,7 @@ function register_listing_ads_taxonomies()
         'name' => _x('Ad Categories', 'Taxonomy General Name', 'equipmenttrader'),
         'singular_name' => _x('Ad Category', 'Taxonomy Singular Name', 'equipmenttrader'),
         'menu_name' => __('Ad Category', 'equipmenttrader'),
-        'all_items' => __('All Product Categories', 'equipmenttrader'),
+        'all_items' => __('Product Categories', 'equipmenttrader'),
         'parent_item' => __('Parent Ad Category', 'equipmenttrader'),
         'parent_item_colon' => __('Parent Ad Category:', 'equipmenttrader'),
         'new_item_name' => __('New Ad Category Name', 'equipmenttrader'),

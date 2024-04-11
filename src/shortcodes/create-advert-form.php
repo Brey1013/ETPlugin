@@ -86,12 +86,12 @@ function create_advert_form($atts)
 
         $discount = 0;
 
-        if ($count >= $discount_tier_1 && $count < $discount_tier_2) {
-            $discount = $discount_tier_1_percentage;
-        } elseif ($count < $discount_tier_3) {
-            $discount = $discount_tier_2_percentage;
-        } else {
+        if ($count >= $discount_tier_3) {
             $discount = $discount_tier_3_percentage;
+        } elseif ($count >= $discount_tier_2) {
+            $discount = $discount_tier_2_percentage;
+        } elseif ($count >= $discount_tier_1) {
+            $discount = $discount_tier_1_percentage;
         }
 
         $discounts = $price * $count * ($discount / 100);

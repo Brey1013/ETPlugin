@@ -68,7 +68,32 @@ function setupETPlugin() {
         $(".et-searchable-dropdown").trigger("change");
       }, 100);
     });
+
+    setupGoToCartClick();
   });
+
+  function setupGoToCartClick() {
+    $(".et-submit-advert-form [name='go-to-cart']").on("click", function (e) {
+      var formFields = $(".et-submit-advert-form")
+        .serialize()
+        .split("&")
+        .map((x) => x.split("="))
+        .filter(
+          (x) =>
+            ["action", "quality", "price-type", "availability"].indexOf(x[0]) ==
+            -1,
+        );
+
+      if (formFields.filter((x) => x[1]).length == 0) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const { cartUrl } = e.currentTarget.dataset;
+
+        window.location.href = cartUrl;
+      }
+    });
+  }
 
   function revealButton(event) {
     event.preventDefault();

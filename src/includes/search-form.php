@@ -3,13 +3,13 @@
         <ul>
             <li>
                 <select id="category" name="category" class="postform et-searchable-dropdown">
-                    <option value="">All Product Categories</option>
+                    <option value="">Product Categories</option>
                     <?php foreach ($categories as $key => $value) { ?>
                         <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
                                echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
-                           } ?>     <?php if ($_GET["category"] === $key) {
-                                     echo "selected";
-                                 } ?>>
+                           } ?>         <?php if ($_GET["category"] === $key) {
+                                         echo "selected";
+                                     } ?>>
                             <?php echo $value['name']; ?>
                         </option>
                     <?php } ?>

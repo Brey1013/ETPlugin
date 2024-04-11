@@ -5,7 +5,7 @@
     </div>
     <div class="main-content pt-0 border-0">
         <?php if ($brandLogo) {
-            ?> <img src="<?php echo $brandLogo ?>" height="100" /> <?php
+            ?> <img src="<?php echo $brandLogo ?>" class="mw-100 pb-2" /> <?php
         } ?>
         <h3>Name: <?php echo $brandName ?></h3>
         <p>Product Code/Model: <?php echo $modelName ?></p>

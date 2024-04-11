@@ -302,15 +302,15 @@ function apply_discount_based_on_quantity($cart)
             $discount = 0;
 
             // Check if quantity exceeds threshold
-            if ($quantity >= $tier_1 && $quantity < $tier_2) {
-                // Calculate discount
-                $discount = $cart_item['data']->get_price() * $tier_1_discount / 100;
-            } elseif ($quantity < $tier_3) {
-                // Calculate discount
-                $discount = $cart_item['data']->get_price() * $tier_2_discount / 100;
-            } else {
+            if ($quantity >= $tier_3) {
                 // Calculate discount
                 $discount = $cart_item['data']->get_price() * $tier_3_discount / 100;
+            } elseif ($quantity >= $tier_2) {
+                // Calculate discount
+                $discount = $cart_item['data']->get_price() * $tier_2_discount / 100;
+            } elseif ($quantity >= $tier_1) {
+                // Calculate discount
+                $discount = $cart_item['data']->get_price() * $tier_1_discount / 100;
             }
 
             $cart_item['data']->set_price($cart_item['data']->get_price() - $discount + $featured);

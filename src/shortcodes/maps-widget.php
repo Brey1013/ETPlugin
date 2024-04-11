@@ -21,7 +21,9 @@ function maps_widget()
     $billing_state = get_the_author_meta('billing_state', $author_id);
     $billing_country = get_the_author_meta('billing_country', $author_id);
 
-    $full_address = join(', ', array_filter(array($billing_address_1, $billing_address_2, $billing_city, $billing_postcode, $billing_state, $billing_country)));
+    $full_address_array = array_filter(array($billing_address_1, $billing_address_2, $billing_city, $billing_postcode, $billing_state, $billing_country));
+
+    $full_address = join(', ', $full_address_array);
 
     ob_start();
 

@@ -10,6 +10,7 @@ if ($full_address) { ?>
                   <iframe src="https://www.google.com/maps?q=<?php echo $full_address; ?>&output=embed" width="200"
                         height="250" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <p> <?php echo $full_address; ?> </p>
             </div>
       </section>
 

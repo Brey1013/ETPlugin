@@ -390,13 +390,13 @@
   width: 75%;
 }
 
-.et-product-seller-info {
+.et-product-seller-info section {
   background: var(--et_aquamarine);
   border-radius: var(--et_bdrs);
   padding: 10px;
 }
 
-.et-product-seller-info h2 {
+.et-product-seller-info section h2 {
   color: #fefefe;
 }
 
@@ -461,8 +461,8 @@ ul.single-listing-meta li {
   width: initial !important;
   height: initial !important;
   font-family: sans-serif !important;
-  margin: 1em !important;
-  padding: 0 !important;
+  margin: 0 !important;
+  padding: 1em !important;
 }
 
 .classified-seller-info h3,
@@ -523,6 +523,15 @@ form.et-submit-advert-form .progress-bar {
 
 .progress-bar .bar[data-text]::before:empty {
   display: none;
+}
+
+.progress-bar span.bar.discount {
+  background: var(--et_black);
+  height: 30px;
+}
+
+.progress-bar span.bar.discount:after {
+  color: var(--et_black);
 }
 
 .et-ad-listing-help-area {
@@ -656,3 +665,16 @@ body.single-listing_ad .badge {
 }
 
 /*############################################*/
+
+.woocommerce-MyAccount-content a.woocommerce-Button.button {
+  display: none;
+}
+
+.select2-container--default
+  .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--e-global-color-c2c88b5) !important;
+}
+
+input.select2-search__field:focus-visible {
+  outline-color: var(--e-global-color-c2c88b5) !important;
+}
