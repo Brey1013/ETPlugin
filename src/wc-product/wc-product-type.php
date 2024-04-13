@@ -36,7 +36,7 @@ class WC_Product_Type_Plugin
      */
     public function add_type($types)
     {
-        $types['listing-ad'] = __('Listing Ad', 'equipmenttrader');
+        $types['listing_ad'] = __('Listing Ad', 'equipmenttrader');
 
         return $types;
     }
@@ -49,8 +49,8 @@ class WC_Product_Type_Plugin
     public function install()
     {
         // If there is no advanced product type taxonomy, add it.
-        if (!get_term_by('slug', 'listing-ad', 'product_type')) {
-            wp_insert_term('listing-ad', 'product_type');
+        if (!get_term_by('slug', 'listing_ad', 'product_type')) {
+            wp_insert_term('listing_ad', 'product_type');
         }
     }
 
@@ -103,7 +103,7 @@ class WC_Product_Type_Plugin
             return;
         endif;
         // echo "<pre>";print_r($product_object);exit;
-        $is_advanced = $product_object && 'listing-ad' === $product_object->get_type() ? true : false;
+        $is_advanced = $product_object && 'listing_ad' === $product_object->get_type() ? true : false;
 
         ?>
         <script type='text/javascript'>

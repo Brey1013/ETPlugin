@@ -1,6 +1,6 @@
-function setupETPlugin() {
-  const $ = jQuery;
+"use strict";
 
+(function ($) {
   $(function () {
     updateSubCategoriesOnSelect();
 
@@ -132,12 +132,19 @@ function setupETPlugin() {
             );
           });
         }
-
-        if ($("#sub-category").data("show-other") === "true")
-          $("#sub-category").append(`<option value="Other">Other</option>`);
-
-        $("#sub-category").select2();
       }
+
+      if ($("#sub-category").data("show-other") === true) {
+        var hasSubCategory = $("#other_subcat_wrap").hasClass("d-none");
+
+        $("#sub-category").append(
+          `<option value="Other" ${
+            hasSubCategory ? "" : "selected"
+          }>Other</option>`,
+        );
+      }
+
+      $("#sub-category").select2();
 
       if (category == "Other") {
         $("#other_cat_wrap").removeClass("d-none");
@@ -158,7 +165,7 @@ function setupETPlugin() {
       if (sub_category == "Other") {
         $("#other_subcat_wrap").removeClass("d-none");
       } else {
-        $("#other_other_subcat_wrapcat_wrap").addClass("d-none");
+        $("#other_subcat_wrap").addClass("d-none");
       }
     });
 
@@ -533,5 +540,4 @@ function setupETPlugin() {
       }
     });
   }
-}
-setupETPlugin();
+})(jQuery);

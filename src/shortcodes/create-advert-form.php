@@ -74,7 +74,7 @@ function create_advert_form($atts)
         foreach ($cart as $cart_item_key => $cart_item) {
             $cart_product_id = $cart_item['product_id'];
 
-            if (has_term('listing-ad', 'product_type', $cart_product_id)) {
+            if (has_term('listing_ad', 'product_type', $cart_product_id)) {
                 $count++;
 
                 $featured = $cart_item['featured'] ?? false;

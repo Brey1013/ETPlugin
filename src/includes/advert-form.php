@@ -59,9 +59,10 @@ global $woocommerce;
                             <?php _e('Select Category', 'equipmenttrader'); ?>
                         </option>
                         <?php foreach ($categories as $key => $value) { ?>
-                            <option value="<?php echo $key; ?>" <?php if (isset($adData['category']) && $adData['category'] == $key) {
+                            <option value="<?php echo $value["term_id"]; ?>" <?php if (isset($adData['category']) && $adData['category'] == $value["term_id"]) {
                                    echo 'selected';
-                               } ?>     <?php if (isset($value['children'])) {
+                               } ?>     <?php
+                                     if (isset($value['children'])) {
                                          echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
                                      } ?>>
                                 <?php echo $value['name']; ?>
@@ -102,7 +103,7 @@ global $woocommerce;
                         </option>
                         <?php if (isset($adData['category'])) {
                             foreach ($categories as $key => $value) {
-                                if ($adData['category'] == $key) {
+                                if ($adData['category'] == $value["term_id"]) {
                                     foreach ($value['children'] as $term) { ?>
                                         <option value="<?php echo $term['term_id']; ?>" <?php if (isset($adData['subcategory']) && $adData['subcategory'] == $term['term_id']) {
                                                echo 'selected';
@@ -113,7 +114,7 @@ global $woocommerce;
                                 }
                             }
                         } ?>
-                        <option value="Other" <?php if (isset($adData['category']) && $adData['category'] == 'Other') {
+                        <option value="Other" <?php if (isset($adData['subcategory']) && $adData['subcategory'] == 'Other') {
                             echo 'selected';
                         } ?>><?php _e('Other', 'equipmenttrader'); ?>
                         </option>

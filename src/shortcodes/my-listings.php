@@ -69,19 +69,42 @@ function et_my_listings()
             </thead>
 
             <tbody>
-                <?php foreach ($results as $result) {
+                <?php
+                $taxonomy = 'ad_category';
+
+                foreach ($results as $result) {
+                    $product_id = $result->ID;
                     $link = get_edit_link($result);
                     $categories = array();
 
-                    $taxonomy = 'ad_category'; //Choose the taxonomy
-                    $terms = get_terms($taxonomy); //Get all the terms
-            
+                    $terms = wp_get_post_terms($product_id, $taxonomy, array('orderby' => 'term_order'));
+
+                    $term_name = '';
+                    $term_name_second = '';
+
                     foreach ($terms as $term) {
                         $parent = $term->parent;
                         if ($parent == '0') {
                             $term_name = $term->name;
                         } else {
+                            $parent_term = get_term_by('id', $parent, $taxonomy);
                             $term_name_second = $term->name;
+                            $term_name = $parent_term->name;
+                        }
+                    }
+
+                    if ($result->post_status === 'temp-draft') {
+                        $adData = get_post_meta($product_id, 'cart_items');
+
+                        if (count($adData) > 0) {
+                            $draft_data = $adData[0];
+
+                            $result->post_title = $draft_data['title'];
+
+                            $term_name = !!$draft_data["other-category"] ? $draft_data["other-category"] : get_term_by('id', $draft_data["category"], $taxonomy)->name;
+                            $term_name_second = !!$draft_data["other-subcategory"] ? $draft_data["other-subcategory"] : get_term_by('id', $draft_data["subcategory"], $taxonomy)->name;
+
+                            $result->featured = $draft_data["featured"];
                         }
                     }
 
@@ -91,24 +114,17 @@ function et_my_listings()
                     if (isset($term_name_second))
                         $categories[] = $term_name_second;
 
-                    if ($result->post_status === 'temp-draft') {
-                        $adData = get_post_meta($result->ID, 'cart_items');
-
-                        if (count($adData) > 0)
-                            $result->post_title = $adData[0]['title'];
-                    }
-
                     ?>
 
                     <tr class="woocommerce-orders-table__row woocommerce-orders-table__row--status-on-hold order">
                         <td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions" data-title="">
                             <input type="checkbox" name="add-to-cart[]" />
-                            <input type="hidden" name="add-to-cart-ids[]" value="<?php echo $result->ID; ?>" />
+                            <input type="hidden" name="add-to-cart-ids[]" value="<?php echo $product_id; ?>" />
                         </td>
                         <td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-id"
                             data-title="Listing ID">
                             <a href="<?php echo $link ?>"> #
-                                <?php echo $result->ID; ?>
+                                <?php echo $product_id; ?>
                             </a>
                         </td>
                         <td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-title"
@@ -152,12 +168,14 @@ add_shortcode('et-my-listings', 'et_my_listings');
 
 function get_edit_link($result)
 {
+    $product_id = $result->ID;
+
     $link = get_option(SettingsConstants::get_setting_name(SettingsConstants::$relative_listing_path));
 
     if ($result->post_status === 'temp-draft')
-        $link .= '?draft_id=' . $result->ID;
+        $link .= '?draft_id=' . $product_id;
     else
-        $link .= '?listing_id=' . $result->ID;
+        $link .= '?listing_id=' . $product_id;
 
     return $link;
 }

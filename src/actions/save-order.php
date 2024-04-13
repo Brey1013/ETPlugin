@@ -5,6 +5,8 @@ if (!defined('ABSPATH')) {
 
 function handle_advert_form_submission()
 {
+    $redirect_location = '';
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['submit']) || isset($_POST['update']) || isset($_POST['go-to-cart']) || isset($_POST['submit-draft']))) {
 
         global $woocommerce;
@@ -12,9 +14,9 @@ function handle_advert_form_submission()
         $title = sanitize_text_field($_POST['title']);
         $description = sanitize_text_field($_POST['description']);
         $category = sanitize_text_field($_POST['category']);
-        $otherCategory = sanitize_text_field($_POST['other-category']);
+        $otherCategory = $category === "Other" ? sanitize_text_field($_POST['other-category']) : null;
         $subcategory = sanitize_text_field($_POST['sub-category']);
-        $otherSubcategory = sanitize_text_field($_POST['other-subcategory']);
+        $otherSubcategory = $subcategory === "Other" ? sanitize_text_field($_POST['other-subcategory']) : null;
         $brand = sanitize_text_field($_POST['brand']);
         $model = sanitize_text_field($_POST['model']);
         $quality = sanitize_text_field($_POST['quality']);
@@ -71,7 +73,6 @@ function handle_advert_form_submission()
                 }
                 // Save the changes to the cart
                 $woocommerce->cart->set_session();
-                header('Location:' . $_SERVER['HTTP_REFERER']);
             } elseif (isset($_POST['submit'])) {
                 if (isset($_GET['draft_id'])) {
                     wp_delete_post($_GET['draft_id'], true);
@@ -85,7 +86,8 @@ function handle_advert_form_submission()
                     $woocommerce->cart->remove_cart_item($_GET['key']);
                 }
                 $cart_item_key = $woocommerce->cart->add_to_cart($product_id, $quantity, 0, array(), $itemData);
-                header('Location:' . $woocommerce->cart->get_cart_url());
+
+                $redirect_location = $woocommerce->cart->get_cart_url();
             }
         } elseif (isset($_POST['submit-draft'])) {
 
@@ -115,11 +117,17 @@ function handle_advert_form_submission()
 
                 $post_id = wp_insert_post($post_arr);
             }
-
-            if (isset($_GET['key'])) {
-                $woocommerce->cart->remove_cart_item($_GET['key']);
-            }
         }
+
+        if ($redirect_location === '' && str_contains($_SERVER['HTTP_REFERER'], "?")) {
+            $redirect_location = $_SERVER['HTTP_REFERER'];
+        }
+    }
+
+    if ($redirect_location !== '') {
+        $redirect_location = explode("?", $redirect_location)[0];
+
+        header('Location:' . $redirect_location);
     }
 }
 add_action('template_redirect', 'handle_advert_form_submission');
@@ -279,7 +287,7 @@ function apply_discount_based_on_quantity($cart)
     $quantity = 0;
     foreach ($cart_items as $cart_item_key => $cart_item) {
         $cart_product_id = $cart_item['product_id'];
-        if (has_term('listing-ad', 'product_type', $cart_product_id)) {
+        if (has_term('listing_ad', 'product_type', $cart_product_id)) {
             $quantity++;
         }
     }
@@ -295,7 +303,7 @@ function apply_discount_based_on_quantity($cart)
     foreach ($cart_items as $cart_item_key => $cart_item) {
         // Get product ID and quantity
         $product_id = $cart_item['product_id'];
-        if (has_term('listing-ad', 'product_type', $product_id)) {
+        if (has_term('listing_ad', 'product_type', $product_id)) {
             $featured = $cart_item['featured'] ?? false;
             $featured = intval($featured);
 
@@ -329,13 +337,13 @@ function custom_cart_item_name($product_name, $cart_item, $cart_item_key)
     $quantity = 0;
     foreach ($cart as $cart_item_key => $item) {
         $cart_product_id = $item['product_id'];
-        if (has_term('listing-ad', 'product_type', $cart_product_id)) {
+        if (has_term('listing_ad', 'product_type', $cart_product_id)) {
             $quantity++;
         }
     }
 
     // Check if the product is of a specific product type (e.g., 'book')
-    if (get_post_type($product_id) === 'product' && has_term('listing-ad', 'product_type', $product_id)) {
+    if (get_post_type($product_id) === 'product' && has_term('listing_ad', 'product_type', $product_id)) {
         // Get the meta value stored in the cart for this product
         $meta_value = isset($cart_item['title']) ? $cart_item['title'] : '';
         $featured = isset($cart_item['featured']) ? $cart_item['featured'] : '';
@@ -379,7 +387,7 @@ function disable_quantity_change_for_product_type($product_quantity, $cart_item_
     $product = wc_get_product($product_id);
 
     // Check if the product belongs to the desired product type
-    if ($product && $product->get_type() === 'listing-ad') {
+    if ($product && $product->get_type() === 'listing_ad') {
         // Disable quantity change by setting the input field to read-only
         $product_quantity = '<input type="number" name="cart[' . $cart_item_key . '][qty]" value="' . $cart_item['quantity'] . '" size="4" inputmode="numeric" aria-labelledby="input_0" readonly>';
     }
@@ -395,7 +403,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
     $quantity = 0;
     foreach ($cart as $cart_item_key => $cart_item) {
         $cart_product_id = $cart_item['product_id'];
-        if (has_term('listing-ad', 'product_type', $cart_product_id)) {
+        if (has_term('listing_ad', 'product_type', $cart_product_id)) {
             $quantity++;
         }
     }
@@ -409,7 +417,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
     // Get the product type
     $product_type = $product->get_type();
 
-    if ($product_type === 'listing-ad') {
+    if ($product_type === 'listing_ad') {
         $tier_3 = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3));
         $tier_3_days = get_option(SettingsConstants::get_setting_name(SettingsConstants::$tier_3_days));
 
@@ -539,7 +547,7 @@ function display_custom_data_on_order_received_page($item_id, $item, $product)
 
     // Get the product type
     $product_type = $product->get_type();
-    if ($product_type === 'listing-ad') {
+    if ($product_type === 'listing_ad') {
         $featured = $item->get_meta('featured_ads', true);
         $listing_id = $item->get_meta('listing_ad_id', true);
 

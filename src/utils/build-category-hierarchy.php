@@ -8,6 +8,7 @@ function build_category_hierarchy($terms)
         if ($term->parent == 0) {
             $category_id = $term->term_id;
             $categories[$category_id]['name'] = $term->name;
+            $categories[$category_id]['term_id'] = $term->term_id;
         } else {
             $parent_id = $term->parent;
             $categories[$parent_id]['children'][] = array(
