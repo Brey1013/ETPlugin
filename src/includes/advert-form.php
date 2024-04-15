@@ -163,14 +163,16 @@ global $woocommerce;
                     <div class="d-flex align-items-center brand-logo-preview w-100">
                         <div class="col-10 p-0 position-relative d-flex">
                             <?php if (isset($adData['brand_logo']) && $adData['brand_logo']) { ?>
-                                <?php $imgURL = wp_get_attachment_image_url($adData['brand_logo']); ?>
+                                <?php $imgURL = is_int($adData['brand_logo']) ? wp_get_attachment_image_url($adData['brand_logo']) : $adData['brand_logo']; ?>
                                 <img id="brand-logo-image" src="<?php echo $imgURL; ?>" alt="your brand logo"
                                     class="img-fluid" />
+                                <input type="hidden" name="original-brand-logo-image" value="<?php echo $imgURL; ?>" />
                             <?php } else { ?>
                                 <img id="brand-logo-image" src="#" alt="your brand logo" class="d-none img-fluid" />
                             <?php } ?>
-                            <button id="clear-brand-logo"
-                                class="btn btn-secondary clear-brand-logo position-absolute px-2 py-0 d-none">
+                            <button id="clear-brand-logo" type="button"
+                                class=" btn btn-secondary clear-brand-logo position-absolute px-2 py-0 d-none"
+                                style="line-height: 18px; height: 20px; width: 20px; display: flex; justify-content: center;">
                                 <p class="mb-0"><i class="fas fa-times fa-sm"></i></p>
                             </button>
                         </div>
@@ -212,9 +214,11 @@ global $woocommerce;
                 multiple <?php if (!isset($adData['images'])) { ?>required<?php } ?> />
             <div id="gallery-preview" class="row my-3">
                 <?php if (isset($adData['images']) && $adData['images']) { ?>
-                    <?php foreach ($adData['images'] as $image) { ?>
-                        <?php $imgURL = wp_get_attachment_image_url($image); ?>
-                        <img src="<?php echo $imgURL; ?> " class="col-3 p-1">
+                    <?php foreach ($adData['images'] as $key => $image) { ?>
+                        <?php $imgURL = is_int($image) ? wp_get_attachment_image_url($image) : $image; ?>
+                        <img src="<?php echo $imgURL; ?> " class="col-3 p-1" data-linked-index="<?php echo $key; ?>" />
+                        <input type="hidden" name="original-product-image[]" value="<?php echo $imgURL; ?>"
+                            data-linked-index="<?php echo $key; ?>" />
                     <?php } ?>
                 <?php } ?>
             </div>
@@ -276,7 +280,7 @@ global $woocommerce;
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="spec-sheets">
-                    <?php _e('Spec Sheet (Max 3):', 'equipmenttrader'); ?>:
+                    <?php _e('Spec Sheet (Max 3)', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
                         <div class="et-tooltip">Please upload a maximum of 3 spec sheets or brochures related to the
                             product, if applicable</div>
@@ -286,21 +290,23 @@ global $woocommerce;
                 <div class="col-sm-8">
                     <input type="file" class="form-control-file" id="spec-sheets" name="spec-sheets"
                         accept="image/jpg, image/jpeg, .pdf" multiple />
-                    <div id="file-tags" class="d-flex flex-wrap">
+                    <div class="d-flex flex-wrap mw-100">
                         <?php if (isset($adData['specsheets']) && is_array($adData['specsheets'])) { ?>
                             <?php foreach ($adData['specsheets'] as $document) { ?>
-                                <?php $attachment_url = wp_get_attachment_url($document);
+                                <?php $attachment_url = is_int($document) ? wp_get_attachment_url($document) : $document;
                                 $file_parts = explode('/', $attachment_url);
                                 $fileName = end($file_parts);
                                 ?>
                                 <span
-                                    class="badge badge-pill badge-light m-2 p-0 d-flex gap-2 align-items-center justify-content-center">
-                                    <p class="mb-0 pl-3">
-                                        <?php echo $fileName; ?>
-                                    </p><button class="btn border-0 pr-3"><i class="fas fa-times fa-xs"></i></button>
+                                    class="align-items-center badge badge-light badge-pill d-flex gap-2 justify-content-center m-2 mw-100 p-0">
+                                    <span class="mb-0 pl-3 spec-sheet-label"> <?php echo $fileName; ?> </span>
+                                    <button class="btn border-0 pr-3 original-specsheets-button" type="button"><i
+                                            class="fas fa-times fa-xs"></i></button>
+                                    <input type="hidden" name="original-specsheets[]" value="<?php echo $attachment_url; ?>" />
                                 </span>
                             <?php } ?>
                         <?php } ?>
+                        <span id="file-tags" class="mw-100"></span>
                     </div>
                 </div>
             </div>

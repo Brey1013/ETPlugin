@@ -405,6 +405,12 @@
   max-width: 25%;
 }
 
+span.mb-0.pl-3.spec-sheet-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /*Plugin Styles###############################*/
 .et-product-header-area {
   display: flex;

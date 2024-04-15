@@ -93,6 +93,16 @@ function et_my_listings()
                         }
                     }
 
+                    $other_category_term = get_post_meta($product_id, 'other-category', true);
+
+                    if (strlen($other_category_term) > 0)
+                        $term_name = $other_category_term;
+
+                    $other_sub_category_term = get_post_meta($product_id, 'other-subcategory', true);
+
+                    if (strlen($other_sub_category_term) > 0)
+                        $term_name_second = $other_sub_category_term;
+
                     if ($result->post_status === 'temp-draft') {
                         $adData = get_post_meta($product_id, 'cart_items');
 
@@ -101,8 +111,8 @@ function et_my_listings()
 
                             $result->post_title = $draft_data['title'];
 
-                            $term_name = !!$draft_data["other-category"] ? $draft_data["other-category"] : get_term_by('id', $draft_data["category"], $taxonomy)->name;
-                            $term_name_second = !!$draft_data["other-subcategory"] ? $draft_data["other-subcategory"] : get_term_by('id', $draft_data["subcategory"], $taxonomy)->name;
+                            $term_name = strlen($draft_data["other-category"]) > 0 ? $draft_data["other-category"] : get_term_by('id', $draft_data["category"], $taxonomy)->name;
+                            $term_name_second = strlen($draft_data["other-subcategory"]) > 0 ? $draft_data["other-subcategory"] : get_term_by('id', $draft_data["subcategory"], $taxonomy)->name;
 
                             $result->featured = $draft_data["featured"];
                         }

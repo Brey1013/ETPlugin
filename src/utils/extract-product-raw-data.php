@@ -6,60 +6,70 @@ function et_extract_product_raw_data($productId)
 
     $data = array();
 
-    $temp_post = get_post($productId);
+    $post = get_post($productId);
 
-    $prod_images = array();
     $spec_sheet = array();
 
-    $temp_prod_images = get_post_meta($productId, 'prod_images', true);
+    $all_meta = get_post_meta($productId);
+
+    foreach ($all_meta as $key => $value) {
+        $temp = maybe_unserialize($value[0]);
+
+        $data[$key] = $temp;
+    }
+
+    $data["featured"] = $data["featured_ads"];
+    $data["images"] = $data["prod_images"];
+
     $temp_spec_sheet = get_post_meta($productId, 'spec_sheet', true);
-    $temp_other_category = get_post_meta($productId, 'other-category', true);
-    $temp_other_subcategory = get_post_meta($productId, 'other-subcategory', true);
 
-    if (is_array($temp_prod_images) === 1) {
-        foreach ($temp_prod_images as $key => $value) {
-            array_push($prod_images, $key);
-        }
+    foreach ($temp_spec_sheet as $key => $value) {
+        array_push($spec_sheet, $key);
     }
 
-    if (is_array($temp_spec_sheet) === 1) {
-        foreach ($temp_spec_sheet as $key => $value) {
-            array_push($spec_sheet, $key);
-        }
-    }
+    $data["specsheets"] = $spec_sheet;
 
-    $data['images'] = $prod_images;
-    $data['title'] = $temp_post->post_title;
+    $data['title'] = $post->post_title;
+    $data['description'] = $post->post_content;
 
     $taxonomy = 'ad_category'; //Choose the taxonomy
     $terms = get_the_terms($productId, $taxonomy); //Get all the terms
 
-    if (is_array($terms) === 1) {
-        foreach ($terms as $term) { //Cycle through terms, one at a time
-            $parent = $term->parent;
+    foreach ($terms as $term) {
+        $parent = $term->parent;
 
-            if ($parent == '0') {
-                $data['category'] = $term->term_id;
-            } else {
-                $data['subcategory'] = $term->term_id;
-            }
+        if ($parent == '0') {
+            $data['category'] = $term->term_id;
+        } else {
+            $data['category'] = $term->parent;
+            $data['subcategory'] = $term->term_id;
         }
     }
 
+    $temp_other_category = $data['other-category'];
+
     if (isset($temp_other_category) && $temp_other_category != '') {
         $data['category'] = 'Other';
-        $data['other-category'] = $temp_other_category;
     }
+
+    $temp_other_subcategory = $data['other-subcategory'];
 
     if (isset($temp_other_subcategory) && $temp_other_subcategory != '') {
         $data['subcategory'] = 'Other';
-        $data['other-subcategory'] = $temp_other_subcategory;
+    }
+
+    $brandTerms = get_the_terms($productId, "brand");
+    $modelTerms = get_the_terms($productId, "model");
+
+    foreach ($brandTerms as $term) {
+        $parent = $term->parent;
+
+        $data['brand'] = $term->name;
+    }
+
+    foreach ($modelTerms as $term) {
+        $data['model'] = $term->name;
     }
 
     return $data;
-}
-
-function filterProdImages($x)
-{
-    return $x->key === "prod_images";
 }

@@ -22,6 +22,12 @@
 
     setupMyListingAdmin();
 
+    $(".original-specsheets-button").on("click", function (event) {
+      event.preventDefault();
+
+      $(event.currentTarget.parentElement).remove();
+    });
+
     $(".et-searchable-dropdown").select2();
 
     let percent = $(".progress-bar").attr("data-percent");
@@ -195,7 +201,7 @@
         matches = [];
 
         // regex used to determine if a string contains the substring `q`
-        substrRegex = new RegExp(q, "i");
+        var substrRegex = new RegExp(q, "i");
 
         // iterate through the pool of strings and for any string that
         // contains the substring `q`, add it to the `matches` array
@@ -341,7 +347,7 @@
       return false;
     } else {
       const files = event.currentTarget.files;
-      if (files.length >= 10) {
+      if (files.length > 10) {
         alert("You can only select up to 10 images.");
         event.currentTarget.value = "";
         return false;
@@ -458,7 +464,7 @@
 
   function setupSpecsTags() {
     $("#spec-sheets").on("change", function () {
-      if (this.files.length >= 3) {
+      if (this.files.length > 3) {
         alert("You can only select up to 3 documents.");
         this.value = "";
         return false;
@@ -484,7 +490,7 @@
 
     selectedFiles.forEach((file, i) => {
       let tag = $("<span>").addClass(
-        "badge badge-pill badge-light m-2 p-0 d-flex gap-2 align-items-center justify-content-center",
+        "align-items-center badge badge-light badge-pill d-flex gap-2 justify-content-center m-2 mw-100 p-0",
       );
 
       // Convert file object to Base64 string
@@ -502,14 +508,14 @@
       };
       reader.readAsDataURL(file);
 
-      let fileName = $("<p>")
-        .addClass("mb-0 pl-3")
+      let fileName = $("<span>")
+        .addClass("mb-0 pl-3 spec-sheet-label")
         .text(file.name)
         .appendTo(tag);
       let closeButton = $("<button>")
         .addClass("btn border-0 pr-3")
         .html('<i class="fas fa-times fa-xs"></i>')
-        .on("click", function () {
+        .on("click", function (event) {
           // Remove the corresponding tag (including hidden input)
           tag.remove();
           // Remove the file from selectedFiles array
