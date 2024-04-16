@@ -42,14 +42,12 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3>Contact
-                                <?php echo $display_name; ?> now!
-                            </h3>
+                            <h3>Enquire about this product</h3>
                         </div>
                         <div class="modal-body">
                             <?php
 
-                            echo do_shortcode('[contact-form-7 id="3c7a5d7" title="Seller Contact Form"]');
+                            echo do_shortcode('[contact-form-7 id="3c7a5d7" title="Enquire about this product"]');
 
                             ?>
                         </div>

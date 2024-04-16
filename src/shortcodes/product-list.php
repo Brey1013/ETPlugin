@@ -23,7 +23,7 @@ function product_list($args)
     $args = shortcode_atts($defaults, $args);
 
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    $today = date('Y-m-d');
+    $today = time();
 
     $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
     $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
@@ -65,7 +65,6 @@ function product_list($args)
             $end_listing_date = get_post_meta($advert_id, 'end_listing_date', true);
             $duration = get_post_meta($advert_id, 'duration', true);
             $publish_date = get_the_date('Y-m-d', $advert_id);
-            $today = time();
 
             $ad_arr = array(
                 'id' => $advert_id,

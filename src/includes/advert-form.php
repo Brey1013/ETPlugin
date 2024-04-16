@@ -15,10 +15,12 @@ global $woocommerce;
                     <p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Recusandae tenetur corporis
                         dignissimos maiores, qui optio, consectetur. Maiores explicabo et rerum suscipit repellat,
                         excepturi vel distinctio?</p>
-                    <p style="margin-bottom: 10px; float: right"><a id="" href="#et-account-help-popup"
-                            class="et-top-cut-button"><i class="fa fa-solid fa-info"></i>Get help</a><a
-                            href="#et-faq-section" class="et-top-cut-button"><i
-                                class="fa fa-solid fa-question"></i>FAQs</a></p>
+                    <p style="margin-bottom: 10px; float: right">
+                        <a id="" href="#et-account-help-popup" class="et-top-cut-button"><i
+                                class="fa fa-solid fa-info"></i>Get help</a>
+                        <a id="et-account-faq-popup" class="et-top-cut-button"><i
+                                class="fa fa-solid fa-question"></i>FAQs</a>
+                    </p>
                     <hr>
                     <h4>Getting stuck?</h4>
                     <p>

@@ -1,5 +1,9 @@
 <?php get_header(); ?>
 <?php
+$post = get_post();
+
+$author_id = $post->post_author;
+
 $postType = 'listing_ad';
 $product_id = get_the_ID();
 
@@ -27,8 +31,8 @@ $featured_ads = get_post_meta($product_id, 'featured_ads', true);
 
 $taxonomy = 'ad_category'; //Choose the taxonomy
 $terms = get_terms($taxonomy); //Get all the terms
-foreach ($terms as $term) { //Cycle through terms, one at a time
 
+foreach ($terms as $term) { //Cycle through terms, one at a time
     // Check and see if the term is a top-level parent. If so, display it.
     $parent = $term->parent;
     if ($parent == '0') {
@@ -42,6 +46,10 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
         $term_name_second = $term->name;
     }
 }
+
+$subject = implode(', ', array(get_the_title(), $priceValue, implode(', ', $brand_str), implode(', ', $model_str)));
+$authorEmail = get_the_author_meta('email', $author_id);
+
 ?>
 
 <div id="primary" class="content-area classima-listing-single">
@@ -242,4 +250,12 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
         </div>
     </div>
 </div>
+<script defer>
+    jQuery("[name=your-subject]").val(`I would like to enquire about <?php echo $subject; ?>`);
+    jQuery("[name=author-email]").val(`<?php echo $authorEmail; ?>`);
+
+    jQuery("form.wpcf7-form").on('reset', function (event) {
+        event.preventDefault();
+    });
+</script>
 <?php get_footer(); ?>

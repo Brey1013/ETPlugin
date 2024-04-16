@@ -25,6 +25,8 @@ function et_my_listings()
         $query .= " AND pm_featured.meta_key = 'featured_ads' ";
     else if ($status_filter === 'expired')
         $query .= " AND (pm_end_date.meta_value < date(NOW())) ";
+    else if ($status_filter === 'pending')
+        $query .= " AND (pm_end_date.meta_value IS NULL) ";
 
     $query .= " ORDER BY p.post_date DESC";
 

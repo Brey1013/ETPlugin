@@ -1648,3 +1648,19 @@ section.elementor-section.elementor-top-section.elementor-element.elementor-elem
 [id^="post-"] > .woocommerce {
   display: none;
 }
+
+.um-field.um-field-type_terms_conditions .um-field-area > * {
+  display: none;
+}
+
+.um-field-type_shortcode
+  .um-field.um-field-type_terms_conditions
+  .um-field-area
+  > * {
+  display: block;
+}
+
+.um-field.um-field-type_terms_conditions .um-field-area > .um-notice.err {
+  display: block;
+  top: -25px;
+}

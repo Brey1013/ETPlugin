@@ -464,14 +464,6 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
             $duration = $duration + $tier_3_days;
         }
 
-        $today = time();
-        $start_date = get_option(SettingsConstants::get_setting_name(SettingsConstants::$start_date));
-        if (strtotime($start_date) < $today) {
-            $end_listing_date = date('Y-m-d', strtotime('+' . $duration . ' days', $today));
-        } else {
-            $end_listing_date = date('Y-m-d', strtotime('+' . $duration . ' days', strtotime($start_date)));
-        }
-
         if (isset($item->legacy_values)) {
             $meta_values = $item->legacy_values;
             $status = 'publish';
@@ -487,7 +479,6 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
             $item->add_meta_data('availability', $meta_values['availability'], true);
             $item->add_meta_data('featured_ads', $meta_values['featured'], true);
             $item->add_meta_data('duration', $duration, true);
-            $item->add_meta_data('end_listing_date', $end_listing_date, true);
 
             $post_arr = array(
                 'post_type' => 'listing_ad',
@@ -506,8 +497,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
                     'price-value' => $meta_values['price-value'],
                     'availability' => $meta_values['availability'],
                     'featured_ads' => $meta_values['featured'] ?? false,
-                    'duration' => $duration ?? 0,
-                    'end_listing_date' => $end_listing_date ?? 0
+                    'duration' => $duration ?? 0
                 ),
             );
 

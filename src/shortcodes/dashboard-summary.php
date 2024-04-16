@@ -29,6 +29,13 @@ function et_dashboard_summary()
         (SELECT COUNT(*)
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
+        WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
+            AND (pm_endate.meta_value IS NULL)
+        ) AS pending,
+
+        (SELECT COUNT(*)
+        FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
             LEFT JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id AND pm.meta_key = 'featured_ads'
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
             AND (pm_endate.meta_value >= date(NOW()))
@@ -51,6 +58,7 @@ function et_dashboard_summary()
 
     $drafts = $result->draft;
     $published = $result->published;
+    $pending = $result->pending;
     $featured = $result->featured;
     $expired = $result->expired;
 
@@ -82,6 +90,10 @@ function et_dashboard_summary()
         <div class="et-dashboard-tile cart col-md-6 col-12"><a href="<?php echo $woocommerce->cart->get_cart_url(); ?>">
                 <span class="et-dashboard-tile-number"><?php echo $inCart ?></span>
                 <?php _e('Saved in Cart', 'equipmenttrader'); ?>
+            </a></div>
+        <div class="et-dashboard-tile published col-md-6 col-12"><a href="../my-listings/?status=pending">
+                <span class="et-dashboard-tile-number"><?php echo $pending ?></span>
+                <?php _e('Pending Payment Listings', 'equipmenttrader'); ?>
             </a></div>
         <div class="et-dashboard-tile published col-md-6 col-12"><a href="../my-listings/?status=publish">
                 <span class="et-dashboard-tile-number"><?php echo $published ?></span>
