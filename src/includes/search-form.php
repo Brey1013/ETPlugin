@@ -1,15 +1,23 @@
-<form action="<?php echo get_post_type_archive_link($postType); ?>" method="get" class="searchandfilter">
+<form action="<?php echo get_permalink(wc_get_page_id('shop')); ?>" method="get"
+    class="<?php echo $args["simple-form"] === "false" ? 'searchandfilter' : '' ?>">
     <div>
         <ul>
+            <?php if ($args["simple-form"] === "true") { ?>
+                <li>
+                    <div class="border-0 main-title-block pt-0 px-0">
+                        <h3 class="m-0 rtin-specs-title">Filters:</h3>
+                        <hr class="et-styled-hr">
+                    </div>
+                </li>
+            <?php } ?>
             <li>
                 <select id="category" name="category" class="postform et-searchable-dropdown">
                     <option value="">Product Categories</option>
                     <?php foreach ($categories as $key => $value) { ?>
                         <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
                                echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
-                           } ?>         <?php if ($_GET["category"] === $key) {
-                                         echo "selected";
-                                     } ?>>
+                           }
+                           echo ($_GET["category"] === $key) ? " selected" : ''; ?>>
                             <?php echo $value['name']; ?>
                         </option>
                     <?php } ?>
@@ -59,7 +67,7 @@
             </li>
         </ul>
     </div>
-    <ul class="et-expanded-search">
+    <ul class="<?php echo $args["simple-form"] === "false" ? 'et-expanded-search' : '' ?>">
         <li>
             <input type="text" class="postform js-typeahead tt-query" name="brand" placeholder="Brand"
                 data-options="<?php echo transform_object_for_frontend($brands) ?>"
@@ -90,10 +98,14 @@
     </ul>
     <ul class="et-search-bottom">
         <li>
-            <a class="et-search-more-info more">
-                <span class="more">More options <i class="fas fa-chevron-right"></i></span>
-                <span class="less">Less options <i class="fas fa-chevron-left"></i></span>
-            </a>
+
+            <?php if ($args["simple-form"] === "false") { ?>
+                <a class="et-search-more-info more">
+                    <span class="more">More options <i class="fas fa-chevron-right"></i></span>
+                    <span class="less">Less options <i class="fas fa-chevron-left"></i></span>
+                </a>
+            <?php } ?>
+
             <input type="submit" value="Find it!" />
             <input type="reset" value="Clear all filters">
         </li>

@@ -15,10 +15,6 @@
 
   // Replace product name on the cart page
 
-  $(".woocommerce-cart.woocommerce-page .product-name").html(
-    "Basic Advert Listing",
-  );
-
   $("td.product-name .product-quantity").html("");
 
   // Move more info button of home search form to where it needs to be

@@ -84,8 +84,7 @@ foreach ($terms as $term) { //Cycle through terms, one at a time
                                                                     $class = '';
                                                                 }
                                                                 ?>
-                                                                <div class="carousel-item <?php echo $class; ?>"
-                                                                    style="text-align: center;">
+                                                                <div class="carousel-item <?php echo $class; ?>">
                                                                     <img src="<?php echo $img; ?>" style="max-height: inherit;"
                                                                         alt="<?php echo $term_name; ?> <?php echo $i; ?>" />
                                                                 </div>

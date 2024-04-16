@@ -314,7 +314,6 @@ function handle_single_file_upload($file)
 }
 
 // Apply discounts
-add_action('woocommerce_before_calculate_totals', 'apply_discount_based_on_quantity');
 function apply_discount_based_on_quantity($cart)
 {
     if (is_admin() && !defined('DOING_AJAX')) {
@@ -364,9 +363,9 @@ function apply_discount_based_on_quantity($cart)
         }
     }
 }
+add_action('woocommerce_before_calculate_totals', 'apply_discount_based_on_quantity');
 
 // Modify product title in cart for specific product type
-add_filter('woocommerce_cart_item_name', 'custom_cart_item_name', 10, 3);
 function custom_cart_item_name($product_name, $cart_item, $cart_item_key)
 {
     // Get the product ID
@@ -416,6 +415,7 @@ function custom_cart_item_name($product_name, $cart_item, $cart_item_key)
 
     return $product_name;
 }
+add_filter('woocommerce_cart_item_name', 'custom_cart_item_name', 10, 3);
 
 function disable_quantity_change_for_product_type($product_quantity, $cart_item_key, $cart_item)
 {
@@ -433,7 +433,6 @@ function disable_quantity_change_for_product_type($product_quantity, $cart_item_
 
     return $product_quantity;
 }
-
 add_filter('woocommerce_cart_item_quantity', 'disable_quantity_change_for_product_type', 10, 3);
 
 function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
@@ -588,7 +587,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
 }
 add_action('woocommerce_checkout_create_order_line_item', 'save_custom_data_to_order_meta', 10, 4);
 
-function display_custom_data_on_order_received_page($item_id, $item, $product)
+function display_custom_data_on_order_received_page($item_id, $item, $bool = false)
 {
     // Get the product ID from the order item
     $product_id = $item->get_product_id();
@@ -606,12 +605,44 @@ function display_custom_data_on_order_received_page($item_id, $item, $product)
         $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
 
         if ($featured && $featured == $featured_option_1_price) {
-            echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
         } elseif ($featured && $featured == $featured_option_2_price) {
-            echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
         } else {
-            echo '<br><small class="product-meta"><small class="product-meta">Your Advert: <a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a></small>';
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
         }
     }
 }
-add_action('woocommerce_order_item_meta_end', 'display_custom_data_on_order_received_page', 10, 3);
+add_action('woocommerce_order_item_name', 'display_custom_data_on_order_received_page', 10, 2);
+
+function plugin_republic_order_item_thumbnail($output_html, $item, $bool = false)
+{
+    // Get the product ID from the order item
+    $product_id = $item->get_product_id();
+
+    // Get the product object
+    $product = wc_get_product($product_id);
+
+    // Get the product type
+    $product_type = $product->get_type();
+    if ($product_type === 'listing_ad') {
+        $output_html = "test thumbnail override";
+
+        $featured = $item->get_meta('featured_ads', true);
+        $listing_id = $item->get_meta('listing_ad_id', true);
+
+        $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
+        $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
+
+        if ($featured && $featured == $featured_option_1_price) {
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
+        } elseif ($featured && $featured == $featured_option_2_price) {
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
+        } else {
+            echo '<a href="' . get_permalink($listing_id) . '">' . get_the_title($listing_id) . '</a>';
+        }
+    }
+
+    return $output_html;
+}
+add_filter('woocommerce_order_item_thumbnail', 'plugin_republic_order_item_thumbnail', 10, 2);

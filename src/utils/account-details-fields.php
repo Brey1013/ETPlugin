@@ -6,26 +6,6 @@ function et_add_account_details_fields_to_start()
 
     ?>
 
-    <div class="row">
-        <div class="col-auto">
-
-            <?php if (isset($user->image)) { ?>
-                <img src="<?php echo wp_get_attachment_image_url($user->image); ?>" alt="Company logo" class="mb-3">
-            <?php } ?>
-
-        </div>
-        <div class="col">
-
-            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                <label for="image"><?php esc_html_e('Upload company logo', 'woocommerce'); ?><br />
-                    <sub>(optional but we should strongly suggest it is done to add credibility to a vendor
-                        listing)</sub></label>
-                <input type="file" class="woocommerce-Input" name="image" accept="image/x-png,image/gif,image/jpeg">
-            </p>
-
-        </div>
-    </div>
-
     <?php
 }
 add_action('woocommerce_edit_account_form_start', 'et_add_account_details_fields_to_start');
@@ -57,6 +37,26 @@ function et_add_account_details_fields()
         <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="billing_company"
             id="billing_company" value="<?php echo esc_attr($user->billing_company); ?>" />
     </p>
+
+    <div class="row">
+        <div class="col-auto">
+
+            <?php if (isset($user->image)) { ?>
+                <img src="<?php echo wp_get_attachment_image_url($user->image); ?>" alt="Company logo" class="mb-3">
+            <?php } ?>
+
+        </div>
+        <div class="col">
+
+            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                <label for="image"><?php esc_html_e('Upload company logo', 'woocommerce'); ?><br />
+                    <sub>(optional but we should strongly suggest it is done to add credibility to a vendor
+                        listing)</sub></label>
+                <input type="file" class="woocommerce-Input" name="image" accept="image/x-png,image/gif,image/jpeg">
+            </p>
+
+        </div>
+    </div>
 
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
         <label for="url">

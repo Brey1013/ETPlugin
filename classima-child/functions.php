@@ -1,22 +1,25 @@
 <?php
-add_action( 'wp_enqueue_scripts', 'classima_child_styles', 18 );
-function classima_child_styles() {
-	wp_enqueue_style( 'classipost-style', get_stylesheet_uri() );
+add_action('wp_enqueue_scripts', 'classima_child_styles', 18);
+function classima_child_styles()
+{
+    wp_enqueue_style('classipost-style', get_stylesheet_uri());
 }
 
-add_action( 'after_setup_theme', 'classima_child_theme_setup' );
-function classima_child_theme_setup() {
-    load_child_theme_textdomain( 'classima', get_stylesheet_directory() . '/languages' );
+add_action('after_setup_theme', 'classima_child_theme_setup');
+function classima_child_theme_setup()
+{
+    load_child_theme_textdomain('classima', get_stylesheet_directory() . '/languages');
 }
 
 
 
 // Disable block widgets (they are terrible)
 
-function disable_hash_themes_support() {
-    remove_theme_support( 'widgets-block-editor' );
+function disable_hash_themes_support()
+{
+    remove_theme_support('widgets-block-editor');
 }
-add_action( 'after_setup_theme', 'disable_hash_themes_support' );
+add_action('after_setup_theme', 'disable_hash_themes_support');
 
 // Disable block editor
 
@@ -25,18 +28,21 @@ add_filter('use_block_editor_for_post', '__return_false');
 // Add some JavaScript
 
 
-function et_script() {
-wp_enqueue_script( 'et', get_stylesheet_directory_uri() . '/js/et-scripts.js', array( 'jquery' ), false, true );
-wp_enqueue_script( 'et_cycle', get_stylesheet_directory_uri() . '/js/jquery.cycle2.min.js', array( 'jquery' ), false, true );
+function et_script()
+{
+    wp_enqueue_script('et_cycle', get_stylesheet_directory_uri() . '/js/jquery.cycle2.min.js', array('jquery'), false, true);
+    wp_enqueue_script('et', get_stylesheet_directory_uri() . '/js/et-scripts.min.js', array('jquery'), false, true);
+
+    wp_enqueue_style("et-responsive-style", get_stylesheet_directory_uri() . "/style.responsive.css");
 }
-add_action('wp_enqueue_scripts','et_script');
+add_action('wp_enqueue_scripts', 'et_script', 9999);
 
 // Disable comments
 
 add_action('admin_init', function () {
     // Redirect any user trying to access comments page
     global $pagenow;
-    
+
     if ($pagenow === 'edit-comments.php') {
         wp_redirect(admin_url());
         exit;
@@ -75,23 +81,24 @@ add_action('init', function () {
 
 
 /**
-* Add new predefined field "Profile Photo" in UM Form Builder.
-*/
-add_filter("um_predefined_fields_hook","um_predefined_fields_hook_profile_photo", 99999, 1 );
-function um_predefined_fields_hook_profile_photo( $arr ){
+ * Add new predefined field "Profile Photo" in UM Form Builder.
+ */
+add_filter("um_predefined_fields_hook", "um_predefined_fields_hook_profile_photo", 99999, 1);
+function um_predefined_fields_hook_profile_photo($arr)
+{
 
 
     $arr['profile_photo'] = array(
-        'title' => __('Profile Photo','ultimate-member'),
+        'title' => __('Profile Photo', 'ultimate-member'),
         'metakey' => 'profile_photo',
         'type' => 'image',
-        'label' => __('Change your profile photo','ultimate-member'),
-        'upload_text' => __('Upload your photo here','ultimate-member'),
+        'label' => __('Change your profile photo', 'ultimate-member'),
+        'upload_text' => __('Upload your photo here', 'ultimate-member'),
         'icon' => 'um-faicon-camera',
         'crop' => 1,
-        'max_size' => ( UM()->options()->get('profile_photo_max_size') ) ? UM()->options()->get('profile_photo_max_size') : 999999999,
-        'min_width' => str_replace('px','',UM()->options()->get('profile_photosize')),
-        'min_height' => str_replace('px','',UM()->options()->get('profile_photosize')),
+        'max_size' => (UM()->options()->get('profile_photo_max_size')) ? UM()->options()->get('profile_photo_max_size') : 999999999,
+        'min_width' => str_replace('px', '', UM()->options()->get('profile_photosize')),
+        'min_height' => str_replace('px', '', UM()->options()->get('profile_photosize')),
     );
 
     return $arr;
@@ -100,66 +107,70 @@ function um_predefined_fields_hook_profile_photo( $arr ){
 
 /**
  *  Multiply Profile Photo with different sizes
-*/
-add_action( 'um_registration_set_extra_data', 'um_registration_set_profile_photo', 9999, 2 );
-function um_registration_set_profile_photo( $user_id, $args ){
+ */
+add_action('um_registration_set_extra_data', 'um_registration_set_profile_photo', 9999, 2);
+function um_registration_set_profile_photo($user_id, $args)
+{
 
-    if ( empty( $args['custom_fields'] ) ) return;
-    
-    if( ! isset( $args['form_id'] ) ) return;
+    if (empty($args['custom_fields']))
+        return;
 
-    if( ! isset( $args['profile_photo'] ) || empty( $args['profile_photo'] ) ) return;
+    if (!isset($args['form_id']))
+        return;
+
+    if (!isset($args['profile_photo']) || empty($args['profile_photo']))
+        return;
 
     // apply this to specific form
-    //if( $args['form_id'] != 12345 ) return; 
+    //if( $args['form_id'] != 12345 ) return;
 
 
     $files = array();
 
-    $fields = unserialize( $args['custom_fields'] );
+    $fields = unserialize($args['custom_fields']);
 
-    $user_basedir = UM()->uploader()->get_upload_user_base_dir( $user_id, true );
+    $user_basedir = UM()->uploader()->get_upload_user_base_dir($user_id, true);
 
-    $profile_photo = get_user_meta( $user_id, 'profile_photo', true ); 
+    $profile_photo = get_user_meta($user_id, 'profile_photo', true);
 
     $image_path = $user_basedir . DIRECTORY_SEPARATOR . $profile_photo;
 
-    $image = wp_get_image_editor( $image_path );
+    $image = wp_get_image_editor($image_path);
 
-    $file_info = wp_check_filetype_and_ext( $image_path, $profile_photo );
- 
+    $file_info = wp_check_filetype_and_ext($image_path, $profile_photo);
+
     $ext = $file_info['ext'];
-    
-    $new_image_name = str_replace( $profile_photo,  "profile_photo.".$ext, $image_path );
 
-    $sizes = UM()->options()->get( 'photo_thumb_sizes' );
+    $new_image_name = str_replace($profile_photo, "profile_photo." . $ext, $image_path);
 
-    $quality = UM()->options()->get( 'image_compression' );
+    $sizes = UM()->options()->get('photo_thumb_sizes');
 
-    if ( ! is_wp_error( $image ) ) {
-            
+    $quality = UM()->options()->get('image_compression');
+
+    if (!is_wp_error($image)) {
+
         $max_w = UM()->options()->get('image_max_width');
-        if ( $src_w > $max_w ) {
-            $image->resize( $max_w, $src_h );
+        if ($src_w > $max_w) {
+            $image->resize($max_w, $src_h);
         }
 
-        $image->save( $new_image_name );
+        $image->save($new_image_name);
 
-        $image->set_quality( $quality );
+        $image->set_quality($quality);
 
         $sizes_array = array();
 
-        foreach( $sizes as $size ){
-            $sizes_array[ ] = array ('width' => $size );
+        foreach ($sizes as $size) {
+            $sizes_array[] = array('width' => $size);
         }
 
-        $image->multi_resize( $sizes_array );
+        $image->multi_resize($sizes_array);
 
-        delete_user_meta( $user_id, 'synced_profile_photo' );
-        update_user_meta( $user_id, 'profile_photo', "profile_photo.{$ext}" ); 
-        @unlink( $image_path );
+        delete_user_meta($user_id, 'synced_profile_photo');
+        update_user_meta($user_id, 'profile_photo', "profile_photo.{$ext}");
+        @unlink($image_path);
 
-    } 
+    }
 
 }
 

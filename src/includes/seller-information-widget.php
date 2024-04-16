@@ -63,7 +63,7 @@
 </section>
 
 <?php if ($logo) { ?>
-    <div class="p-2 text-center">
+    <div class="py-2">
         <img src="<?php echo wp_get_attachment_image_url($logo); ?>" alt="<?php echo $display_name; ?> logo"
             class="mw-100" />
     </div>

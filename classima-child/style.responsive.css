@@ -1,0 +1,108 @@
+/*
+Template:       classima
+Theme Name:     Classima Child
+Theme URI:      http://radiustheme.com/demo/wordpress/classima
+Author:         RadiusTheme
+Author URI:     https://www.radiustheme.com
+Description:    Classima is a clean and modern WordPress Theme best suited for Classified Listing. This theme comes with all necessary features and pages for a Classified Listing website.
+Version:        1.0
+Text Domain:    classima
+Tags:           two-columns, three-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, featured-images, footer-widgets, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, blog
+License:        Envato split License
+License URI:    https://themeforest.net/licenses/terms/regular
+*/
+
+@media screen and (max-width: 992px) {
+  .site-header .main-header {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  ul.sub-menu {
+    display: none !important;
+  }
+
+  ul.menu li a {
+    padding: 5px !important;
+  }
+
+  ul.menu li::after {
+    display: none !important;
+  }
+
+  ul.menu li:nth-child(4),
+  ul.menu li:nth-child(5) {
+    width: 48%;
+  }
+
+  ul.menu li:nth-child(4) a::before,
+  ul.menu li:nth-child(5) a::before {
+    padding: 5px !important;
+  }
+
+  .header-btn {
+    display: none;
+  }
+
+  #site-header .site-branding {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  #site-header .site-branding a.dark-logo {
+    width: 60% !important;
+    display: block;
+  }
+
+  .et-mobile-header-btn {
+    display: block;
+  }
+
+  body .et-homepage-search-form.et-search-expanded ul,
+  body .et-homepage-search-form.et-search-expanded ul.et-expanded-search,
+  body .et-search-form.et-search-expanded ul,
+  body .et-search-form.et-search-expanded ul.et-expanded-search {
+    width: 100%;
+    padding-left: 0 !important;
+  }
+
+  .et-homepage-search-form input,
+  .et-homepage-search-form select,
+  .et-search-form input,
+  .et-search-form select,
+  span.select2,
+  span.select2-selection {
+    padding: 2px 5px !important;
+    font-size: 0.85em;
+  }
+
+  .et-homepage-search-form,
+  .et-search-form {
+    margin: 0 !important;
+  }
+
+  .et-homepage-search-form ul,
+  .et-search-form ul {
+    padding: 0 !important;
+  }
+
+  #et-home-blog-section .display-posts-listing div.listing-item {
+    width: 100% !important;
+    padding-right: 0 !important;
+    margin-bottom: 15px;
+  }
+
+  .et-list-limited-3 .listing-list-each {
+    width: 90% !important;
+    margin: 10px auto !important;
+  }
+
+  #content .rtcl-list-view .listing-list-each-2 .rtin-item .rtin-thumb {
+    max-width: initial;
+  }
+}
+
+@media screen and (max-width: 640px) {
+}

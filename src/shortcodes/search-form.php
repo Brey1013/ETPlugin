@@ -6,9 +6,15 @@ if (!defined('ABSPATH')) {
 
 require $PLUGIN_ABSPATH . '/constants/index.php';
 
-function search_form_widget()
+function search_form_widget($args)
 {
     $postType = 'listing_ad';
+
+    $defaults = array(
+        'simple-form' => 'false',
+    );
+
+    $args = shortcode_atts($defaults, $args);
 
     $listOfCategories = get_categories(
         array(

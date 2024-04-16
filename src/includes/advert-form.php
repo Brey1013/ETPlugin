@@ -156,9 +156,8 @@ global $woocommerce;
                             advertised</div>
                     </i>
                 </label>
-                </label>
-                <div class="col-sm-8 d-flex align-items-center">
-                    <input type="file" class="form-control-file mr-3" id="brand-logo" name="brand-logo"
+                <div class="align-items-center col-sm-8 d-flex flex-column gap-2">
+                    <input type="file" class="form-control-file mb-1" id="brand-logo" name="brand-logo"
                         accept="image/*" />
                     <div class="d-flex align-items-center brand-logo-preview w-100">
                         <div class="col-10 p-0 position-relative d-flex">
