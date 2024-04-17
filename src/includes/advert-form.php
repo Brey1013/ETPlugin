@@ -12,9 +12,12 @@ global $woocommerce;
             <div class="et-listing-ad-form-help-area">
                 <div class="et-ad-listing-help-area">
                     <h4>Adding a product listing</h4>
-                    <p>Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Recusandae tenetur corporis
-                        dignissimos maiores, qui optio, consectetur. Maiores explicabo et rerum suscipit repellat,
-                        excepturi vel distinctio?</p>
+                    <p>Write a good title thinking about what your customer would search for.</p>
+                    <p>Try to populate all the fields requested, including the brand logo of the product you want to
+                        sell. Potential customers may recognise the brand you are selling before you.</p>
+                    <p>The search on this website draws information from all these fields so the more you add the
+                        higher the quality of your listing will be and the better the sales opportunity you are creating
+                        for your company.</p>
                     <p style="margin-bottom: 10px; float: right">
                         <a id="" href="#et-account-help-popup" class="et-top-cut-button"><i
                                 class="fa fa-solid fa-info"></i>Get help</a>
@@ -38,7 +41,8 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="title">
                     <?php _e('Title', 'equipmenttrader'); ?>:*
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please provide a title for your advert</div>
+                        <div class="et-tooltip">Think of what your customer would search for when deciding your title.
+                        </div>
                     </i>
                 </label>
 
@@ -52,7 +56,7 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="category">
                     <?php _e('Category', 'equipmenttrader'); ?>:*
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please select a category for your advert</div>
+                        <div class="et-tooltip">Select the best category you want your product advertised in</div>
                     </i>
                 </label>
                 <div class="col-sm-8">
@@ -94,7 +98,7 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="sub-category">
                     <?php _e('Select Product Type', 'equipmenttrader'); ?>:*
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please select a product type for your advert</div>
+                        <div class="et-tooltip">Please select the most appropriate product type for your listing</div>
                     </i>
                 </label>
                 <div class="col-sm-8">
@@ -140,7 +144,8 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="brand">
                     <?php _e('Brand', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please type in or select the brand of the product being advertised</div>
+                        <div class="et-tooltip">Brand is important – customers may search/recognize this before your
+                            company name</div>
                     </i>
                 </label>
                 </label>
@@ -154,8 +159,8 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="brand-logo">
                     <?php _e('Brand Logo', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please upload an image of the logo of the brand of the product being
-                            advertised</div>
+                        <div class="et-tooltip">The logo of the brand you are selling is a great way to add credibility
+                            to your listing</div>
                     </i>
                 </label>
                 <div class="align-items-center col-sm-8 d-flex flex-column gap-2">
@@ -184,8 +189,8 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="model">
                     <?php _e('Product Code/Model', 'equipmenttrader'); ?>:
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please type in the model or product code of the product being advertised
-                        </div>
+                        <div class="et-tooltip">A great way to help potential customers quickly search and find the item
+                            they want to buy from you</div>
                     </i>
                 </label>
                 </label>
@@ -199,7 +204,8 @@ global $woocommerce;
                 <label for="description">
                     <?php _e('Description', 'equipmenttrader'); ?>: *
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please enter a description of the product being advertised</div>
+                        <div class="et-tooltip">Knowing your product, provide the information you know will be important
+                            to your customer.</div>
                     </i>
                 </label>
                 </label>
@@ -210,6 +216,9 @@ global $woocommerce;
                 <?php _e('Add Images (Max 10):', 'equipmenttrader'); ?>
                 <?php if (!isset($adData['images']) || !$adData['images']) { ?>*
                 <?php } ?>
+                <i class="fas fa-question-circle et-tooltip-trigger">
+                    <div class="et-tooltip">First image will be the main image displayed</div>
+                </i>
             </label>
             <input type="file" class="form-control-file" id="gallery-images" name="gallery-images" accept="image/*"
                 multiple <?php if (!isset($adData['images'])) { ?>required<?php } ?> />
@@ -253,7 +262,8 @@ global $woocommerce;
                 <label class="col-sm-4 col-form-label" for="price-type">
                     <?php _e('Price', 'equipmenttrader'); ?>: *
                     <i class="fas fa-question-circle et-tooltip-trigger">
-                        <div class="et-tooltip">Please select an option below of how the product will be priced.</div>
+                        <div class="et-tooltip">Enter a fixed price (good for search) or select POA (Price on
+                            application) and discuss with you client when they call you.</div>
                     </i>
                 </label>
                 </label>

@@ -136,8 +136,14 @@ $authorEmail = get_the_author_meta('email', $author_id);
                                                 </h1>
                                             </div>
                                             <div class="et-product-price">
-                                                <span class="rtin-label">R </span> <span class="rtin-title">
-                                                    <?php echo $priceValue; ?>
+                                                <span class="rtin-label">
+                                                    <?php if ($priceType == 'POA') { ?>
+                                                        POA
+                                                    <?php } elseif ($priceValue) { ?>
+                                                        R </span> <span class="rtin-title">
+                                                        <?php echo $priceValue; ?>
+
+                                                    <?php } ?>
                                                 </span>
                                             </div>
 

@@ -12,7 +12,8 @@ function et_add_custom_cart_css()
     if (is_cart()) {
         echo '<style>
     /* Change number 4 with the number of the column you want to remove */
-    .woocommerce table.cart td:nth-of-type(5), .woocommerce table.cart th:nth-of-type(5) {
+    .woocommerce table.cart td:nth-of-type(5), .woocommerce table.cart th:nth-of-type(5),
+    .woocommerce table.cart td:nth-of-type(2), .woocommerce table.cart th:nth-of-type(2) {
             display: none;
         }
 
