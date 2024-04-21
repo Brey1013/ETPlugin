@@ -6,9 +6,9 @@
                 <li>
                     <div class="border-0 main-title-block pt-0 px-0">
                         <h3 class="m-0 rtin-specs-title">Filters:</h3>
-                        <a class="et-filter-trigger"><i class="fas fa-chevron-right"></i></a>
                         <hr class="et-styled-hr">
                     </div>
+                    <a class="et-filter-trigger"><i class="fas fa-chevron-right"></i></a>
                 </li>
             <?php } ?>
             <li>
