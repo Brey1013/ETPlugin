@@ -45,6 +45,16 @@ if (!function_exists('et_update_order')) {
 
                 break;
         }
+
+        $referer = strtolower($_SERVER['HTTP_REFERER']);
+
+        $queries = array();
+        parse_str($_SERVER['QUERY_STRING'], $queries);
+
+        if ($status != "completed" && $queries["payment"] == "successful" && str_contains($referer, "paynow.netcash.co.za")) {
+            $order->set_status("completed", "Payment received from $referer");
+            $order->save();
+        }
     }
 }
 add_action('woocommerce_update_order', 'et_update_order', 100, 2);

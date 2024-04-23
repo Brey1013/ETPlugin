@@ -347,6 +347,8 @@ global $woocommerce;
                         <div class="et-tooltip">Featured ads get more attention via special placement on the site, and
                             enhanced visual styling</div>
                     </i>
+                    <br><sub>* costs of featuring are not discounted</sub>
+                </label>
                 </label>
                 </label>
                 <div class="col-sm-8">

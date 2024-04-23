@@ -207,7 +207,7 @@ function getAdditionalFilters($args, $feature_options)
         $categoryFilter = $_GET['category'];
 
     if (strlen($categoryFilter) > 0)
-        array_push($result, "AND tt_category_lookup.term_id = {$categoryFilter}");
+        array_push($result, "AND (tt_category_lookup.term_id = {$categoryFilter} OR tt_category_lookup.parent = {$categoryFilter})");
     else if (isset($args['category']) && strlen($args['category']) > 0)
         array_push($result, "AND tt_category.name LIKE '%" . $args['category'] . "%'");
 

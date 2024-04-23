@@ -1,5 +1,5 @@
 <form action="<?php echo get_permalink(wc_get_page_id('shop')); ?>" method="get"
-    class="<?php echo $args["simple-form"] === "false" ? 'searchandfilter' : '' ?>">
+    class="<?php echo $args["simple-form"] === "false" ? 'searchandfilter' : '' ?>" autocomplete="none">
     <div>
         <ul>
             <?php if ($args["simple-form"] === "true") { ?>
@@ -13,13 +13,13 @@
             <?php } ?>
             <div class="fieldsholder">
                 <li>
-                    <select id="category" name="category" class="postform et-searchable-dropdown">
+                    <select id="category" name="category" class="postform et-searchable-dropdown" autocomplete="none">
                         <option value="">Product Categories</option>
                         <?php foreach ($categories as $key => $value) { ?>
-                            <option value="<?php echo $key; ?>" <?php if (isset($value['children'])) {
+                            <option value="<?php echo $value["term_id"]; ?>" <?php if (isset($value['children'])) {
                                    echo "data-options='" . transform_object_for_frontend($value['children']) . "'";
                                }
-                               echo ($_GET["category"] === $key) ? " selected" : ''; ?>>
+                               echo ($_GET["category"] == $value["term_id"]) ? " selected" : ''; ?>>
                                 <?php echo $value['name']; ?>
                             </option>
                         <?php } ?>
@@ -27,12 +27,12 @@
                 </li>
                 <li>
                     <select id="sub-category" name="sub_category" class="postform et-searchable-dropdown"
-                        data-first="Product Type">
+                        data-first="Product Type" autocomplete="none">
                         <option value="">Product Type</option>
                     </select>
                 </li>
                 <li>
-                    <select name="quality" class="postform et-searchable-dropdown">
+                    <select name="quality" class="postform et-searchable-dropdown" autocomplete="none">
                         <option value="">New/Used/Refurbished</option>
                         <option value="New" <?php if ($_GET["quality"] == "New") {
                             echo "selected";
@@ -83,7 +83,7 @@
                     value="<?php echo $_GET["product_code"]; ?>" />
             </li>
             <li>
-                <select class="form-control" class="postform" name="availability">
+                <select class="form-control" class="postform" name="availability" autocomplete="none">
                     <option value="">Availability</option>
                     <?php foreach ($availability_options as $option) { ?>
                         <option value="<?php echo $option; ?>" <?php if ($_GET["availability"] == $option) {
