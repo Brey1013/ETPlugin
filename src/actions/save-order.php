@@ -466,7 +466,7 @@ function save_custom_data_to_order_meta($item, $cart_item_key, $values, $order)
 
         if (isset($item->legacy_values)) {
             $meta_values = $item->legacy_values;
-            $status = 'publish';
+            $status = 'pending';
             $item->add_meta_data('title', $meta_values['title'], true);
             $item->add_meta_data('description', $meta_values['description'], true);
             $item->add_meta_data('category', absint($meta_values['category']), true);

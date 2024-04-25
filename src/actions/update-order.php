@@ -22,6 +22,13 @@ if (!function_exists('et_update_order')) {
                     delete_metadata('post', $listing_id, 'end_listing_date');
 
                     $item->delete_meta_data('end_listing_date');
+
+                    wp_update_post(
+                        array(
+                            'ID' => $listing_id,
+                            'post_status' => 'pending'
+                        )
+                    );
                 }
 
                 break;
@@ -41,19 +48,20 @@ if (!function_exists('et_update_order')) {
                     add_metadata('post', $listing_id, 'end_listing_date', $end_listing_date, true);
 
                     $item->add_meta_data('end_listing_date', $end_listing_date, true);
+
+                    wp_update_post(
+                        array(
+                            'ID' => $listing_id,
+                            'post_status' => 'publish'
+                        )
+                    );
                 }
 
                 break;
         }
 
-        $referer = strtolower($_SERVER['HTTP_REFERER']);
-
-        $queries = array();
-        parse_str($_SERVER['QUERY_STRING'], $queries);
-
-        if ($status != "completed" && $queries["payment"] == "successful" && str_contains($referer, "paynow.netcash.co.za")) {
-            $order->set_status("completed", "Payment received from $referer");
-            $order->save();
+        if ($status == "processing") {
+            $order->update_status("completed", "Payment changed from $status");
         }
     }
 }

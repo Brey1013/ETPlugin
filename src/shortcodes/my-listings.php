@@ -13,22 +13,47 @@ function et_my_listings()
     $current_user_id = get_current_user_id();
     $status_filter = isset($_GET["status"]) ? strtolower($_GET["status"]) : null;
 
-    $query = "SELECT p.ID, p.post_title, p.post_status, pm_featured.meta_value AS featured, pm_end_date.meta_value AS end_date
+    $query = "SELECT DISTINCT p.ID, p.post_title, p.post_status, pm_featured.meta_value AS featured, pm_endate.meta_value AS end_date
         FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
             LEFT OUTER JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
-            LEFT OUTER JOIN {$wpdb->postmeta} AS pm_end_date ON p.ID = pm_end_date.post_id AND pm_end_date.meta_key = 'end_listing_date'
-        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' ";
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND wc_order.post_status <> 'trash' ";
 
-    if ($status_filter === 'temp-draft' || $status_filter === 'publish')
+    if ($status_filter === 'temp-draft' || $status_filter === 'publish') {
         $query .= " AND p.post_status = '$status_filter' ";
-    else if ($status_filter === 'featured')
-        $query .= " AND pm_featured.meta_key = 'featured_ads' ";
-    else if ($status_filter === 'expired')
-        $query .= " AND (pm_end_date.meta_value < date(NOW())) ";
-    else if ($status_filter === 'pending')
-        $query .= " AND (pm_end_date.meta_value IS NULL) ";
 
-    $query .= " ORDER BY p.post_date DESC";
+        if ($status_filter === "publish") {
+            $query .= "AND (pm_endate.meta_value >= date(NOW()))";
+        }
+    } else if ($status_filter === 'featured') {
+        $query .= " AND pm_featured.meta_key = 'featured_ads' ";
+
+        $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
+        $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
+        $featured_option_1_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_duration));
+        $featured_option_2_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_duration));
+
+        $feature_options[1]["price"] = $featured_option_1_price;
+        $feature_options[1]["duration"] = $featured_option_1_duration;
+        $feature_options[2]["price"] = $featured_option_2_price;
+        $feature_options[2]["duration"] = $featured_option_2_duration;
+
+        foreach ($feature_options as $number => $settings) {
+            $featured_filters[] = "(pm_featured.meta_value = '" . $settings['price'] . "' AND NOW() <= DATE_ADD(p.post_date, INTERVAL " . $settings["duration"] . " DAY))";
+        }
+
+        $query .= " AND (" . join(" OR ", $featured_filters) . ") ";
+    } else if ($status_filter === 'expired')
+        $query .= " AND (pm_endate.meta_value < date(NOW())) ";
+    else if ($status_filter === 'pending')
+        $query .= " AND (pm_endate.meta_value IS NULL) AND wc_order.post_status = 'wc-on-hold' AND wo_payment_type.meta_value = 'bacs' ";
+
+    $query .= " ORDER BY p.post_date DESC, p.ID DESC";
 
     $results = $wpdb->get_results($query);
 

@@ -102,7 +102,7 @@ class WC_Product_Type_Plugin
         if ('product' != $post->post_type):
             return;
         endif;
-        // echo "<pre>";print_r($product_object);exit;
+
         $is_advanced = $product_object && 'listing_ad' === $product_object->get_type() ? true : false;
 
         ?>

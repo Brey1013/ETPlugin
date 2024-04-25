@@ -11,6 +11,16 @@ function et_dashboard_summary()
     global $wpdb;
     global $woocommerce;
 
+    $featured_option_1_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_price));
+    $featured_option_2_price = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_price));
+    $featured_option_1_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_1_duration));
+    $featured_option_2_duration = get_option(SettingsConstants::get_setting_name(SettingsConstants::$featured_option_2_duration));
+
+    $feature_options[1]["price"] = $featured_option_1_price;
+    $feature_options[1]["duration"] = $featured_option_1_duration;
+    $feature_options[2]["price"] = $featured_option_2_price;
+    $feature_options[2]["duration"] = $featured_option_2_duration;
+
     $inCart = count(WC()->cart->get_cart());
     $published = 0;
     $drafts = 0;
@@ -18,49 +28,71 @@ function et_dashboard_summary()
     $expired = 0;
     $current_user_id = get_current_user_id();
 
+    foreach ($feature_options as $number => $settings) {
+        $featured_filters[] = "(pm_featured.meta_value = '" . $settings['price'] . "' AND NOW() <= DATE_ADD(p.post_date, INTERVAL " . $settings["duration"] . " DAY))";
+    }
+
     $query = "SELECT
-        (SELECT COUNT(*)
+        (SELECT DISTINCT COUNT(*)
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND (pm_endate.meta_value >= date(NOW()))
+            AND pm_endate.meta_value >= date(NOW()) AND wc_order.post_status <> 'trash'
         ) AS published,
 
-        (SELECT COUNT(*)
+        (SELECT DISTINCT COUNT(*)
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-        WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND (pm_endate.meta_value IS NULL)
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id}
+            AND pm_endate.meta_value IS NULL AND wc_order.post_status = 'wc-on-hold' AND wo_payment_type.meta_value = 'bacs'
         ) AS pending,
 
-        (SELECT COUNT(*)
+        (SELECT DISTINCT COUNT(*)
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-            LEFT JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id AND pm.meta_key = 'featured_ads'
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND (pm_endate.meta_value >= date(NOW()))
-            AND (pm.meta_key IS NOT NULL AND pm.meta_value IS NOT NULL)
-           ) AS featured,
-
-        (SELECT COUNT(*)
-        FROM {$wpdb->posts} p
-            LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-        WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND (pm_endate.meta_value < date(NOW()))
+            AND pm_endate.meta_value < date(NOW()) AND wc_order.post_status <> 'trash'
         ) AS expired,
 
-        (SELECT COUNT(*)
+        (SELECT DISTINCT COUNT(*)
         FROM {$wpdb->posts} p
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'temp-draft' AND p.post_author = {$current_user_id}
-        ) AS draft;";
+        ) AS draft,
+
+        (SELECT DISTINCT COUNT(*)
+        FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+        WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
+            AND (" . join(" OR ", $featured_filters) . ") AND wc_order.post_status <> 'trash'
+        ) AS featured;";
 
     $result = $wpdb->get_row($query);
 
-    $drafts = $result->draft;
     $published = $result->published;
     $pending = $result->pending;
-    $featured = $result->featured;
     $expired = $result->expired;
+    $drafts = $result->draft;
+    $featured = $result->featured;
 
     ?>
 

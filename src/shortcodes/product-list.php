@@ -36,7 +36,7 @@ function product_list($args)
     $feature_options[2]["duration"] = $featured_option_2_duration;
 
     $query = "
-    SELECT p.ID
+    SELECT DISTINCT p.ID
     FROM {$wpdb->posts} AS p
         LEFT JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id AND pm.meta_key = 'featured_ads'
         LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'

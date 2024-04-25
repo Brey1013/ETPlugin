@@ -19,6 +19,7 @@ html:root {
   --et_black: #010101;
   --et_grey: #ccc;
   --et_featured: #ffc107;
+  --et_featured-opaque: #ffc10733;
   --et_bdrs: 4px;
   --et_boxpadding: 25px;
 }
@@ -1684,4 +1685,9 @@ label[for="payment_method_bacs"] {
 input#payment_method_bacs {
   position: relative;
   top: -20px;
+}
+
+body #content .rtcl-list-view .listing-list-each.featured-listing {
+  border: 2px solid var(--et_featured) !important;
+  background-color: var(--et_featured-opaque);
 }

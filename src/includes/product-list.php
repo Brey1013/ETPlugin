@@ -125,6 +125,7 @@
                                     'format' => '?paged=%#%',
                                     'current' => $paged,
                                     'total' => $total_pages,
+                                    'posts_per_page' => $posts_per_page,
                                     'prev_text' => __('&lt; Previous'),
                                     'next_text' => __('Next &gt;'),
                                 )
