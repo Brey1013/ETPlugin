@@ -1,6 +1,7 @@
 <form action="<?php echo get_permalink(wc_get_page_id('shop')); ?>" method="get"
     class="<?php echo $args["simple-form"] === "false" ? 'searchandfilter' : '' ?>" autocomplete="off">
     <input autocomplete="false" type="text" style="display:none;">
+    <input type="hidden" name="order_by" value="<?php echo $order_by; ?>">
     <div>
         <ul>
             <?php if ($args["simple-form"] === "true") { ?>

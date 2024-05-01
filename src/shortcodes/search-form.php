@@ -16,13 +16,15 @@ function search_form_widget($args)
 
     $args = shortcode_atts($defaults, $args);
 
+    $order_by = $_GET["order_by"] ?? 'high-to-low';
+
     $listOfCategories = get_categories(
         array(
             'taxonomy' => 'ad_category',
             'orderby' => 'name',
             'show_count' => 0,
             'pad_counts' => 0,
-            'hierarchical' => 0,
+            'hierarchical' => 1,
             'title_li' => '',
             'hide_empty' => 1,
         )

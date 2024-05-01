@@ -655,6 +655,13 @@ span.select2-selection {
   border: none !important;
 }
 
+body
+  .select2-container
+  .select2-selection--single
+  .select2-selection__rendered {
+  padding-left: 0;
+}
+
 .et-homepage-search-form input[type="submit"],
 .et-search-form input[type="submit"] {
   width: auto !important;
@@ -1690,4 +1697,17 @@ input#payment_method_bacs {
 body #content .rtcl-list-view .listing-list-each.featured-listing {
   border: 2px solid var(--et_featured) !important;
   background-color: var(--et_featured-opaque);
+}
+
+body
+  #content
+  .featured-row
+  .rtcl-list-view
+  .listing-list-each.featured-listing {
+  background: white;
+}
+
+.footer-style-2 .footer-top-area {
+  padding-top: 50px !important;
+  padding-bottom: 0 !important;
 }

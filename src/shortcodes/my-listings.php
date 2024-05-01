@@ -16,13 +16,11 @@ function et_my_listings()
     $query = "SELECT DISTINCT p.ID, p.post_title, p.post_status, pm_featured.meta_value AS featured, pm_endate.meta_value AS end_date
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-            LEFT OUTER JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
+            LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
-            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
-            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
-        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND wc_order.post_status <> 'trash' ";
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
+        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash' ";
 
     if ($status_filter === 'temp-draft' || $status_filter === 'publish') {
         $query .= " AND p.post_status = '$status_filter' ";
@@ -56,6 +54,49 @@ function et_my_listings()
     $query .= " ORDER BY p.post_date DESC, p.ID DESC";
 
     $results = $wpdb->get_results($query);
+
+    if ($_POST['add-to-cart']) {
+        global $woocommerce;
+
+        $product_id = wc_get_product_id_by_sku('master'); // Get the product ID
+        $quantity = 1; // Set the quantity to 1
+
+        foreach ($_POST['add-to-cart'] as $add_to_cart_id) {
+            $itemData = et_extract_product_raw_data($add_to_cart_id);
+
+            $images = array();
+            $specsheets = array();
+
+            foreach ($itemData['images'] as $id => $url) {
+                $images[] = $id;
+            }
+
+            foreach ($itemData['specsheets'] as $id => $url) {
+                $specsheets[] = $id;
+            }
+
+            $itemData['images'] = $images;
+            $itemData['prod_images'] = $images;
+
+            if (count($specsheets) > 0) {
+                $itemData['spec_sheet'] = $specsheets;
+                $itemData['specsheets'] = $specsheets;
+            } else {
+                $itemData['spec_sheet'] = [];
+                $itemData['specsheets'] = [];
+            }
+
+            $woocommerce->cart->add_to_cart($product_id, $quantity, 0, array(), $itemData);
+        }
+
+        ?>
+
+        <div class="woocommerce-notices-wrapper">
+            <div class="woocommerce-message" role="alert">Ad(s) added to your cart successfully.</div>
+        </div>
+
+        <?php
+    }
 
     ?>
 
@@ -155,8 +196,9 @@ function et_my_listings()
 
                     <tr class="woocommerce-orders-table__row woocommerce-orders-table__row--status-on-hold order">
                         <td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-actions" data-title="">
-                            <input type="checkbox" name="add-to-cart[]" />
-                            <input type="hidden" name="add-to-cart-ids[]" value="<?php echo $product_id; ?>" />
+                            <?php if ($result->post_status !== 'temp-draft') { ?>
+                                <input type="checkbox" name="add-to-cart[]" value="<?php echo $product_id; ?>" />
+                            <?php } ?>
                         </td>
                         <td class="woocommerce-orders-table__cell woocommerce-orders-table__cell-order-id"
                             data-title="Listing ID">

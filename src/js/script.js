@@ -76,7 +76,14 @@
     });
 
     setupGoToCartClick();
+
+    $("select[name='order_by']").on("change", orderByChanged);
   });
+
+  function orderByChanged(event) {
+    $("input[type=hidden][name=order_by]").val(event.currentTarget.value);
+    $(".et-search-form form input[type=submit]").trigger("click");
+  }
 
   function setupGoToCartClick() {
     $(".et-submit-advert-form [name='go-to-cart']").on("click", function (e) {

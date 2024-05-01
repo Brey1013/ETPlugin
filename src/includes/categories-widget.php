@@ -6,7 +6,7 @@ $listOfCategories = get_categories(
         'orderby' => 'name',
         'show_count' => 0,
         'pad_counts' => 0,
-        'hierarchical' => 0,
+        'hierarchical' => 1,
         'title_li' => '',
         'hide_empty' => 1
     )

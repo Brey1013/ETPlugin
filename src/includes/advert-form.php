@@ -283,7 +283,7 @@ global $woocommerce;
             <div class="form-group row <?php if (isset($adData['price-type']) && $adData['price-type'] == 'POA') {
                 echo 'd-none';
             } ?>" id="price-value-block">
-                <label class="col-sm-4 col-form-label" for="price-value"></label>
+                <label class="col-sm-4 col-form-label" for="price-value"><sub>Ex VAT</sub></label>
                 <div class="col-sm-8">
                     <input class="form-control" id="price-value" name="price-value" type="currency" placeholder="0.00"
                         value="<?php echo $adData['price-value'] ?? ''; ?>" />

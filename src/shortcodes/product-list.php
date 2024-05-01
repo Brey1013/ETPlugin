@@ -18,9 +18,19 @@ function product_list($args)
         'disable_pagination' => false,
         'brand' => '',
         'category' => '',
+        'order_by' => 'high-to-low'
     );
 
+    $sortOrders = array();
+
+    $sortOrders["high-to-low"] = "Price: High to Low";
+    $sortOrders["low-to-high"] = "Price: Low to High";
+    $sortOrders["new-to-old"] = "Age: New to Old";
+    $sortOrders["old-to-new"] = "Age: Old to New";
+
     $args = shortcode_atts($defaults, $args);
+
+    $order_by = $_GET["order_by"] ?? $args["order_by"] ?? 'high-to-low';
 
     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $today = time();
@@ -35,84 +45,33 @@ function product_list($args)
     $feature_options[2]["price"] = $featured_option_2_price;
     $feature_options[2]["duration"] = $featured_option_2_duration;
 
-    $query = "
-    SELECT DISTINCT p.ID
+    $joins = getAdditionalJoins($args, $order_by);
+    $filters = getAdditionalFilters($args, $feature_options);
+    $ordering = getOrderByClause($args, $order_by);
+
+    $query = "SELECT DISTINCT p.ID
     FROM {$wpdb->posts} AS p
         LEFT JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id AND pm.meta_key = 'featured_ads'
         LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-        " . getAdditionalJoins($args) . "
+        $joins
     WHERE p.post_type = 'listing_ad'
         AND p.post_status = 'publish'
         AND (pm.meta_key IS NULL OR pm.meta_key = 'featured_ads')
         AND (pm_endate.meta_value >= date(NOW()) AND pm_endate.meta_value IS NOT NULL)
-        " . getAdditionalFilters($args, $feature_options) . "
-    ORDER BY
-        CASE
-            WHEN pm.meta_value IS NOT NULL THEN pm.meta_value
-            ELSE '0'
-        END DESC,
-        p.post_date DESC";
+        $filters
+    ORDER BY $ordering";
 
     $adverts = $wpdb->get_col($query);
 
     if ($adverts) {
-        $featured_option_1 = array();
-        $featured_option_2 = array();
-        $normal_posts = array();
-
-        foreach ($adverts as $advert_id) {
-            $featured = get_post_meta($advert_id, 'featured_ads', true);
-            $end_listing_date = get_post_meta($advert_id, 'end_listing_date', true);
-            $duration = get_post_meta($advert_id, 'duration', true);
-            $publish_date = get_the_date('Y-m-d', $advert_id);
-
-            $ad_arr = array(
-                'id' => $advert_id,
-                'date' => $publish_date
-            );
-
-            if ($featured == $featured_option_1_price) {
-                $remaining_days = $duration - $featured_option_1_duration;
-                $feature_expiry_date = strtotime('-' . $remaining_days . ' days', strtotime($end_listing_date));
-                if ($feature_expiry_date >= $today) {
-                    $featured_option_1[] = $ad_arr;
-                } else {
-                    $normal_posts[] = $ad_arr;
-                }
-            } elseif ($featured == $featured_option_2_price) {
-                $remaining_days = $duration - $featured_option_2_duration;
-                $feature_expiry_date = strtotime('-' . $remaining_days . ' days', strtotime($end_listing_date));
-                if ($feature_expiry_date >= $today) {
-                    $featured_option_2[] = $ad_arr;
-                } else {
-                    $normal_posts[] = $ad_arr;
-                }
-            } else {
-                $normal_posts[] = $ad_arr;
-            }
-        }
-
         // Set up pagination
         $total = count($adverts);
         $posts_per_page = $args['posts_per_page'];
         $total_pages = ceil($total / $posts_per_page);
 
-        // Merge featured and normal posts
-        $all_posts = array_merge($featured_option_2, $featured_option_1);
-
-        if ($args['only_featured'] == false)
-            $all_posts = array_merge($all_posts, $normal_posts);
-
-        usort($all_posts, 'sortByDate');
-
-        // Create an array of just the IDs
-        $idsArray = array_map(function ($item) {
-            return $item['id'];
-        }, $all_posts);
-
         $args_all = array(
             'post_type' => 'listing_ad',
-            'post__in' => $idsArray,
+            'post__in' => $adverts,
             'orderby' => 'post__in',
             'paged' => $paged,
             'posts_per_page' => $posts_per_page,
@@ -131,7 +90,7 @@ function product_list($args)
 }
 add_shortcode('et-product-list', 'product_list');
 
-function getAdditionalJoins($args)
+function getAdditionalJoins($args, $order_by)
 {
     global $wpdb;
 
@@ -162,8 +121,14 @@ function getAdditionalJoins($args)
     if (isset($_GET['quality']) && strlen($_GET['quality']) > 0)
         array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_quality ON p.ID = pm_quality.post_id AND pm_quality.meta_key = 'quality'");
 
-    if ((isset($_GET['min_price']) && strlen($_GET['min_price']) > 0) || (isset($_GET['max_price']) && strlen($_GET['max_price']) > 0))
+    $orderByPriceOptions = ["high-to-low", "low-to-high"];
+
+    $orderByPrice = in_array($order_by, $orderByPriceOptions);
+
+    if ($orderByPrice || (isset($_GET['min_price']) && strlen($_GET['min_price']) > 0) || (isset($_GET['max_price']) && strlen($_GET['max_price']) > 0)) {
+        array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_price_type ON p.ID = pm_price_type.post_id AND pm_price_type.meta_key = 'priceType'");
         array_push($result, "LEFT JOIN {$wpdb->postmeta} AS pm_price ON p.ID = pm_price.post_id AND pm_price.meta_key = 'price-value'");
+    }
 
     if ((isset($_GET['brand']) && strlen($_GET['brand']) > 0) || (isset($args['brand']) && strlen($args['brand']) > 0)) {
         array_push($result, "LEFT JOIN {$wpdb->term_relationships} AS tr_brand ON p.ID = tr_brand.object_id");
@@ -303,4 +268,29 @@ function getAdditionalFilters($args, $feature_options)
 function sortByDate($a, $b)
 {
     return strtotime($b['date']) - strtotime($a['date']);
+}
+
+function getOrderByClause($args, $order_by)
+{
+    if ($args["only_featured"] == true && $args["disable_pagination"] == true)
+        $result = "RAND()";
+    else {
+        switch ($order_by) {
+            default:
+            case "high-to-low":
+                $result = "CASE WHEN pm_price_type.meta_value = 'POA' THEN 1 ELSE 0 END DESC, CAST(REPLACE(pm_price.meta_value, ' ', '') AS DECIMAL(10,2)) DESC";
+                break;
+            case "low-to-high":
+                $result = "CASE WHEN pm_price_type.meta_value = 'POA' THEN 1 ELSE 0 END ASC, CAST(REPLACE(pm_price.meta_value, ' ', '') AS DECIMAL(10,2)) ASC";
+                break;
+            case "new-to-old":
+                $result = "p.post_date DESC";
+                break;
+            case "old-to-new":
+                $result = "p.post_date ASC";
+                break;
+        }
+    }
+
+    return " $result ";
 }

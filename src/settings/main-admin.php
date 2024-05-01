@@ -351,7 +351,7 @@ function cmb2_sample_metaboxes()
     $cmb->add_field(
         array(
             'name' => 'Product Images',
-            'desc' => 'Upload an Images',
+            'desc' => 'Upload Images',
             'id' => 'prod_images',
             'type' => 'file_list',
             'preview_size' => 'small', // Image size to use when previewing in the admin.

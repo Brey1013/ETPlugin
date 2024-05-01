@@ -99,6 +99,7 @@ function handle_advert_form_submission()
                 if (isset($_GET['draft_id'])) {
                     wp_delete_post($_GET['draft_id'], true);
                 }
+
                 $cart_item_key = $woocommerce->cart->add_to_cart($product_id, $quantity, 0, array(), $itemData);
             } elseif (isset($_POST['go-to-cart'])) {
                 if (isset($_GET['draft_id'])) {

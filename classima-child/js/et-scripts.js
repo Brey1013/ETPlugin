@@ -1,6 +1,13 @@
 "use strict";
 
 (function ($) {
+  // Toggle view of the search filters on mobile
+
+  $(".et-filter-trigger").click(function () {
+    $(this).toggleClass("filtersopen");
+    $(".et-search-form .fieldsholder").toggleClass("filtersopen");
+  });
+
   // Move the mobile version of the add listing header button to where it needs to be
 
   $("a.et-mobile-header-btn")

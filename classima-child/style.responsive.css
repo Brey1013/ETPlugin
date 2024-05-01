@@ -16,9 +16,111 @@ License URI:    https://themeforest.net/licenses/terms/regular
   .site-header .main-header {
     display: block !important;
   }
+
+  .col-4,
+  .col-8,
+  .col-6 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: initial !important;
+    margin-bottom: 50px !important;
+  }
+
+  form.searchandfilter .col-4,
+  form.searchandfilter .col-8,
+  form.searchandfilter .col-6 {
+    margin-bottom: 0 !important;
+  }
+  .col-4.et-search-form .col-6,
+  .col-4.et-search-form .col-6,
+  .col-4.et-search-form .col-6 {
+    margin-bottom: 0 !important;
+  }
+
+  .et-ad-listing .listing-list-each.listing-list-each-2.rtcl-listing-item {
+    width: 100% !important;
+  }
+
+  .main-content iframe {
+    width: 100%;
+  }
+
+  .py-2 img {
+    width: 80% !important;
+    margin: 20px 10% !important;
+  }
+
+  .et-top-cut-button {
+    font-size: 0.75em;
+    margin-top: 10px;
+  }
+
+  .et-character-bottom-cutoff::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    bottom: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .et-character-bottom-cutoff-blue::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(rgba(1, 96, 21, 0), rgba(1, 96, 21, 1));
+    bottom: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .progress-bar .bar[data-text]::before {
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .progress-bar .bar::after {
+    font-size: 12px !important;
+  }
+
+  .btn {
+    margin-top: 10px;
+  }
+
+  .page-id-380 .fieldsholder {
+    display: none;
+  }
+
+  a.et-filter-trigger {
+    display: block;
+  }
+
+  #et-banner-section-bg .elementor-element-2ff34a8 {
+    margin: 0 !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
+  .rtcl-list-view .listing-list-each .rtin-thumb {
+    width: 100% !important;
+  }
+
+  .rtcl-list-view .listing-list-each .rtin-thumb img {
+    width: 100% !important;
+  }
+
+  .rtcl-list-view .listing-list-each .rtin-content-area {
+    width: 100% !important;
+    padding: 20px;
+  }
+
+  .rtcl-list-view .listing-list-each .rtin-item {
+    flex-direction: column;
+  }
+
   ul.sub-menu {
     display: none !important;
   }
@@ -74,13 +176,41 @@ License URI:    https://themeforest.net/licenses/terms/regular
   .et-search-form select,
   span.select2,
   span.select2-selection {
-    padding: 2px 5px !important;
-    font-size: 0.85em;
+    padding: 10px 10px !important;
+    /*    font-size: 0.85em;*/
+    line-height: 10px !important;
+    font-size: 15px !important;
+    color: #666 !important;
+  }
+
+  .et-homepage-search-form input:placeholder,
+  .et-homepage-search-form select:placeholder,
+  .et-search-form input:placeholder,
+  .et-search-form select:placeholder {
+    color: #666 !important;
+  }
+
+  span.select2-container {
+    padding: 5px !important;
+  }
+
+  span.select2-selection__rendered {
+    margin-top: -10px;
+    margin-left: -10px;
+  }
+
+  .et-homepage-search-form input[type="reset"] {
+    margin-top: 10px;
   }
 
   .et-homepage-search-form,
   .et-search-form {
-    margin: 0 !important;
+    /*    margin: 0 !important;*/
+  }
+
+  .footer-top-area .container {
+    padding-left: 25px;
+    padding-right: 25px;
   }
 
   .et-homepage-search-form ul,

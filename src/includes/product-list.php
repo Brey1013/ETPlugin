@@ -5,7 +5,23 @@
                 <?php echo do_shortcode('[et-search-form simple-form="true"]') ?>
             </div>
         <?php } ?>
-        <div class="col-<?php echo $args['hide_filters'] == false ? '8' : '12' ?>">
+        <div class="col">
+            <?php if ($args['hide_filters'] == false) { ?>
+                <div class="row">
+                    <div class="col">
+                        <form method="get" autocomplete="off" class="form-inline justify-content-end">
+                            <label class="sr-only" for="order_by">Sort By</label>
+                            <select class="form-control mb-2" name="order_by">
+                                <?php foreach ($sortOrders as $key => $label) { ?>
+                                    <option value="<?php echo $key; ?>" <?php echo $order_by == $key ? 'selected' : ''; ?>>
+                                        <?php echo $label; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            <?php } ?>
             <div class="rtcl rtcl-listings rtcl-listings-list">
                 <div class="rtcl-list-view">
                     <?php
@@ -34,6 +50,12 @@
                             $featured_ads = get_post_meta($product_id, 'featured_ads', true);
                             $cat_array = wp_get_post_terms($product_id, 'ad_category', array('orderby' => 'term_order'));
                             $cat_str = array();
+
+                            if (count($cat_array) === 1 && $cat_array[0]->parent != 0) {
+                                $parent = get_term($cat_array[0]->parent);
+
+                                $cat_str[] = $parent->name;
+                            }
 
                             foreach ($cat_array as $cat) {
                                 $cat_str[] = $cat->name;
@@ -99,7 +121,7 @@
                                                             POA
                                                         <?php } elseif ($priceValue) { ?>
                                                             <span class="rtcl-price-currencySymbol">R</span>
-                                                            <?php echo $priceValue; ?>
+                                                            <?php format_product_price($priceValue); ?>
                                                         <?php } ?>
                                                     </span>
                                                 </div>

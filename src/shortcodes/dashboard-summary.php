@@ -38,11 +38,9 @@ function et_dashboard_summary()
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
-            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
-            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND pm_endate.meta_value >= date(NOW()) AND wc_order.post_status <> 'trash'
+            AND pm_endate.meta_value >= date(NOW()) AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash'
         ) AS published,
 
         (SELECT DISTINCT COUNT(*)
@@ -50,11 +48,10 @@ function et_dashboard_summary()
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
-            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
-            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_item.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
         WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id}
-            AND pm_endate.meta_value IS NULL AND wc_order.post_status = 'wc-on-hold' AND wo_payment_type.meta_value = 'bacs'
+            AND pm_endate.meta_value IS NULL AND p.post_status <> 'trash' AND wc_order.post_status = 'wc-on-hold' AND wo_payment_type.meta_value = 'bacs'
         ) AS pending,
 
         (SELECT DISTINCT COUNT(*)
@@ -62,11 +59,9 @@ function et_dashboard_summary()
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
-            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
-            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND pm_endate.meta_value < date(NOW()) AND wc_order.post_status <> 'trash'
+            AND pm_endate.meta_value < date(NOW()) AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash'
         ) AS expired,
 
         (SELECT DISTINCT COUNT(*)
@@ -79,11 +74,9 @@ function et_dashboard_summary()
             LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_order_stats AS order_stats ON order_item.order_id = order_stats.order_id
-            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_stats.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
-            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = wo_payment_type.post_id
+            LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
         WHERE p.post_type = 'listing_ad' AND p.post_status = 'publish' AND p.post_author = {$current_user_id}
-            AND (" . join(" OR ", $featured_filters) . ") AND wc_order.post_status <> 'trash'
+            AND (" . join(" OR ", $featured_filters) . ") AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash'
         ) AS featured;";
 
     $result = $wpdb->get_row($query);

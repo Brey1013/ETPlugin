@@ -30,13 +30,20 @@ $availability = get_post_meta($product_id, 'availability', true);
 $featured_ads = get_post_meta($product_id, 'featured_ads', true);
 
 $taxonomy = 'ad_category'; //Choose the taxonomy
-$terms = get_terms($taxonomy); //Get all the terms
+$terms = wp_get_post_terms($product_id, $taxonomy, array('orderby' => 'term_order'));
+
+if (count($terms) === 1 && $terms[0]->parent != 0) {
+    $parent = get_term($terms[0]->parent);
+
+    $term_id = $parent->term_id; //Define the term ID
+    $term_link = get_term_link($parent, $taxonomy); //Get the link to the archive page for that term
+    $term_name = $parent->name;
+}
 
 foreach ($terms as $term) { //Cycle through terms, one at a time
     // Check and see if the term is a top-level parent. If so, display it.
     $parent = $term->parent;
     if ($parent == '0') {
-
         $term_id = $term->term_id; //Define the term ID
         $term_link = get_term_link($term, $taxonomy); //Get the link to the archive page for that term
         $term_name = $term->name;
@@ -141,8 +148,7 @@ $authorEmail = get_the_author_meta('email', $author_id);
                                                         POA
                                                     <?php } elseif ($priceValue) { ?>
                                                         R </span> <span class="rtin-title">
-                                                        <?php echo $priceValue; ?>
-
+                                                        <?php format_product_price($priceValue); ?>
                                                     <?php } ?>
                                                 </span>
                                             </div>

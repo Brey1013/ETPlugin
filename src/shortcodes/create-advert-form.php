@@ -58,7 +58,7 @@ function create_advert_form($atts)
                 'orderby' => 'name',
                 'show_count' => 0,
                 'pad_counts' => 0,
-                'hierarchical' => 0,
+                'hierarchical' => 1,
                 'title_li' => '',
                 'hide_empty' => 0,
             )
