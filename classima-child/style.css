@@ -1711,3 +1711,7 @@ body
   padding-top: 50px !important;
   padding-bottom: 0 !important;
 }
+
+[data-id="5ec912e"] .elementor-widget-wrap.elementor-element-populated {
+  align-content: center;
+}
