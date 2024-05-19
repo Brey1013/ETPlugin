@@ -36,6 +36,8 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+
+
 .gap {
   gap: 0.25rem;
 }
@@ -257,6 +259,19 @@ form.et-submit-advert-form .progress-bar {
 
 .et-form-button-save-next {
 }
+
+a.et-filter-trigger {
+  display: none;
+  float: right;
+  transition: all .2s linear;
+}
+
+a.et-filter-trigger.filtersopen {
+  transform: rotate(90deg);
+} 
+
+
+
 
 .et-form-button-save {
 }
@@ -1715,3 +1730,9 @@ body
 [data-id="5ec912e"] .elementor-widget-wrap.elementor-element-populated {
   align-content: center;
 }
+
+.page-id-380 form.form-inline.justify-content-end {
+  display: none !important;
+}
+
+
