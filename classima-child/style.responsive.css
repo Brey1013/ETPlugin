@@ -94,6 +94,10 @@ License URI:    https://themeforest.net/licenses/terms/regular
     display: none;
   }
 
+ .fieldsholder.filtersopen {
+    display: block !important;
+  }
+
   a.et-filter-trigger {
     display: block;
   }
@@ -231,6 +235,12 @@ License URI:    https://themeforest.net/licenses/terms/regular
 
   #content .rtcl-list-view .listing-list-each-2 .rtin-item .rtin-thumb {
     max-width: initial;
+  }
+
+  body .et-homepage-search-form input[type="reset"], body .et-search-form input[type="reset"] {
+    font-size: 14px !important;
+    padding: 15px 10px !important;
+    clear: both;
   }
 }
 
