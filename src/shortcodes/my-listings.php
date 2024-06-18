@@ -16,9 +16,10 @@ function et_my_listings()
     $query = "SELECT DISTINCT p.ID, p.post_title, p.post_status, pm_featured.meta_value AS featured, pm_endate.meta_value AS end_date
         FROM {$wpdb->posts} p
             LEFT JOIN {$wpdb->postmeta} AS pm_endate ON p.ID = pm_endate.post_id AND pm_endate.meta_key = 'end_listing_date'
-            LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
             LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta AS wo_itemmeta ON wo_itemmeta.meta_key = 'listing_ad_id' AND wo_itemmeta.meta_value = p.ID
             LEFT JOIN {$wpdb->prefix}woocommerce_order_items AS order_item ON wo_itemmeta.order_item_id = order_item.order_item_id
+            LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
+            LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_item.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
             LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
         WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash' ";
 
