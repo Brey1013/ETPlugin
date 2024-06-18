@@ -21,13 +21,16 @@ function et_my_listings()
             LEFT JOIN {$wpdb->postmeta} AS pm_featured ON p.ID = pm_featured.post_id AND pm_featured.meta_key = 'featured_ads'
             LEFT JOIN {$wpdb->postmeta} AS wo_payment_type ON order_item.order_id = wo_payment_type.post_id AND wo_payment_type.meta_key = '_payment_method'
             LEFT JOIN {$wpdb->posts} AS wc_order ON wc_order.ID = order_item.order_id
-        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND p.post_status <> 'trash' AND wc_order.post_status <> 'trash' ";
+        WHERE p.post_type = 'listing_ad' AND p.post_author = {$current_user_id} AND p.post_status <> 'auto-draft' AND p.post_status <> 'trash' ";
+
+    if ($status_filter != 'temp-draft')
+        $query .= " AND wc_order.post_status <> 'trash' ";
 
     if ($status_filter === 'temp-draft' || $status_filter === 'publish') {
         $query .= " AND p.post_status = '$status_filter' ";
 
         if ($status_filter === "publish") {
-            $query .= "AND (pm_endate.meta_value >= date(NOW()))";
+            $query .= " AND (pm_endate.meta_value >= date(NOW()))";
         }
     } else if ($status_filter === 'featured') {
         $query .= " AND pm_featured.meta_key = 'featured_ads' ";

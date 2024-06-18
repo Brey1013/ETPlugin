@@ -123,8 +123,8 @@ function handle_advert_form_submission()
                 update_post_meta($post->ID, 'cart_items', $itemData);
             } else {
                 // Handle media uploads
-                $itemData['images'] = array_merge($itemData['images'] || [], upload_base64_attachments('images'));
-                $itemData['specsheets'] = array_merge($itemData['specsheets'] || [], upload_base64_attachments('specsheets'));
+                $itemData['images'] = array_merge($itemData['images'] ?? [], upload_base64_attachments('images', []));
+                $itemData['specsheets'] = array_merge($itemData['specsheets'] ?? [], upload_base64_attachments('specsheets', []));
                 $itemData['brand_logo'] = upload_file('brand_logo', $itemData['brand_logo'] ?? false);
 
                 $post_arr = array(
