@@ -16,6 +16,16 @@ namespace radiustheme\Classima;
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="profile" href="https://gmpg.org/xfn/11" />
 	<?php wp_head(); ?>
+	<!-- Google tag (gtag.js) -->
+	<script async src=https://www.googletagmanager.com/gtag/js?id=G-1Z3TEPTDVJ>
+	</script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'G-1Z3TEPTDVJ');
+	</script>
 </head>
 
 <body <?php body_class(); ?>>
@@ -29,11 +39,9 @@ namespace radiustheme\Classima;
 	</div>
 	<a href="/my-account/add-listings/" class="et-mobile-header-btn"><i class="fas fa-plus"></i> Your Ad</a>
 	<div id="page" class="site">
-		<a class="skip-link screen-reader-text"
-			href="#content"><?php esc_html_e('Skip to content', 'classima'); ?></a>
+		<a class="skip-link screen-reader-text" href="#content">
+			<?php esc_html_e('Skip to content', 'classima'); ?></a>
 		<div id="et-header-button">
-
-
 
 		</div>
 		<?php get_template_part('template-parts/content', 'menu'); ?>

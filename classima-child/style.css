@@ -36,8 +36,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
-
 .gap {
   gap: 0.25rem;
 }
@@ -263,15 +261,12 @@ form.et-submit-advert-form .progress-bar {
 a.et-filter-trigger {
   display: none;
   float: right;
-  transition: all .2s linear;
+  transition: all 0.2s linear;
 }
 
 a.et-filter-trigger.filtersopen {
   transform: rotate(90deg);
-} 
-
-
-
+}
 
 .et-form-button-save {
 }
@@ -639,6 +634,45 @@ section.et-homepage-advert-banner-container div.cycle-mobile-slideshow {
   width: 100%;
 }
 
+.et-advanced-homepage-search
+  form.searchandfilter
+  > div
+  > ul
+  .fieldsholder
+  li:nth-child(3),
+.col-4.et-search-form form > div ul > div.fieldsholder li:nth-child(3) {
+  display: none !important;
+}
+
+.et-advanced-homepage-search
+  form.searchandfilter
+  ul.et-expanded-search
+  .fieldsholder
+  li:nth-child(1),
+.et-advanced-homepage-search
+  form.searchandfilter
+  ul.et-expanded-search
+  .fieldsholder
+  li:nth-child(2),
+.et-advanced-homepage-search
+  form.searchandfilter
+  ul.et-expanded-search
+  .fieldsholder
+  li:nth-child(4),
+.col-4.et-search-form form > ul > div.fieldsholder li:nth-child(1),
+.col-4.et-search-form form > ul > div.fieldsholder li:nth-child(2),
+.col-4.et-search-form form > ul > div.fieldsholder li:nth-child(4) {
+  display: none;
+}
+
+.col-4.et-search-form
+  form
+  > ul.et-search-bottom
+  div.fieldsholder
+  li:nth-child(1) {
+  display: block !important;
+}
+
 .et-homepage-search-form ul,
 .et-search-form ul {
   list-style: none;
@@ -858,7 +892,7 @@ label.et-form-featured-option:before {
 
 .et-ad-listing .rtin-thumb-inner img {
   width: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   border: none !important;
 }
 
@@ -971,7 +1005,16 @@ body.page.page-id-380
   .rtin-thumb
   a
   img {
-  object-fit: cover !important;
+  object-fit: contain !important;
+}
+
+#content
+  .rtcl-list-view
+  .listing-list-each-2
+  .rtin-item
+  .rtin-thumb
+  .rtin-thumb-inner {
+  background: #fefefe;
 }
 
 .et-ad-listing
@@ -1734,5 +1777,3 @@ body
 .page-id-380 form.form-inline.justify-content-end {
   display: none !important;
 }
-
-

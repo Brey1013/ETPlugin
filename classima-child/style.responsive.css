@@ -94,7 +94,7 @@ License URI:    https://themeforest.net/licenses/terms/regular
     display: none;
   }
 
- .fieldsholder.filtersopen {
+  .fieldsholder.filtersopen {
     display: block !important;
   }
 
@@ -237,7 +237,8 @@ License URI:    https://themeforest.net/licenses/terms/regular
     max-width: initial;
   }
 
-  body .et-homepage-search-form input[type="reset"], body .et-search-form input[type="reset"] {
+  body .et-homepage-search-form input[type="reset"],
+  body .et-search-form input[type="reset"] {
     font-size: 14px !important;
     padding: 15px 10px !important;
     clear: both;

@@ -11,10 +11,7 @@ function classima_child_theme_setup()
     load_child_theme_textdomain('classima', get_stylesheet_directory() . '/languages');
 }
 
-
-
 // Disable block widgets (they are terrible)
-
 function disable_hash_themes_support()
 {
     remove_theme_support('widgets-block-editor');
@@ -22,23 +19,18 @@ function disable_hash_themes_support()
 add_action('after_setup_theme', 'disable_hash_themes_support');
 
 // Disable block editor
-
 add_filter('use_block_editor_for_post', '__return_false');
 
 // Add some JavaScript
-
-
 function et_script()
 {
     wp_enqueue_script('et_cycle', get_stylesheet_directory_uri() . '/js/jquery.cycle2.min.js', array('jquery'), false, true);
     wp_enqueue_script('et', get_stylesheet_directory_uri() . '/js/et-scripts.min.js', array('jquery'), false, true);
-
     wp_enqueue_style("et-responsive-style", get_stylesheet_directory_uri() . "/style.responsive.css");
 }
 add_action('wp_enqueue_scripts', 'et_script', 9999);
 
 // Disable comments
-
 add_action('admin_init', function () {
     // Redirect any user trying to access comments page
     global $pagenow;
@@ -79,14 +71,12 @@ add_action('init', function () {
     }
 });
 
-
 /**
  * Add new predefined field "Profile Photo" in UM Form Builder.
  */
 add_filter("um_predefined_fields_hook", "um_predefined_fields_hook_profile_photo", 99999, 1);
 function um_predefined_fields_hook_profile_photo($arr)
 {
-
 
     $arr['profile_photo'] = array(
         'title' => __('Profile Photo', 'ultimate-member'),
@@ -102,7 +92,6 @@ function um_predefined_fields_hook_profile_photo($arr)
     );
 
     return $arr;
-
 }
 
 /**
@@ -111,7 +100,6 @@ function um_predefined_fields_hook_profile_photo($arr)
 add_action('um_registration_set_extra_data', 'um_registration_set_profile_photo', 9999, 2);
 function um_registration_set_profile_photo($user_id, $args)
 {
-
     if (empty($args['custom_fields']))
         return;
 
@@ -120,10 +108,6 @@ function um_registration_set_profile_photo($user_id, $args)
 
     if (!isset($args['profile_photo']) || empty($args['profile_photo']))
         return;
-
-    // apply this to specific form
-    //if( $args['form_id'] != 12345 ) return;
-
 
     $files = array();
 
@@ -148,7 +132,6 @@ function um_registration_set_profile_photo($user_id, $args)
     $quality = UM()->options()->get('image_compression');
 
     if (!is_wp_error($image)) {
-
         $max_w = UM()->options()->get('image_max_width');
         if ($src_w > $max_w) {
             $image->resize($max_w, $src_h);
@@ -169,8 +152,5 @@ function um_registration_set_profile_photo($user_id, $args)
         delete_user_meta($user_id, 'synced_profile_photo');
         update_user_meta($user_id, 'profile_photo', "profile_photo.{$ext}");
         @unlink($image_path);
-
     }
-
 }
-
